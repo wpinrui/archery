@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
-import Flag from 'react-world-flags'
+import Flag from '../../components/Flag'
 import styles from './styles.module.scss'
 
 // ── Config ───────────────────────────────────────────────────────────

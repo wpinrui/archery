@@ -1,4 +1,4 @@
-import Flag from 'react-world-flags'
+import Flag from '../../components/Flag'
 import styles from './styles.module.scss'
 
 // ── Helpers ───────────────────────────────────────────────────────────
