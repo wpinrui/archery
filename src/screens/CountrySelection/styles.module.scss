@@ -1,0 +1,270 @@
+// ── Container ─────────────────────────────────────────────────────────
+
+.container {
+  height: 100vh;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.bg {
+  position: absolute;
+  inset: -2rem;
+  background: url('/menus-bg.jpg') center / cover no-repeat;
+  filter: blur(10px);
+  z-index: 0;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 80% at 50% 50%, transparent 20%, rgba(0,0,0,0.82) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.5) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 860px;
+  height: 100%;
+  padding: 48px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// ── Header ────────────────────────────────────────────────────────────
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.gameLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.title {
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.subtitle {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.45);
+  margin-top: 0.1rem;
+}
+
+// ── Setup card ────────────────────────────────────────────────────────
+
+.setupCard {
+  flex: 1;
+  min-height: 0;
+  background: rgba(8, 8, 8, 0.85);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+// ── Name section ──────────────────────────────────────────────────────
+
+.nameSection {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  flex-shrink: 0;
+}
+
+.sectionLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.45);
+  white-space: nowrap;
+  min-width: 7rem;
+}
+
+.nameInput {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 0.3rem;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.55rem 0.9rem;
+  outline: none;
+
+  &::placeholder { color: var(--muted); }
+  &:focus { border-color: rgba(232, 200, 74, 0.45); }
+}
+
+.cardDivider {
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+  margin: 0 1.5rem;
+  flex-shrink: 0;
+}
+
+// ── Country section ───────────────────────────────────────────────────
+
+.countrySection {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 1.5rem 0;
+  gap: 0.9rem;
+  overflow: hidden;
+}
+
+.countryHeader {
+  flex-shrink: 0;
+}
+
+// ── Selected preview ──────────────────────────────────────────────────
+
+.selectedPreview {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(232, 200, 74, 0.07);
+  border: 1px solid rgba(232, 200, 74, 0.22);
+  border-radius: 0.4rem;
+  padding: 0.85rem 1.1rem;
+  flex-shrink: 0;
+}
+
+.selectedFlag {
+  width: 2.6rem;
+  height: auto;
+  border-radius: 3px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.selectedInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.selectedName {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.selectedReplaces {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.4);
+}
+
+// ── Country grid ──────────────────────────────────────────────────────
+
+.countryGrid {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-content: start;
+  gap: 2px;
+  padding-bottom: 1rem;
+
+  &::-webkit-scrollbar       { width: 3px; }
+  &::-webkit-scrollbar-track  { background: transparent; }
+  &::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.15); border-radius: 2px; }
+}
+
+.countryItem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  transition: background 0.1s;
+
+  &:hover:not(.countryItemSelected) {
+    background: rgba(255,255,255,0.04);
+  }
+}
+
+.countryItemSelected {
+  background: rgba(232, 200, 74, 0.08);
+  border: 1px solid rgba(232, 200, 74, 0.2);
+
+  .itemName { color: var(--accent); }
+}
+
+.itemFlag {
+  width: 1.5rem;
+  height: auto;
+  border-radius: 2px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.itemName {
+  font-size: 0.88rem;
+  color: rgba(240,240,240,0.85);
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemAthlete {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 130px;
+}
+
+// ── Action row ────────────────────────────────────────────────────────
+
+.actionRow {
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.beginBtn {
+  padding: 0.7rem 2.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  background: var(--accent);
+  color: #0d0d0d;
+  border: none;
+  border-radius: 0.3rem;
+  transition: opacity 0.15s;
+  letter-spacing: 0.01em;
+
+  &:hover { opacity: 0.88; }
+}
