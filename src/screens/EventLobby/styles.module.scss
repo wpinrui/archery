@@ -45,7 +45,7 @@
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  background: rgba(8, 8, 8, 0.65);
+  background: rgba(8, 8, 8, 0.82);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 0.5rem;
   backdrop-filter: blur(6px);
@@ -93,7 +93,7 @@
   align-items: stretch;
   gap: 0;
   position: relative;
-  background: rgba(8, 8, 8, 0.65);
+  background: rgba(8, 8, 8, 0.82);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 0.5rem;
   backdrop-filter: blur(6px);
@@ -192,7 +192,7 @@
   display: flex;
   align-items: center;
   gap: 2rem;
-  background: rgba(8, 8, 8, 0.65);
+  background: rgba(8, 8, 8, 0.82);
   border: 1px solid rgba(255,255,255,0.08);
   border-left: 3px solid var(--accent);
   border-radius: 0.5rem;
@@ -278,7 +278,7 @@
 }
 
 .standingsTable {
-  background: rgba(8, 8, 8, 0.7);
+  background: rgba(8, 8, 8, 0.85);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 0.5rem;
   backdrop-filter: blur(6px);
