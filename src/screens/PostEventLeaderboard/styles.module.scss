@@ -1,0 +1,378 @@
+// ── Container ─────────────────────────────────────────────────────────
+
+.container {
+  height: 100vh;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.bg {
+  position: absolute;
+  inset: -2rem;
+  background: url('/trees-capetown.jpg') center / cover no-repeat;
+  filter: blur(10px);
+  z-index: 0;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 80% at 50% 50%, transparent 20%, rgba(0,0,0,0.82) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.5) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 860px;
+  height: 100%;
+  padding: 48px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+// ── Season bar ────────────────────────────────────────────────────────
+
+.seasonBar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: rgba(8, 8, 8, 0.82);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  padding: 0.9rem 1.5rem;
+  flex-shrink: 0;
+}
+
+.seasonBarItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.seasonBarLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.5);
+}
+
+.seasonBarValue {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+.seasonBarOf {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.5);
+}
+
+.seasonBarDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  flex-shrink: 0;
+}
+
+.seasonBarSpacer {
+  flex: 1;
+}
+
+.completedBadge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--success);
+  border: 1px solid rgba(90, 224, 122, 0.35);
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.6rem;
+}
+
+// ── Result hero ───────────────────────────────────────────────────────
+
+.resultCard {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  background: rgba(8, 8, 8, 0.82);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  padding: 1.5rem 2rem;
+  flex-shrink: 0;
+}
+
+.resultLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  min-width: 4.5rem;
+}
+
+.resultLabel {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(255,255,255,0.4);
+}
+
+.resultPos {
+  font-size: clamp(2.4rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.resultDivider {
+  width: 1px;
+  height: 3rem;
+  background: rgba(255,255,255,0.1);
+  flex-shrink: 0;
+}
+
+.resultRight {
+  display: flex;
+  gap: 3rem;
+}
+
+.resultStat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.resultStatValue {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text);
+}
+
+.resultStatLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.45);
+}
+
+// ── Score breakdown ───────────────────────────────────────────────────
+
+.breakdown {
+  display: flex;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.breakdownGroup {
+  flex: 1;
+  background: rgba(8, 8, 8, 0.75);
+  border: 3px solid;
+  border-radius: 0.4rem;
+  padding: 0.8rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.breakdownDist {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.scorePills {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.scorePill {
+  width: 1.6rem;
+  height: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.subtotal {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.04em;
+
+  &::before {
+    content: '= ';
+    color: rgba(255,255,255,0.2);
+  }
+}
+
+// ── Event leaderboard ─────────────────────────────────────────────────
+
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.leaderboardTable {
+  background: rgba(8, 8, 8, 0.85);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.leaderboardTitle {
+  padding: 0.75rem 0.75rem 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.leaderboardBody {
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+
+  &::-webkit-scrollbar       { width: 3px; }
+  &::-webkit-scrollbar-track  { background: transparent; }
+  &::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.15); border-radius: 2px; }
+}
+
+// Grid: # | flag | name | score | +pts
+.lbRow {
+  display: grid;
+  grid-template-columns: 2.2rem 1.6rem 1fr 4rem 4.5rem;
+  align-items: center;
+  gap: 0;
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+
+  &:last-child { border-bottom: none; }
+}
+
+.lbHeaderRow {
+  padding: 0.3rem 0.75rem;
+  background: rgba(255,255,255,0.025);
+  border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+
+  .cRank, .cTotal, .cPts {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    font-size: 0.8rem;
+  }
+}
+
+.playerRow {
+  border-left: 2px solid var(--accent);
+  background: rgba(232, 200, 74, 0.05);
+
+  .cName  { color: var(--accent); }
+  .cTotal { color: var(--accent) !important; }
+  .cRank  { color: var(--accent) !important; }
+}
+
+// Column cells
+
+.cRank {
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: rgba(255,255,255,0.5);
+}
+
+.cFlag {
+  width: 1.1rem;
+  height: auto;
+  border-radius: 1px;
+  display: block;
+}
+
+.cName {
+  font-size: 0.88rem;
+  color: rgba(240,240,240,0.85);
+  padding-right: 0.5rem;
+}
+
+.cTotal {
+  font-size: 0.88rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text);
+  text-align: right;
+  padding-right: 0.5rem;
+}
+
+.cPts {
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  color: rgba(255,255,255,0.4);
+  text-align: right;
+}
+
+// ── Action row ────────────────────────────────────────────────────────
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.25rem;
+  flex-shrink: 0;
+}
+
+.careerBtn {
+  padding: 0.55rem 1.4rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 0.3rem;
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.06);
+  transition: border-color 0.15s, background 0.15s;
+
+  &:hover {
+    border-color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.1);
+  }
+}
+
+.continueBtn {
+  padding: 0.7rem 2.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  background: var(--accent);
+  color: #0d0d0d;
+  border: none;
+  border-radius: 0.3rem;
+  transition: opacity 0.15s;
+  letter-spacing: 0.01em;
+
+  &:hover { opacity: 0.88; }
+}
