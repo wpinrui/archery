@@ -34,6 +34,8 @@ const STANDINGS: StandingsRow[] = [
 export default function EventLobby() {
   return (
     <div className={styles.container}>
+      <div className={styles.bg} />
+      <div className={styles.vignette} />
       <div className={styles.seasonCtx}>Season 1 · Event 3 of 5</div>
 
       <div className={styles.eventHeader}>
