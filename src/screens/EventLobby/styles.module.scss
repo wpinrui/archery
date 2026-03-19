@@ -1,13 +1,13 @@
+// ── Container ─────────────────────────────────────────────────────────
+
 .container {
   min-height: 100vh;
   background: var(--bg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 24px 40px;
-  gap: 2rem;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 .bg {
@@ -22,150 +22,373 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 70% at 50% 52%, transparent 25%, rgba(0,0,0,0.75) 100%),
-    linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.4) 100%);
+    radial-gradient(ellipse 80% 80% at 50% 50%, transparent 20%, rgba(0,0,0,0.82) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.5) 100%);
   pointer-events: none;
   z-index: 1;
 }
 
-// All content sits above bg + vignette
-.seasonCtx, .eventHeader, .distancesStrip, .standings, .actionRow {
-  z-index: 2;
+.content {
   position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 860px;
+  padding: 48px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
 }
 
-// ── Season context ────────────────────────────────────────────────────
+// ── Season bar ────────────────────────────────────────────────────────
 
-.seasonCtx {
-  position: absolute;
-  top: 12px;
-  right: 24px;
-  font-size: 0.7rem;
-  font-family: var(--font-mono);
+.seasonBar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: rgba(8, 8, 8, 0.65);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  padding: 0.9rem 1.5rem;
+}
+
+.seasonBarItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.seasonBarLabel {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
   color: var(--muted);
-  letter-spacing: 0.08em;
 }
 
-// ── Event header ──────────────────────────────────────────────────────
+.seasonBarValue {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
 
-.eventHeader {
+.seasonBarOf {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.seasonBarDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  flex-shrink: 0;
+}
+
+// ── Timeline ──────────────────────────────────────────────────────────
+
+.timeline {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  position: relative;
+  background: rgba(8, 8, 8, 0.65);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+}
+
+.timelineTrack {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+  pointer-events: none;
+}
+
+.timelineStep {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 420px;
+  gap: 0.3rem;
+  padding: 1rem 0.5rem;
+  position: relative;
+  z-index: 1;
+  transition: background 0.15s;
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(255,255,255,0.05);
+  }
 }
 
-.eventNameBlock {
+.stepDone {
+  .timelineName    { color: rgba(255,255,255,0.6); }
+  .timelineResult  { color: var(--accent); }
+}
+
+.stepCurrent {
+  background: rgba(232, 200, 74, 0.07);
+  .timelineName    { color: var(--text); font-weight: 600; }
+  .timelineCurrent { color: var(--accent); }
+}
+
+.stepAhead {
+  .timelineName { color: rgba(255,255,255,0.25); }
+  .timelineFlag { opacity: 0.3; }
+  .timelineAhead { color: rgba(255,255,255,0.15); }
+}
+
+.timelineFlagWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timelineFlag {
+  width: 1.75rem;
+  height: auto;
+  border-radius: 2px;
+  display: block;
+}
+
+.timelinePulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 3px;
+  border: 1px solid var(--accent);
+  opacity: 0.6;
+}
+
+.timelineName {
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.timelineResult {
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+.timelineCurrent {
+  font-size: 0.6rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.timelineAhead {
+  font-size: 0.65rem;
+}
+
+// ── Current event block ───────────────────────────────────────────────
+
+.eventBlock {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background: rgba(8, 8, 8, 0.65);
+  border: 1px solid rgba(255,255,255,0.08);
   border-left: 3px solid var(--accent);
-  padding-left: 1rem;
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  padding: 1.25rem 1.5rem;
 }
 
-.eventName {
-  font-size: clamp(28px, 3vw, 32px);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text);
-  line-height: 1.1;
+.eventLeft {
+  flex: 1;
+  min-width: 0;
 }
 
-.hostLine {
+.eventMeta {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
 }
 
-.hostFlag {
+.eventHostFlag {
   width: 1.1rem;
   height: auto;
   border-radius: 1px;
   display: block;
 }
 
-.hostCountry {
+.eventHostName {
+  font-size: 0.75rem;
   color: var(--muted);
-  font-size: 0.8rem;
 }
 
-// ── Distances strip ───────────────────────────────────────────────────
+.eventName {
+  font-size: clamp(24px, 2.5vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.1;
+}
 
 .distancesStrip {
   display: flex;
-  gap: 0.85rem;
-  width: 100%;
-  max-width: 420px;
+  gap: 0.75rem;
+  flex-shrink: 0;
 }
 
 .distanceCard {
-  background: var(--surface);
+  background: rgba(255,255,255,0.04);
   border: 1px solid;
   border-radius: 0.4rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.6rem 1.1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.3rem;
-  flex: 1;
+  gap: 0.25rem;
+  min-width: 80px;
 }
 
 .distanceValue {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
   line-height: 1;
 }
 
 .arrowCount {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--muted);
 }
 
-// ── Season standings ──────────────────────────────────────────────────
+// ── Championship standings ────────────────────────────────────────────
 
 .standings {
-  width: 100%;
-  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 }
 
 .standingsLabel {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--muted);
-  margin-bottom: 0.6rem;
 }
 
 .standingsTable {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 0.4rem;
+  background: rgba(8, 8, 8, 0.7);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
   overflow: hidden;
 }
 
+// Grid: # | athlete-flag | name | E1 | E2 | E3 | E4 | E5 | Total
 .standingsRow {
   display: grid;
-  grid-template-columns: 1.6rem 1.6rem 1fr 2rem 2.8rem;
+  grid-template-columns: 2rem 1.6rem 1fr repeat(5, 3rem) 3.5rem;
   align-items: center;
-  gap: 0.25rem;
-  padding: 0.45rem 0.75rem;
-  border-bottom: 1px solid var(--border);
+  gap: 0;
+  padding: 0 0.75rem;
+  height: 2.4rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
 
   &:last-child { border-bottom: none; }
+}
+
+.standingsHeaderRow {
+  height: 2rem;
+  background: rgba(255,255,255,0.025);
+  border-bottom: 1px solid rgba(255,255,255,0.07) !important;
 }
 
 .playerRow {
   border-left: 2px solid var(--accent);
   background: rgba(232, 200, 74, 0.05);
 
-  .nameCol { color: var(--accent); }
-  .ptsCol  { color: var(--accent); }
+  .cName  { color: var(--accent); }
+  .cTotal { color: var(--accent); }
 }
 
-.rankCol  { font-size: 0.7rem; font-family: var(--font-mono); color: var(--muted); }
-.flagCol  { width: 1.1rem; height: auto; border-radius: 1px; display: block; }
-.nameCol  { font-size: 0.8rem; color: rgba(240, 240, 240, 0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ptsLabel { font-size: 0.6rem; color: #333; text-align: right; font-family: var(--font-mono); align-self: flex-end; padding-bottom: 1px; }
-.ptsCol   { font-size: 0.82rem; font-family: var(--font-mono); color: var(--text); text-align: right; }
+.standingsSep {
+  text-align: center;
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.1);
+  letter-spacing: 0.2em;
+  padding: 0.3rem 0;
+  background: rgba(255,255,255,0.015);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-family: var(--font-mono);
+}
+
+// Shared column cells
+.cRank {
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  color: var(--muted);
+}
+
+.cFlag {
+  width: 1.1rem;
+  height: auto;
+  border-radius: 1px;
+  display: block;
+}
+
+.cName {
+  font-size: 0.82rem;
+  color: rgba(240,240,240,0.65);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 0.5rem;
+}
+
+.cEvent {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cEventDone  { color: rgba(240,240,240,0.7); }
+
+.cEventCurrent {
+  color: rgba(240,240,240,0.25);
+  background: rgba(232, 200, 74, 0.06);
+  height: 100%;
+  border-left: 1px solid rgba(232, 200, 74, 0.15);
+  border-right: 1px solid rgba(232, 200, 74, 0.15);
+}
+
+.cEventAhead { color: rgba(255,255,255,0.15); }
+
+.cTotal {
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text);
+  text-align: right;
+}
+
+.headerFlag {
+  width: 1.1rem;
+  height: auto;
+  border-radius: 1px;
+  display: block;
+}
 
 // ── Action row ────────────────────────────────────────────────────────
 
@@ -173,30 +396,26 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  max-width: 420px;
-  gap: 1rem;
-  margin-top: auto;
-  padding-top: 0.5rem;
+  padding-top: 0.25rem;
 }
 
 .careerBtn {
   padding: 0.5rem 1.25rem;
   font-size: 0.8rem;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 0.3rem;
   color: var(--muted);
   background: transparent;
   transition: border-color 0.15s, color 0.15s;
 
   &:hover {
-    border-color: var(--text);
+    border-color: rgba(255,255,255,0.35);
     color: var(--text);
   }
 }
 
 .startBtn {
-  padding: 0.65rem 2rem;
+  padding: 0.7rem 2.25rem;
   font-size: 1rem;
   font-weight: 700;
   background: var(--accent);
@@ -204,6 +423,7 @@
   border: none;
   border-radius: 0.3rem;
   transition: opacity 0.15s;
+  letter-spacing: 0.01em;
 
-  &:hover { opacity: 0.9; }
+  &:hover { opacity: 0.88; }
 }
