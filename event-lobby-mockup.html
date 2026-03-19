@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EventLobby Mockup — Long Draw Archery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0d0d0d;
+    --surface:   #1a1a1a;
+    --border:    #2a2a2a;
+    --text:      #f0f0f0;
+    --muted:     #666;
+    --accent:    #e8c84a;
+    --danger:    #e05a5a;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Inter', system-ui, sans-serif;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { cursor: pointer; border: none; background: none; color: inherit; font: inherit; }
+
+  /* ── Layout helpers ──────────────────────────────────────────── */
+  .mockup-section {
+    padding: 48px 0;
+    border-bottom: 1px solid #1e1e1e;
+  }
+  .mockup-section:last-child { border-bottom: none; }
+  .mockup-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  /* ── EventLobby container ────────────────────────────────────── */
+  .event-lobby {
+    min-height: 100vh;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 24px 40px;
+    gap: 2rem;
+    position: relative;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* Season / event context — top-right */
+  .season-ctx {
+    position: absolute;
+    top: 12px;
+    right: 24px;
+    font-size: 0.7rem;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── Event header ────────────────────────────────────────────── */
+  .event-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+    width: 100%;
+  }
+
+  .event-name-block {
+    border-left: 3px solid var(--accent);
+    padding-left: 1rem;
+    text-align: left;
+  }
+
+  .event-name {
+    font-size: clamp(28px, 3vw, 32px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1.1;
+  }
+
+  .host-line {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.35rem;
+  }
+
+  .host-country {
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  /* ── Distances strip ─────────────────────────────────────────── */
+  .distances-strip {
+    display: flex;
+    gap: 0.85rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .distance-card {
+    background: var(--surface);
+    border: 1px solid;
+    border-radius: 0.4rem;
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    min-width: 90px;
+    flex: 1;
+    max-width: 130px;
+  }
+
+  .distance-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    font-family: var(--font-mono);
+  }
+
+  .arrow-count {
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  /* ── Season standings ────────────────────────────────────────── */
+  .standings {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .standings-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+
+  .standings-table {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.4rem;
+    overflow: hidden;
+  }
+
+  .standings-row {
+    display: grid;
+    grid-template-columns: 1.6rem 1.6rem 1fr 2rem 2.8rem;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.45rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .standings-row:last-child { border-bottom: none; }
+
+  .standings-row.player-row {
+    border-left: 2px solid var(--accent);
+    background: rgba(232, 200, 74, 0.05);
+  }
+  .standings-row.player-row .name-col { color: var(--accent); }
+  .standings-row.player-row .pts-col  { color: var(--accent); }
+
+  .standings-separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.7rem;
+    color: #3a3a3a;
+    letter-spacing: 0.2em;
+    font-family: var(--font-mono);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .rank-col { font-size: 0.7rem; font-family: var(--font-mono); color: var(--muted); }
+  .flag-col  { font-size: 0.9rem; }
+  .name-col  { font-size: 0.8rem; color: rgba(240,240,240,0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pts-label { font-size: 0.6rem; color: #333; text-align: right; font-family: var(--font-mono); align-self: flex-end; padding-bottom: 1px; }
+  .pts-col   { font-size: 0.82rem; font-family: var(--font-mono); color: var(--text); text-align: right; }
+
+  /* ── Action row ──────────────────────────────────────────────── */
+  .action-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 420px;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+
+  .career-btn {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 0.3rem;
+    color: var(--muted);
+    background: transparent;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .career-btn:hover { border-color: var(--text); color: var(--text); }
+
+  .start-btn {
+    padding: 0.65rem 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    background: var(--accent);
+    color: #0d0d0d;
+    border: none;
+    border-radius: 0.3rem;
+    transition: opacity 0.15s;
+  }
+  .start-btn:hover { opacity: 0.9; }
+
+  /* ── Design notes ────────────────────────────────────────────── */
+  .design-notes {
+    background: #111;
+    padding: 48px 32px;
+    border-top: 1px solid #1e1e1e;
+    font-size: 0.85rem;
+    color: #555;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .design-notes h2 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #444;
+    margin-bottom: 1.5rem;
+    font-family: var(--font-mono);
+  }
+  .design-notes h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #444;
+    margin: 1.5rem 0 0.5rem;
+    font-family: var(--font-mono);
+  }
+  .design-notes p { margin-bottom: 0.5rem; line-height: 1.7; }
+  .design-notes ul { padding-left: 1.25rem; }
+  .design-notes li { margin-bottom: 0.35rem; line-height: 1.7; }
+  .code { font-family: var(--font-mono); font-size: 0.8rem; color: #888; background: #1a1a1a; padding: 0.1rem 0.35rem; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     STATE 1 — Player in top 5 (no separator)
+════════════════════════════════════════════════════════════════════════ -->
+<div class="mockup-section">
+  <div class="mockup-label">State 1 — Player in top 5 (rank 5, no separator)</div>
+
+  <div class="event-lobby">
+    <div class="season-ctx">Season 1 · Event 3 of 5</div>
+
+    <!-- Event header -->
+    <div class="event-header">
+      <div class="event-name-block">
+        <h1 class="event-name">Cape Town Cup</h1>
+        <div class="host-line">
+          <span>🇿🇦</span>
+          <span class="host-country">South Africa</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Distances strip -->
+    <div class="distances-strip">
+      <div class="distance-card" style="border-color: hsl(120, 70%, 62%);">
+        <span class="distance-value" style="color: hsl(120, 70%, 62%);">18m</span>
+        <span class="arrow-count">2 arrows</span>
+      </div>
+      <div class="distance-card" style="border-color: hsl(33, 70%, 62%);">
+        <span class="distance-value" style="color: hsl(33, 70%, 62%);">70m</span>
+        <span class="arrow-count">4 arrows</span>
+      </div>
+      <div class="distance-card" style="border-color: hsl(0, 70%, 62%);">
+        <span class="distance-value" style="color: hsl(0, 70%, 62%);">90m</span>
+        <span class="arrow-count">4 arrows</span>
+      </div>
+    </div>
+
+    <!-- Season standings -->
+    <div class="standings">
+      <div class="standings-label">Season Standings</div>
+      <div class="standings-table">
+        <div class="standings-row">
+          <span class="rank-col">1</span>
+          <span class="flag-col">🇳🇱</span>
+          <span class="name-col">J. Visser</span>
+          <span class="pts-label">pts</span>
+          <span class="pts-col">58</span>
+        </div>
+        <div class="standings-row">
+          <span class="rank-col">2</span>
+          <span class="flag-col">🇮🇹</span>
+          <span class="name-col">M. Rossi</span>
+          <span class="pts-label">pts</span>
+          <span class="pts-col">55</span>
+        </div>
+        <div class="standings-row">
+          <span class="rank-col">3</span>
+          <span class="flag-col">🇨🇳</span>
+          <span class="name-col">Chen Wei</span>
+          <span class="pts-label">pts</span>
+          <span class="pts-col">53</span>
+        </div>
+        <div class="standings-row">
+          <span class="rank-col">4</span>
+          <span class="flag-col">🇯🇵</span>
+          <span class="name-col">A. Nakamura</span>
+          <span class="pts-label">pts</span>
+          <span class="pts-col">51</span>
+        </div>
+        <div class="standings-row player-row">
+          <span class="rank-col">5</span>
+          <span class="flag-col">🇿🇦</span>
+          <span class="name-col">YOU</span>
+          <span class="pts-label">pts</span>
+          <span class="pts-col">48</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action row -->
+    <div class="action-row">
+      <a href="/career" class="career-btn">Career</a>
+      <button class="start-btn">Start Event →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     STATE 2 — Player outside top 5 (rank 8, separator shown)
+════════════════════════════════════════════════════════════════════════ -->
+<div class="mockup-section">
+  <div class="mockup-label">State 2 — Player outside top 5 (rank 8, separator + pinned row)</div>
+
+  <div class="event-lobby">
+    <div class="season-ctx">Season 1 · Event 3 of 5</div>
+
+    <div class="event-header">
+      <div class="event-name-block">
+        <h1 class="event-name">Cape Town Cup</h1>
+        <div class="host-line">
+          <span>🇿🇦</span>
+          <span class="host-country">South Africa</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="distances-strip">
+      <div class="distance-card" style="border-color: hsl(120, 70%, 62%);">
+        <span class="distance-value" style="color: hsl(120, 70%, 62%);">18m</span>
+        <span class="arrow-count">2 arrows</span>
+      </div>
+      <div class="distance-card" style="border-color: hsl(33, 70%, 62%);">
+        <span class="distance-value" style="color: hsl(33, 70%, 62%);">70m</span>
+        <span class="arrow-count">4 arrows</span>
+      </div>
+      <div class="distance-card" style="border-color: hsl(0, 70%, 62%);">
+        <span class="distance-value" style="color: hsl(0, 70%, 62%);">90m</span>
+        <span class="arrow-count">4 arrows</span>
+      </div>
+    </div>
+
+    <div class="standings">
+      <div class="standings-label">Season Standings</div>
+      <div class="standings-table">
+        <div class="standings-row">
+          <span class="rank-col">1</span>
+          <span class="flag-col">🇳🇱</span>
+          <span class="name-col">J. Visser</span>
+          <span class="pts-label">pts</span>
+          <span class="pts-col">58</span>
+        </div>
+        <div class="standings-row">
+          <span class="rank-col">2</span>
+          <span class="flag-col">🇮🇹</span>
+          <span class="name-col">M. Rossi</span>
+          <span class="pts-label">pts</span>
+          <span class="pts-col">55</span>
+        </div>
+        <div class="standings-row">
+          <span class="rank-col">3</span>
+          <span class="flag-col">🇨🇳</span>
+          <span class="name-col">Chen Wei</span>
+          <span class="pts-label">pts</span>
+          <span class="pts-col">53</span>
+        </div>
+        <div class="standings-row">
+          <span class="rank-col">4</span>
+          <span class="flag-col">🇯🇵</span>
+          <span class="name-col">A. Nakamura</span>
+          <span class="pts-label">pts</span>
+          <span class="pts-col">51</span>
+        </div>
+        <div class="standings-row">
+          <span class="rank-col">5</span>
+          <span class="flag-col">🇿🇲</span>
+          <span class="name-col">K. Mbeki</span>
+          <span class="pts-label">pts</span>
+          <span class="pts-col">48</span>
+        </div>
+        <div class="standings-separator">···</div>
+        <div class="standings-row player-row">
+          <span class="rank-col">8</span>
+          <span class="flag-col">🇿🇦</span>
+          <span class="name-col">YOU</span>
+          <span class="pts-label">pts</span>
+          <span class="pts-col">31</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <a href="/career" class="career-btn">Career</a>
+      <button class="start-btn">Start Event →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     DESIGN NOTES
+════════════════════════════════════════════════════════════════════════ -->
+<div class="design-notes">
+  <h2>Design Notes — EventLobby</h2>
+
+  <h3>Layout</h3>
+  <p>Centered column, <span class="code">max-width: 520px</span>, padded top 40px to clear the devNav bar.
+     <span class="code">align-items: center</span> on the flex column keeps all sections centred.
+     The action row uses <span class="code">margin-top: auto</span> to push itself to the natural bottom.</p>
+
+  <h3>Event header — gold accent line</h3>
+  <p>The event name block uses <span class="code">border-left: 3px solid var(--accent)</span> with a left-padding indent.
+     This matches the ShootingHUD's gold-on-dark aesthetic without adding a visual element that competes with the event name typography.
+     The flag + country name sit directly below, muted, so the hierarchy is: name → origin.</p>
+
+  <h3>Distance cards — colour formula</h3>
+  <p>Distances are shown in shot order (shortest → longest, per GDD): 18m, 70m, 90m.
+     Colour uses the same helper as ShootingHUD: <span class="code">hsl(120*(1 − (m−18)/72), 70%, 62%)</span>.</p>
+  <ul>
+    <li>18m → <span class="code">hsl(120, 70%, 62%)</span> — green</li>
+    <li>70m → <span class="code">hsl(33, 70%, 62%)</span> — orange</li>
+    <li>90m → <span class="code">hsl(0, 70%, 62%)</span> — red</li>
+  </ul>
+  <p>The border of each card uses the same colour, keeping it consistent with ShootingHUD's distanceCard.</p>
+
+  <h3>Season standings — 5-column grid</h3>
+  <p>Grid: <span class="code">1.6rem 1.6rem 1fr 2rem 2.8rem</span> → rank | flag | name | pts-label | pts-value.
+     The pts-label column ("pts") uses a very muted colour to act as a subtle data annotation without competing with the value.
+     The player row gets <span class="code">border-left: 2px solid var(--accent)</span> and a 5% gold tint background — same approach as ShootingHUD's <span class="code">lbPlayer</span>.</p>
+  <p>Separator state: when the player is outside top 5, a <span class="code">···</span> separator row is inserted between the top 5 and the pinned player row. The separator row uses the same grid padding and a very muted colour to feel like a continuation, not a divider.</p>
+
+  <h3>Action row</h3>
+  <p>"Career" is a ghost/outlined button — muted border, muted text, low visual weight. "Start Event →" is the primary CTA using <span class="code">var(--accent)</span> fill with dark text, bold, larger padding. Justified to opposite ends of the max-width container.</p>
+
+  <h3>Season context</h3>
+  <p>"Season 1 · Event 3 of 5" sits absolutely positioned top-right, using <span class="code">var(--font-mono)</span> and <span class="code">var(--muted)</span>. Small (0.7rem) so it reads as metadata, not a heading.</p>
+
+  <h3>Implementation gaps</h3>
+  <ul>
+    <li>Data is hard-coded; real implementation needs <span class="code">GameState</span> props: <span class="code">eventName</span>, <span class="code">hostCountry</span>, <span class="code">distances</span>, <span class="code">standings</span>, <span class="code">playerRank</span>, <span class="code">seasonNum</span>, <span class="code">eventIndex</span>, <span class="code">totalEvents</span></li>
+    <li>Career button href is a placeholder; needs router integration (<span class="code">useNavigate</span> or <span class="code">Link</span>)</li>
+    <li>Start Event button needs <span class="code">onClick</span> handler to transition to ShootingHUD</li>
+    <li>The separator / player-pin logic: filter top 5; if player rank &gt; 5, show separator + player row</li>
+  </ul>
+</div>
+
+</body>
+</html>
