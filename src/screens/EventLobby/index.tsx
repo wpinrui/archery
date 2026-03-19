@@ -168,7 +168,7 @@ export default function EventLobby() {
                   <span key={i} className={`${styles.cEvent} ${i < CURRENT_EVENT_IDX ? styles.cEventDone : i === CURRENT_EVENT_IDX ? styles.cEventCurrent : styles.cEventAhead}`}>
                     {evt !== null ? (
                       <>
-                        <span className={styles.cEventPos} style={{ color: posColor(evt.pos) }}>P{evt.pos}</span>
+                        <span className={styles.cEventPos} style={{ color: posColor(evt.pos) }}>#{evt.pos}</span>
                         <span className={styles.cEventPts}>{evt.pts}</span>
                       </>
                     ) : '—'}
@@ -188,7 +188,7 @@ export default function EventLobby() {
                     <span key={i} className={`${styles.cEvent} ${i < CURRENT_EVENT_IDX ? styles.cEventDone : i === CURRENT_EVENT_IDX ? styles.cEventCurrent : styles.cEventAhead}`}>
                       {evt !== null ? (
                         <>
-                          <span className={styles.cEventPos} style={{ color: posColor(evt.pos) }}>P{evt.pos}</span>
+                          <span className={styles.cEventPos} style={{ color: posColor(evt.pos) }}>#{evt.pos}</span>
                           <span className={styles.cEventPts}>{evt.pts}</span>
                         </>
                       ) : '—'}
