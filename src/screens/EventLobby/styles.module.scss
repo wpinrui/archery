@@ -59,7 +59,7 @@
 }
 
 .seasonBarLabel {
-  font-size: 0.6rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--muted);
@@ -100,15 +100,6 @@
   overflow: hidden;
 }
 
-.timelineTrack {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: rgba(255,255,255,0.06);
-  pointer-events: none;
-}
 
 .timelineStep {
   flex: 1;
@@ -172,27 +163,27 @@
 }
 
 .timelineName {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   letter-spacing: 0.04em;
   text-align: center;
   white-space: nowrap;
 }
 
 .timelineResult {
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   font-family: var(--font-mono);
   letter-spacing: 0.04em;
 }
 
 .timelineCurrent {
-  font-size: 0.6rem;
+  font-size: 0.72rem;
   font-family: var(--font-mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 .timelineAhead {
-  font-size: 0.65rem;
+  font-size: 0.75rem;
 }
 
 // ── Current event block ───────────────────────────────────────────────
@@ -229,7 +220,7 @@
 }
 
 .eventHostName {
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   color: var(--muted);
 }
 
@@ -266,7 +257,7 @@
 }
 
 .arrowCount {
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 
@@ -279,10 +270,11 @@
 }
 
 .standingsLabel {
-  font-size: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.55);
 }
 
 .standingsTable {
@@ -322,7 +314,7 @@
 
 .standingsSep {
   text-align: center;
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   color: rgba(255,255,255,0.1);
   letter-spacing: 0.2em;
   padding: 0.3rem 0;
@@ -333,7 +325,7 @@
 
 // Shared column cells
 .cRank {
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   font-family: var(--font-mono);
   color: var(--muted);
 }
@@ -346,16 +338,13 @@
 }
 
 .cName {
-  font-size: 0.82rem;
-  color: rgba(240,240,240,0.65);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 0.88rem;
+  color: rgba(240,240,240,0.85);
   padding-right: 0.5rem;
 }
 
 .cEvent {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-family: var(--font-mono);
   text-align: center;
   display: flex;
@@ -376,11 +365,17 @@
 .cEventAhead { color: rgba(255,255,255,0.15); }
 
 .cTotal {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-family: var(--font-mono);
   font-weight: 700;
   color: var(--text);
   text-align: right;
+}
+
+.standingsHeaderRow .cTotal {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: var(--muted);
 }
 
 .headerFlag {

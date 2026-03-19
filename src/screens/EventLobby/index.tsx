@@ -105,7 +105,6 @@ export default function EventLobby() {
               </div>
             )
           })}
-          <div className={styles.timelineTrack} />
         </div>
 
         {/* ── Current event block ─────────────────────────────────── */}
