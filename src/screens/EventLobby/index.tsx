@@ -31,24 +31,37 @@ const CURRENT_DISTANCES = [
   { distance: 90, arrows: 4 },
 ]
 
+interface EventResult { pos: number; pts: number }
+
 interface Athlete {
   rank: number
   code: string
   name: string
   isPlayer?: boolean
-  eventPts: (number | null)[]
+  events: (EventResult | null)[]
 }
 
 const STANDINGS: Athlete[] = [
-  { rank: 1, code: 'NLD', name: 'Joost Visser',    eventPts: [100, 85,  null, null, null] },
-  { rank: 2, code: 'CHN', name: 'Chen Wei',         eventPts: [61,  100, null, null, null] },
-  { rank: 3, code: 'ITA', name: 'Marco Rossi',      eventPts: [85,  72,  null, null, null] },
-  { rank: 4, code: 'JPN', name: 'Akira Nakamura',   eventPts: [72,  61,  null, null, null] },
-  { rank: 5, code: 'ZAF', name: 'Player One',              eventPts: [37,  52,  null, null, null], isPlayer: true },
+  { rank: 1, code: 'NLD', name: 'Joost Visser',  events: [{ pos: 1, pts: 100 }, { pos: 2, pts: 85  }, null, null, null] },
+  { rank: 2, code: 'CHN', name: 'Chen Wei',       events: [{ pos: 4, pts: 61  }, { pos: 1, pts: 100 }, null, null, null] },
+  { rank: 3, code: 'ITA', name: 'Marco Rossi',    events: [{ pos: 2, pts: 85  }, { pos: 3, pts: 72  }, null, null, null] },
+  { rank: 4, code: 'JPN', name: 'Akira Nakamura', events: [{ pos: 3, pts: 72  }, { pos: 4, pts: 61  }, null, null, null] },
+  { rank: 5, code: 'ZAF', name: 'Player One',     events: [{ pos: 7, pts: 37  }, { pos: 5, pts: 52  }, null, null, null], isPlayer: true },
 ]
 
 const playerIsTop5 = STANDINGS.findIndex(a => a.isPlayer) < 5
 const playerRow = STANDINGS.find(a => a.isPlayer)!
+
+function totalPts(events: (EventResult | null)[]) {
+  return events.reduce<number>((s, e) => s + (e?.pts ?? 0), 0)
+}
+
+function posColor(pos: number): string {
+  if (pos === 1) return '#e8c84a'          // gold
+  if (pos === 2) return '#9eb8cc'          // silver — blue-grey, distinct from white
+  if (pos === 3) return '#c8824a'          // bronze
+  return 'rgba(255,255,255,0.75)'          // rest
+}
 
 // ── Component ─────────────────────────────────────────────────────────
 export default function EventLobby() {
@@ -146,23 +159,24 @@ export default function EventLobby() {
               <span className={styles.cTotal}>Total</span>
             </div>
             {/* Athlete rows */}
-            {STANDINGS.map(row => {
-              const total = row.eventPts.reduce<number>((s, v) => s + (v ?? 0), 0)
-              return (
-                <div key={row.rank} className={`${styles.standingsRow} ${row.isPlayer ? styles.playerRow : ''}`}>
-                  <span className={styles.cRank}>{row.rank}</span>
-                  <Flag code={row.code} className={styles.cFlag} />
-                  <span className={styles.cName}>{row.name}</span>
-                  {row.eventPts.map((pts, i) => (
-                    <span key={i} className={`${styles.cEvent} ${i < CURRENT_EVENT_IDX ? styles.cEventDone : i === CURRENT_EVENT_IDX ? styles.cEventCurrent : styles.cEventAhead}`}>
-                      {pts !== null ? pts : '—'}
-                    </span>
-                  ))}
-                  <span className={styles.cTotal}>{total}</span>
-                </div>
-              )
-            })}
-            {/* Player row pinned outside top 5 */}
+            {STANDINGS.map(row => (
+              <div key={row.rank} className={`${styles.standingsRow} ${row.isPlayer ? styles.playerRow : ''}`}>
+                <span className={styles.cRank}>{row.rank}</span>
+                <Flag code={row.code} className={styles.cFlag} />
+                <span className={styles.cName}>{row.name}</span>
+                {row.events.map((evt, i) => (
+                  <span key={i} className={`${styles.cEvent} ${i < CURRENT_EVENT_IDX ? styles.cEventDone : i === CURRENT_EVENT_IDX ? styles.cEventCurrent : styles.cEventAhead}`}>
+                    {evt !== null ? (
+                      <>
+                        <span className={styles.cEventPos} style={{ color: posColor(evt.pos) }}>P{evt.pos}</span>
+                        <span className={styles.cEventPts}>{evt.pts}</span>
+                      </>
+                    ) : '—'}
+                  </span>
+                ))}
+                <span className={styles.cTotal}>{totalPts(row.events)}</span>
+              </div>
+            ))}
             {!playerIsTop5 && (
               <>
                 <div className={styles.standingsSep}>···</div>
@@ -170,12 +184,17 @@ export default function EventLobby() {
                   <span className={styles.cRank}>{playerRow.rank}</span>
                   <Flag code={playerRow.code} className={styles.cFlag} />
                   <span className={styles.cName}>{playerRow.name}</span>
-                  {playerRow.eventPts.map((pts, i) => (
+                  {playerRow.events.map((evt, i) => (
                     <span key={i} className={`${styles.cEvent} ${i < CURRENT_EVENT_IDX ? styles.cEventDone : i === CURRENT_EVENT_IDX ? styles.cEventCurrent : styles.cEventAhead}`}>
-                      {pts !== null ? pts : '—'}
+                      {evt !== null ? (
+                        <>
+                          <span className={styles.cEventPos} style={{ color: posColor(evt.pos) }}>P{evt.pos}</span>
+                          <span className={styles.cEventPts}>{evt.pts}</span>
+                        </>
+                      ) : '—'}
                     </span>
                   ))}
-                  <span className={styles.cTotal}>{playerRow.eventPts.reduce<number>((s, v) => s + (v ?? 0), 0)}</span>
+                  <span className={styles.cTotal}>{totalPts(playerRow.events)}</span>
                 </div>
               </>
             )}
