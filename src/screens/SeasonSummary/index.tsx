@@ -120,11 +120,21 @@ const IS_DECLINING = PLAYER_AGE > 30
 const CHAMPION = STANDINGS[0]
 const PLAYER   = STANDINGS.find(a => a.isPlayer)!
 
+function skillGain(rank: number): number {
+  if (rank === 1)        return 8
+  if (rank <= 3)         return 6
+  if (rank <= 10)        return 4
+  if (rank <= 20)        return 2
+  if (rank <= 40)        return 1
+  return 0
+}
+
 // ── Component ─────────────────────────────────────────────────────────
 
 export default function SeasonSummary() {
   const playerTotal = totalPts(PLAYER.events)
   const champTotal  = totalPts(CHAMPION.events)
+  const gain        = skillGain(PLAYER.rank)
 
   return (
     <div className={styles.container}>
@@ -175,9 +185,11 @@ export default function SeasonSummary() {
               <span className={styles.playerPos}>P{PLAYER.rank}</span>
               <span className={styles.playerPts}>{playerTotal} pts</span>
             </div>
-            <div className={styles.playerNote}>Form improving</div>
+            {gain > 0 && (
+              <div className={styles.playerNote}>Skills improved +{gain}%</div>
+            )}
             {IS_DECLINING && (
-              <div className={styles.playerNoteDecline}>Age is starting to tell</div>
+              <div className={styles.playerNoteDecline}>Age is starting to affect your aim</div>
             )}
           </div>
 
