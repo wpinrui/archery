@@ -146,7 +146,7 @@ export default function EventLobby() {
         <div className={styles.standings}>
           <div className={styles.standingsLabel}>Championship Standings</div>
           <div className={styles.standingsTable}>
-            {/* Column headers */}
+            {/* Column headers — always visible */}
             <div className={`${styles.standingsRow} ${styles.standingsHeaderRow}`}>
               <span className={styles.cRank}>#</span>
               <span className={styles.cFlag} />
@@ -158,7 +158,8 @@ export default function EventLobby() {
               ))}
               <span className={styles.cTotal}>Total</span>
             </div>
-            {/* Athlete rows */}
+            {/* Scrollable body */}
+            <div className={styles.standingsBody}>
             {STANDINGS.map(row => (
               <div key={row.rank} className={`${styles.standingsRow} ${row.isPlayer ? styles.playerRow : ''}`}>
                 <span className={styles.cRank}>{row.rank}</span>
@@ -198,6 +199,7 @@ export default function EventLobby() {
                 </div>
               </>
             )}
+            </div>{/* end standingsBody */}
           </div>
         </div>
 

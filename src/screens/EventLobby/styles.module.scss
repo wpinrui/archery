@@ -283,6 +283,17 @@
   border-radius: 0.5rem;
   backdrop-filter: blur(6px);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.standingsBody {
+  overflow-y: auto;
+  max-height: 16rem;
+
+  &::-webkit-scrollbar       { width: 3px; }
+  &::-webkit-scrollbar-track  { background: transparent; }
+  &::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.15); border-radius: 2px; }
 }
 
 // Grid: # | athlete-flag | name | E1 | E2 | E3 | E4 | E5 | Total
