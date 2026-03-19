@@ -42,11 +42,21 @@ interface Athlete {
 }
 
 const STANDINGS: Athlete[] = [
-  { rank: 1, code: 'NLD', name: 'Joost Visser',  events: [{ pos: 1, pts: 100 }, { pos: 2, pts: 85  }, null, null, null] },
-  { rank: 2, code: 'CHN', name: 'Chen Wei',       events: [{ pos: 4, pts: 61  }, { pos: 1, pts: 100 }, null, null, null] },
-  { rank: 3, code: 'ITA', name: 'Marco Rossi',    events: [{ pos: 2, pts: 85  }, { pos: 3, pts: 72  }, null, null, null] },
-  { rank: 4, code: 'JPN', name: 'Akira Nakamura', events: [{ pos: 3, pts: 72  }, { pos: 4, pts: 61  }, null, null, null] },
-  { rank: 5, code: 'ZAF', name: 'Player One',     events: [{ pos: 7, pts: 37  }, { pos: 5, pts: 52  }, null, null, null], isPlayer: true },
+  { rank:  1, code: 'NLD', name: 'Joost Visser',    events: [{ pos: 1, pts: 100 }, { pos: 2, pts: 85  }, null, null, null] },
+  { rank:  2, code: 'CHN', name: 'Chen Wei',         events: [{ pos: 4, pts: 61  }, { pos: 1, pts: 100 }, null, null, null] },
+  { rank:  3, code: 'ITA', name: 'Marco Rossi',      events: [{ pos: 2, pts: 85  }, { pos: 3, pts: 72  }, null, null, null] },
+  { rank:  4, code: 'JPN', name: 'Akira Nakamura',   events: [{ pos: 3, pts: 72  }, { pos: 4, pts: 61  }, null, null, null] },
+  { rank:  5, code: 'ZAF', name: 'Player One',       events: [{ pos: 7, pts: 37  }, { pos: 5, pts: 52  }, null, null, null], isPlayer: true },
+  { rank:  6, code: 'FIN', name: 'Lauri Mäkinen',    events: [null, null, null, null, null] },
+  { rank:  7, code: 'NGA', name: 'Peter Okonkwo',    events: [null, null, null, null, null] },
+  { rank:  8, code: 'DEU', name: 'Hans Schmidt',     events: [null, null, null, null, null] },
+  { rank:  9, code: 'KOR', name: 'Soo-Jin Park',     events: [null, null, null, null, null] },
+  { rank: 10, code: 'ZMB', name: 'Kabelo Mbeki',     events: [null, null, null, null, null] },
+  { rank: 11, code: 'SWE', name: 'Tobias Bergström', events: [null, null, null, null, null] },
+  { rank: 12, code: 'CZE', name: 'Radek Novák',      events: [null, null, null, null, null] },
+  { rank: 13, code: 'AUS', name: 'Liam Nguyen',      events: [null, null, null, null, null] },
+  { rank: 14, code: 'BRA', name: 'Carlos Souza',     events: [null, null, null, null, null] },
+  { rank: 15, code: 'GBR', name: 'James Fletcher',   events: [null, null, null, null, null] },
 ]
 
 const playerIsTop5 = STANDINGS.findIndex(a => a.isPlayer) < 5
