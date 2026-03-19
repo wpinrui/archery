@@ -114,6 +114,9 @@ const STANDINGS: Athlete[] = [
   { rank: 50, code: 'RUS', name: 'Dmitri Voronov',      events: [ep(49), ep(50), ep(50), ep(50), ep(50)] }, // 0
 ]
 
+const PLAYER_AGE   = 35
+const IS_DECLINING = PLAYER_AGE > 30
+
 const CHAMPION = STANDINGS[0]
 const PLAYER   = STANDINGS.find(a => a.isPlayer)!
 
@@ -139,7 +142,7 @@ export default function SeasonSummary() {
           <div className={styles.seasonBarDot} />
           <div className={styles.seasonBarItem}>
             <span className={styles.seasonBarLabel}>Age</span>
-            <span className={styles.seasonBarValue}>22</span>
+            <span className={styles.seasonBarValue}>{PLAYER_AGE}</span>
           </div>
           <div className={styles.seasonBarDot} />
           <div className={styles.seasonBarItem}>
@@ -172,7 +175,10 @@ export default function SeasonSummary() {
               <span className={styles.playerPos}>P{PLAYER.rank}</span>
               <span className={styles.playerPts}>{playerTotal} pts</span>
             </div>
-            <div className={styles.playerNote}>Shakiness −4% next season</div>
+            <div className={styles.playerNote}>Form improving</div>
+            {IS_DECLINING && (
+              <div className={styles.playerNoteDecline}>Age is starting to tell</div>
+            )}
           </div>
 
         </div>
