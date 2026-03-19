@@ -1,31 +1,45 @@
 .devNav {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   z-index: 999;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 4px;
-  padding: 6px 12px;
-  background: #111;
-  border-bottom: 1px solid var(--border);
+  gap: 2px;
+  padding: 5px 8px;
+  max-width: 240px;
+  background: rgba(10, 10, 10, 0.92);
+  border: 1px solid var(--border);
+  border-radius: 6px;
   font-size: 11px;
   font-family: var(--font-mono);
+  cursor: grab;
+  user-select: none;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+
+  &:active { cursor: grabbing; }
+}
+
+.devHandle {
+  color: #444;
+  margin-right: 6px;
+  font-size: 13px;
+  line-height: 1;
 }
 
 .devLabel {
-  color: var(--muted);
-  margin-right: 8px;
+  color: #444;
+  margin-right: 6px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
 .devLink {
-  padding: 3px 8px;
+  padding: 2px 7px;
   border-radius: 3px;
   color: var(--muted);
   transition: color 0.1s, background 0.1s;
+  cursor: pointer;
 
   &:hover {
     color: var(--text);

@@ -27,6 +27,7 @@ html, body, #root {
   font-size: clamp(14px, 1.1vw, 18px);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
 }
 
 a { color: inherit; text-decoration: none; }

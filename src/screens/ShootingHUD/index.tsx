@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
+import Flag from '../../components/Flag'
 import styles from './styles.module.scss'
 
 // ── Config ───────────────────────────────────────────────────────────
@@ -85,29 +86,29 @@ function makeTransform(cx: number, cy: number, scale: number) {
 }
 
 // ── Mock data ─────────────────────────────────────────────────────────
-interface LbRow { rank: number; name: string; flag: string; pts: number; recent: number[]; isPlayer: boolean }
+interface LbRow { rank: number; name: string; code: string; pts: number; recent: number[]; isPlayer: boolean }
 
 const LB_COMPACT: LbRow[] = [
-  { rank: 3, name: 'Chen Wei',    flag: '🇨🇳', pts: 53, recent: [9, 8, 9], isPlayer: false },
-  { rank: 4, name: 'A. Nakamura', flag: '🇯🇵', pts: 51, recent: [8, 9, 7], isPlayer: false },
-  { rank: 5, name: 'YOU',         flag: '🇿🇦', pts: 48, recent: [],        isPlayer: true  },
-  { rank: 6, name: 'L. Mäkinen',  flag: '🇫🇮', pts: 47, recent: [7, 8, 8], isPlayer: false },
-  { rank: 7, name: 'P. Okonkwo',  flag: '🇳🇬', pts: 45, recent: [7, 7, 8], isPlayer: false },
+  { rank: 3, name: 'Chen Wei',       code: 'CHN', pts: 53, recent: [9, 8, 9], isPlayer: false },
+  { rank: 4, name: 'Akira Nakamura', code: 'JPN', pts: 51, recent: [8, 9, 7], isPlayer: false },
+  { rank: 5, name: 'Player One',            code: 'ZAF', pts: 48, recent: [],        isPlayer: true  },
+  { rank: 6, name: 'Lauri Mäkinen',  code: 'FIN', pts: 47, recent: [7, 8, 8], isPlayer: false },
+  { rank: 7, name: 'Peter Okonkwo',  code: 'NGA', pts: 45, recent: [7, 7, 8], isPlayer: false },
 ]
 
 const LB_FULL: LbRow[] = [
-  { rank:  1, name: 'J. Visser',    flag: '🇳🇱', pts: 58, recent: [10, 9, 10], isPlayer: false },
-  { rank:  2, name: 'M. Rossi',     flag: '🇮🇹', pts: 55, recent: [9, 9, 8],  isPlayer: false },
-  { rank:  3, name: 'Chen Wei',     flag: '🇨🇳', pts: 53, recent: [9, 8, 9],  isPlayer: false },
-  { rank:  4, name: 'A. Nakamura',  flag: '🇯🇵', pts: 51, recent: [8, 9, 7],  isPlayer: false },
-  { rank:  5, name: 'YOU',          flag: '🇿🇦', pts: 48, recent: [],          isPlayer: true  },
-  { rank:  6, name: 'L. Mäkinen',   flag: '🇫🇮', pts: 47, recent: [7, 8, 8],  isPlayer: false },
-  { rank:  7, name: 'P. Okonkwo',   flag: '🇳🇬', pts: 45, recent: [7, 7, 8],  isPlayer: false },
-  { rank:  8, name: 'H. Schmidt',   flag: '🇩🇪', pts: 44, recent: [8, 7, 6],  isPlayer: false },
-  { rank:  9, name: 'S. Park',      flag: '🇰🇷', pts: 42, recent: [7, 6, 8],  isPlayer: false },
-  { rank: 10, name: 'K. Mbeki',     flag: '🇿🇲', pts: 41, recent: [6, 7, 7],  isPlayer: false },
-  { rank: 11, name: 'T. Bergström', flag: '🇸🇪', pts: 39, recent: [7, 6, 6],  isPlayer: false },
-  { rank: 12, name: 'R. Novák',     flag: '🇨🇿', pts: 37, recent: [6, 6, 7],  isPlayer: false },
+  { rank:  1, name: 'Joost Visser',    code: 'NLD', pts: 58, recent: [10, 9, 10], isPlayer: false },
+  { rank:  2, name: 'Marco Rossi',     code: 'ITA', pts: 55, recent: [9, 9, 8],  isPlayer: false },
+  { rank:  3, name: 'Chen Wei',        code: 'CHN', pts: 53, recent: [9, 8, 9],  isPlayer: false },
+  { rank:  4, name: 'Akira Nakamura',  code: 'JPN', pts: 51, recent: [8, 9, 7],  isPlayer: false },
+  { rank:  5, name: 'Player One',             code: 'ZAF', pts: 48, recent: [],          isPlayer: true  },
+  { rank:  6, name: 'Lauri Mäkinen',   code: 'FIN', pts: 47, recent: [7, 8, 8],  isPlayer: false },
+  { rank:  7, name: 'Peter Okonkwo',   code: 'NGA', pts: 45, recent: [7, 7, 8],  isPlayer: false },
+  { rank:  8, name: 'Hans Schmidt',    code: 'DEU', pts: 44, recent: [8, 7, 6],  isPlayer: false },
+  { rank:  9, name: 'Soo-Jin Park',    code: 'KOR', pts: 42, recent: [7, 6, 8],  isPlayer: false },
+  { rank: 10, name: 'Kabelo Mbeki',    code: 'ZMB', pts: 41, recent: [6, 7, 7],  isPlayer: false },
+  { rank: 11, name: 'Tobias Bergström',code: 'SWE', pts: 39, recent: [7, 6, 6],  isPlayer: false },
+  { rank: 12, name: 'Radek Novák',     code: 'CZE', pts: 37, recent: [6, 6, 7],  isPlayer: false },
 ]
 
 interface ArrowHit { x: number; y: number; score: number; radius: number }
@@ -409,7 +410,7 @@ export default function ShootingHUD() {
           {injectRecent(expanded ? LB_FULL : LB_COMPACT).map(r => (
             <div key={r.rank} className={`${styles.lbRow} ${r.isPlayer ? styles.lbPlayer : ''}`}>
               <span className={styles.lbRank}>{r.rank}</span>
-              <span className={styles.lbFlag}>{r.flag}</span>
+              <Flag code={r.code} className={styles.lbFlag} />
               <span className={styles.lbName}>{r.name}</span>
               <span className={styles.lbRecent}>
                 {r.recent.map((s, i) => {

@@ -36,7 +36,7 @@
 // ── Card base ─────────────────────────────────────────────────────────
 
 %card {
-  background: rgba(8, 8, 8, 0.72);
+  background: rgba(8, 8, 8, 0.85);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 0.3rem;
   backdrop-filter: blur(8px);
@@ -55,7 +55,7 @@
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.6);
   margin-bottom: 0.4rem;
 }
 
@@ -308,7 +308,7 @@ $arm-thick: 2px;
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.6);
   border-bottom: 1px solid rgba(255,255,255,0.06);
   cursor: pointer;
   transition: color 0.15s;
@@ -343,9 +343,9 @@ $arm-thick: 2px;
   .lbPts  { color: var(--accent); }
 }
 
-.lbRank { font-size: 0.7rem;  font-family: var(--font-mono); color: rgba(255,255,255,0.3); }
-.lbFlag { font-size: 0.85rem; }
-.lbName { font-size: 0.8rem;  color: rgba(255,255,255,0.55); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lbRank { font-size: 0.7rem;  font-family: var(--font-mono); color: rgba(255,255,255,0.55); }
+.lbFlag { width: 1.1rem; height: auto; border-radius: 1px; display: block; }
+.lbName { font-size: 0.8rem;  color: rgba(255,255,255,0.85); }
 .lbPts  { text-align: right;  font-size: 0.8rem; font-family: var(--font-mono); color: var(--text); }
 
 .lbRecent {
