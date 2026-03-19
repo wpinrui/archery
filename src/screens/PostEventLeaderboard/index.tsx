@@ -156,7 +156,7 @@ export default function PostEventLeaderboard() {
         </div>
 
         {/* ── Result hero ─────────────────────────────────────── */}
-        <div className={styles.resultCard} style={{ borderLeftColor: pColor }}>
+        <div className={styles.resultCard}>
           <div className={styles.resultLeft}>
             <span className={styles.resultLabel}>YOUR FINISH</span>
             <span className={styles.resultPos} style={{ color: pColor }}>{posLabel}</span>
