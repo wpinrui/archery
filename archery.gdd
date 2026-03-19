@@ -161,6 +161,15 @@ summary screen → next season begins.
    shown: one row per season, with age, championship position,
    points total, and medals earned that season.
 
+8. **Event lobby** — shown before each event begins (after
+   country selection on first launch, and after each
+   post-event leaderboard thereafter). Displays the event
+   name, host country flag, and the three distances for the
+   event. Shows current season standings (top 5 rows plus the
+   player's row if outside top 5). A "Start Event" button
+   advances to the Shooting HUD. The career screen is
+   accessible from here via a persistent button.
+
 ## Progression & Aging
 
 ### Skill & Shakiness

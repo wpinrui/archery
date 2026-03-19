@@ -7,9 +7,11 @@ import SeasonSummary from './screens/SeasonSummary'
 import CareerScreen from './screens/CareerScreen'
 import VictoryScreen from './screens/VictoryScreen'
 import RetirementScreen from './screens/RetirementScreen'
+import EventLobby from './screens/EventLobby'
 
 const SCREENS = [
   { path: '/country-selection',      label: 'Country Selection',      component: CountrySelection },
+  { path: '/event-lobby',            label: 'Event Lobby',            component: EventLobby },
   { path: '/shooting-hud',           label: 'Shooting HUD',           component: ShootingHUD },
   { path: '/post-event-leaderboard', label: 'Post-Event Leaderboard', component: PostEventLeaderboard },
   { path: '/season-summary',         label: 'Season Summary',         component: SeasonSummary },
