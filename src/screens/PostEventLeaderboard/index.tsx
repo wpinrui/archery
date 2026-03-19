@@ -204,8 +204,8 @@ export default function PostEventLeaderboard() {
 
         {/* ── Event leaderboard ───────────────────────────────── */}
         <div className={styles.leaderboard}>
-          <span className={styles.leaderboardLabel}>Event Results</span>
           <div className={styles.leaderboardTable}>
+            <div className={styles.leaderboardTitle}>Event Results</div>
             <div className={`${styles.lbRow} ${styles.lbHeaderRow}`}>
               <span className={styles.cRank}>#</span>
               <span className={styles.cFlag} />
