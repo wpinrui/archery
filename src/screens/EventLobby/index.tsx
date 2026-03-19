@@ -40,11 +40,11 @@ interface Athlete {
 }
 
 const STANDINGS: Athlete[] = [
-  { rank: 1, code: 'NLD', name: 'J. Visser',   eventPts: [100, 85,  null, null, null] },
-  { rank: 2, code: 'CHN', name: 'Chen Wei',     eventPts: [61,  100, null, null, null] },
-  { rank: 3, code: 'ITA', name: 'M. Rossi',     eventPts: [85,  72,  null, null, null] },
-  { rank: 4, code: 'JPN', name: 'A. Nakamura',  eventPts: [72,  61,  null, null, null] },
-  { rank: 5, code: 'ZAF', name: 'YOU',          eventPts: [37,  52,  null, null, null], isPlayer: true },
+  { rank: 1, code: 'NLD', name: 'Joost Visser',    eventPts: [100, 85,  null, null, null] },
+  { rank: 2, code: 'CHN', name: 'Chen Wei',         eventPts: [61,  100, null, null, null] },
+  { rank: 3, code: 'ITA', name: 'Marco Rossi',      eventPts: [85,  72,  null, null, null] },
+  { rank: 4, code: 'JPN', name: 'Akira Nakamura',   eventPts: [72,  61,  null, null, null] },
+  { rank: 5, code: 'ZAF', name: 'YOU',              eventPts: [37,  52,  null, null, null], isPlayer: true },
 ]
 
 const playerIsTop5 = STANDINGS.findIndex(a => a.isPlayer) < 5
