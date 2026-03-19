@@ -1,0 +1,185 @@
+.container {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 24px 40px;
+  gap: 2rem;
+  position: relative;
+}
+
+// ── Season context ────────────────────────────────────────────────────
+
+.seasonCtx {
+  position: absolute;
+  top: 12px;
+  right: 24px;
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+// ── Event header ──────────────────────────────────────────────────────
+
+.eventHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 420px;
+}
+
+.eventNameBlock {
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+}
+
+.eventName {
+  font-size: clamp(28px, 3vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.hostLine {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+}
+
+.hostFlag {
+  width: 1.1rem;
+  height: auto;
+  border-radius: 1px;
+  display: block;
+}
+
+.hostCountry {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+// ── Distances strip ───────────────────────────────────────────────────
+
+.distancesStrip {
+  display: flex;
+  gap: 0.85rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.distanceCard {
+  background: var(--surface);
+  border: 1px solid;
+  border-radius: 0.4rem;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.distanceValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  font-family: var(--font-mono);
+}
+
+.arrowCount {
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+// ── Season standings ──────────────────────────────────────────────────
+
+.standings {
+  width: 100%;
+  max-width: 420px;
+}
+
+.standingsLabel {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+
+.standingsTable {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  overflow: hidden;
+}
+
+.standingsRow {
+  display: grid;
+  grid-template-columns: 1.6rem 1.6rem 1fr 2rem 2.8rem;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+
+  &:last-child { border-bottom: none; }
+}
+
+.playerRow {
+  border-left: 2px solid var(--accent);
+  background: rgba(232, 200, 74, 0.05);
+
+  .nameCol { color: var(--accent); }
+  .ptsCol  { color: var(--accent); }
+}
+
+.rankCol  { font-size: 0.7rem; font-family: var(--font-mono); color: var(--muted); }
+.flagCol  { width: 1.1rem; height: auto; border-radius: 1px; display: block; }
+.nameCol  { font-size: 0.8rem; color: rgba(240, 240, 240, 0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ptsLabel { font-size: 0.6rem; color: #333; text-align: right; font-family: var(--font-mono); align-self: flex-end; padding-bottom: 1px; }
+.ptsCol   { font-size: 0.82rem; font-family: var(--font-mono); color: var(--text); text-align: right; }
+
+// ── Action row ────────────────────────────────────────────────────────
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 420px;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.careerBtn {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 0.3rem;
+  color: var(--muted);
+  background: transparent;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover {
+    border-color: var(--text);
+    color: var(--text);
+  }
+}
+
+.startBtn {
+  padding: 0.65rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  background: var(--accent);
+  color: #0d0d0d;
+  border: none;
+  border-radius: 0.3rem;
+  transition: opacity 0.15s;
+
+  &:hover { opacity: 0.9; }
+}
