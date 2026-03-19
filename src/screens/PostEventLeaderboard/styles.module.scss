@@ -94,7 +94,6 @@
 
 .completedBadge {
   font-size: 0.72rem;
-  font-family: var(--font-mono);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.16em;
@@ -162,7 +161,6 @@
 .resultStatValue {
   font-size: 1.6rem;
   font-weight: 700;
-  font-family: var(--font-mono);
   line-height: 1;
   color: var(--text);
 }
@@ -196,7 +194,6 @@
 .breakdownDist {
   font-size: 0.95rem;
   font-weight: 700;
-  font-family: var(--font-mono);
   letter-spacing: 0.04em;
 }
 
@@ -215,13 +212,11 @@
   border-radius: 3px;
   font-size: 0.82rem;
   font-weight: 700;
-  font-family: var(--font-mono);
   line-height: 1;
 }
 
 .subtotal {
   font-size: 0.8rem;
-  font-family: var(--font-mono);
   color: rgba(255,255,255,0.5);
   letter-spacing: 0.04em;
 
