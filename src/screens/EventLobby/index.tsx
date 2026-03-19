@@ -184,7 +184,7 @@ export default function EventLobby() {
 
         {/* ── Actions ─────────────────────────────────────────────── */}
         <div className={styles.actionRow}>
-          <a href="/career" className={styles.careerBtn}>Career</a>
+          <a href="/career" className={styles.careerBtn}>My Career</a>
           <button className={styles.startBtn}>Start Event →</button>
         </div>
 

@@ -62,7 +62,7 @@
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: var(--muted);
+  color: rgba(255,255,255,0.5);
 }
 
 .seasonBarValue {
@@ -75,7 +75,7 @@
 .seasonBarOf {
   font-size: 0.85rem;
   font-weight: 400;
-  color: var(--muted);
+  color: rgba(255,255,255,0.5);
 }
 
 .seasonBarDot {
@@ -124,7 +124,7 @@
 }
 
 .stepDone {
-  .timelineName    { color: rgba(255,255,255,0.6); }
+  .timelineName    { color: rgba(255,255,255,0.8); }
   .timelineResult  { color: var(--accent); }
 }
 
@@ -221,7 +221,7 @@
 
 .eventHostName {
   font-size: 0.82rem;
-  color: var(--muted);
+  color: rgba(255,255,255,0.5);
 }
 
 .eventName {
@@ -258,7 +258,7 @@
 
 .arrowCount {
   font-size: 0.75rem;
-  color: var(--muted);
+  color: rgba(255,255,255,0.5);
 }
 
 // ── Championship standings ────────────────────────────────────────────
@@ -274,7 +274,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: rgba(255,255,255,0.55);
+  color: rgba(255,255,255,0.75);
 }
 
 .standingsTable {
@@ -327,7 +327,7 @@
 .cRank {
   font-size: 0.8rem;
   font-family: var(--font-mono);
-  color: var(--muted);
+  color: rgba(255,255,255,0.5);
 }
 
 .cFlag {
@@ -352,7 +352,7 @@
   justify-content: center;
 }
 
-.cEventDone  { color: rgba(240,240,240,0.7); }
+.cEventDone  { color: rgba(240,240,240,0.9); }
 
 .cEventCurrent {
   color: rgba(240,240,240,0.25);
@@ -375,7 +375,7 @@
 .standingsHeaderRow .cTotal {
   font-family: var(--font-sans);
   font-weight: 600;
-  color: var(--muted);
+  color: rgba(255,255,255,0.5);
 }
 
 .headerFlag {
@@ -399,7 +399,7 @@
   font-size: 0.8rem;
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 0.3rem;
-  color: var(--muted);
+  color: rgba(255,255,255,0.5);
   background: transparent;
   transition: border-color 0.15s, color 0.15s;
 
