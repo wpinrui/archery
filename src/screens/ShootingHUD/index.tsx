@@ -91,7 +91,7 @@ interface LbRow { rank: number; name: string; code: string; pts: number; recent:
 const LB_COMPACT: LbRow[] = [
   { rank: 3, name: 'Chen Wei',       code: 'CHN', pts: 53, recent: [9, 8, 9], isPlayer: false },
   { rank: 4, name: 'Akira Nakamura', code: 'JPN', pts: 51, recent: [8, 9, 7], isPlayer: false },
-  { rank: 5, name: 'YOU',            code: 'ZAF', pts: 48, recent: [],        isPlayer: true  },
+  { rank: 5, name: 'Player One',            code: 'ZAF', pts: 48, recent: [],        isPlayer: true  },
   { rank: 6, name: 'Lauri Mäkinen',  code: 'FIN', pts: 47, recent: [7, 8, 8], isPlayer: false },
   { rank: 7, name: 'Peter Okonkwo',  code: 'NGA', pts: 45, recent: [7, 7, 8], isPlayer: false },
 ]
@@ -101,7 +101,7 @@ const LB_FULL: LbRow[] = [
   { rank:  2, name: 'Marco Rossi',     code: 'ITA', pts: 55, recent: [9, 9, 8],  isPlayer: false },
   { rank:  3, name: 'Chen Wei',        code: 'CHN', pts: 53, recent: [9, 8, 9],  isPlayer: false },
   { rank:  4, name: 'Akira Nakamura',  code: 'JPN', pts: 51, recent: [8, 9, 7],  isPlayer: false },
-  { rank:  5, name: 'YOU',             code: 'ZAF', pts: 48, recent: [],          isPlayer: true  },
+  { rank:  5, name: 'Player One',             code: 'ZAF', pts: 48, recent: [],          isPlayer: true  },
   { rank:  6, name: 'Lauri Mäkinen',   code: 'FIN', pts: 47, recent: [7, 8, 8],  isPlayer: false },
   { rank:  7, name: 'Peter Okonkwo',   code: 'NGA', pts: 45, recent: [7, 7, 8],  isPlayer: false },
   { rank:  8, name: 'Hans Schmidt',    code: 'DEU', pts: 44, recent: [8, 7, 6],  isPlayer: false },
