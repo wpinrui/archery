@@ -24,15 +24,21 @@ forces decisions under pressure.
 
 At longer distances the arrow drops due to gravity. The player
 must aim above the target to compensate — no indicator is shown;
-this is learned through trial and error. At 18m compensation is
-negligible; at 90m it is significant.
+this is learned through trial and error. Gravity displacement
+scales linearly with distance: zero at 18 m, rising to the full
+gravity factor at 90 m.
 
 Wind is shown via a windsock. The player reads it and
 compensates manually by aiming into the wind. Wind displaces
-the arrow horizontally on release.
+the arrow horizontally on release. Wind effect scales with
+distance: 30% of full effect at 18 m, rising linearly to
+100% at 90 m.
 
 Scoring follows standard archery rings: bullseye = 10, down to
 1 at the outer edge. Missing the board entirely scores 0.
+
+Target size scales with distance: 450 px at 18 m, shrinking
+linearly to 300 px at 90 m.
 
 ## Competition Structure
 
