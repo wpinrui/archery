@@ -46,6 +46,7 @@ export default function TitleScreen() {
               <circle cx="50" cy="50" r="18" fill="#0a0a0a" />
               <circle cx="50" cy="50" r="10" fill="var(--accent)" />
               <circle cx="50" cy="50" r="10" fill="none" stroke="#000" strokeWidth="1.5" />
+              <circle cx="50" cy="50" r="48" fill="none" stroke="var(--accent)" strokeWidth="2.5" />
             </svg>
             <span className={styles.titleText}>
               <span className={styles.titleAccent}>Long Draw</span>
