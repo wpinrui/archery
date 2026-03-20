@@ -269,26 +269,3 @@ the competitive window but cannot stop the decline.
 
 The player may retire at any time via a permanently visible
 retire button. There is no forced retirement age.
-
-## Core Shooting Mechanic
-
-The player aims by moving the mouse. The bow sight drifts
-continuously due to simulated hand tremor — the entire bow
-moves, not just a cursor. The player actively corrects by
-countering the drift direction. Effective aim = mouse position
-+ live shake offset.
-
-On click, the arrow is released. A 20-second timer per shot
-forces decisions under pressure.
-
-At longer distances the arrow drops due to gravity. The player
-must aim above the target to compensate — no indicator is shown;
-this is learned through trial and error. At 18m compensation is
-negligible; at 90m it is significant.
-
-Wind is shown via a windsock. The player reads it and
-compensates manually by aiming into the wind. Wind displaces
-the arrow horizontally on release.
-
-Scoring follows standard archery rings: bullseye = 10, down to
-1 at the outer edge. Missing the board entirely scores 0.
