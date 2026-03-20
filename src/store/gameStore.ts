@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type {
   Athlete,
   CountryCode,
@@ -107,6 +108,9 @@ interface GameState {
   /** End the career and return the 5 retirement highlight slides */
   retire: () => RetirementHighlight[]
 
+  /** Wipe persisted state and start fresh (back to country selection) */
+  resetCareer: () => void
+
   // ── Derived-state helpers ───────────────────────────────────────
 
   /** The event definition for the current event index */
@@ -125,11 +129,15 @@ interface GameState {
   getPlayerEventBreakdown: () => DistanceGroup[]
 }
 
-// ── Store ───────────────────────────────────────────────────────────
+// ── Persistence ─────────────────────────────────────────────────────
 
-export const useGameStore = create<GameState>((set, get) => ({
-  // ── Initial state ───────────────────────────────────────────────
+/**
+ * Bump this when the persisted state shape changes.
+ * On version mismatch the saved career is wiped (acceptable per GDD).
+ */
+const STORE_VERSION = 1
 
+const INITIAL_STATE: Omit<GameState, 'startCareer' | 'recordShot' | 'completeEvent' | 'completeSeason' | 'retire' | 'resetCareer' | 'getCurrentEvent' | 'getCurrentArrowDistance' | 'getEventLeaderboard' | 'getChampionshipStandings' | 'getPlayerEventBreakdown'> = {
   phase: 'country-selection',
   player: null,
   competitors: [],
@@ -141,6 +149,14 @@ export const useGameStore = create<GameState>((set, get) => ({
   completedEvents: [],
   careerHistory: [],
   medalHistory: [],
+}
+
+// ── Store ───────────────────────────────────────────────────────────
+
+export const useGameStore = create<GameState>()(persist((set, get) => ({
+  // ── Initial state ───────────────────────────────────────────────
+
+  ...INITIAL_STATE,
 
   // ── Actions ─────────────────────────────────────────────────────
 
@@ -365,6 +381,10 @@ export const useGameStore = create<GameState>((set, get) => ({
     return computeRetirementHighlights(state.medalHistory, state.careerHistory)
   },
 
+  resetCareer: () => {
+    set(INITIAL_STATE)
+  },
+
   // ── Derived-state helpers ───────────────────────────────────────
 
   getCurrentEvent: () => {
@@ -485,4 +505,8 @@ export const useGameStore = create<GameState>((set, get) => ({
     const event = EVENT_SCHEDULE[idx]
     return groupScoresByDistance(state.playerArrowScores, event.distances)
   },
+}), {
+  name: 'long-draw-archery',
+  version: STORE_VERSION,
+  migrate: () => INITIAL_STATE,
 }))
