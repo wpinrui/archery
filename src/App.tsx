@@ -1,27 +1,40 @@
 import { useRef, useState, useCallback, useEffect, useSyncExternalStore } from 'react'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Link, Navigate, Outlet } from 'react-router-dom'
 import { useGameStore } from './store/gameStore'
 import styles from './App.module.scss'
-import CountrySelection from './mockups/CountrySelection'
-import ShootingHUD from './mockups/ShootingHUD'
-import PostEventLeaderboard from './mockups/PostEventLeaderboard'
-import SeasonSummary from './mockups/SeasonSummary'
-import CareerScreen from './mockups/CareerScreen'
-import VictoryScreen from './mockups/VictoryScreen'
-import RetirementScreen from './mockups/RetirementScreen'
-import EventLobby from './mockups/EventLobby'
 
-const SCREENS = [
-  { path: '/mockups/country-selection',      label: 'Country Selection',      component: CountrySelection },
-  { path: '/mockups/event-lobby',            label: 'Event Lobby',            component: EventLobby },
-  { path: '/mockups/shooting-hud',           label: 'Shooting HUD',           component: ShootingHUD },
-  { path: '/mockups/post-event-leaderboard', label: 'Post-Event Leaderboard', component: PostEventLeaderboard },
-  { path: '/mockups/season-summary',         label: 'Season Summary',         component: SeasonSummary },
-  { path: '/mockups/career',                 label: 'Career',                 component: CareerScreen },
-  { path: '/mockups/victory',                label: 'Victory',                component: VictoryScreen },
-  { path: '/mockups/retirement',             label: 'Retirement',             component: RetirementScreen },
+// Mockup imports — retained for reference routes only
+import CountrySelectionMockup from './mockups/CountrySelection'
+import EventLobbyMockup from './mockups/EventLobby'
+import ShootingHUDMockup from './mockups/ShootingHUD'
+import PostEventLeaderboardMockup from './mockups/PostEventLeaderboard'
+import SeasonSummaryMockup from './mockups/SeasonSummary'
+import CareerScreenMockup from './mockups/CareerScreen'
+import VictoryScreenMockup from './mockups/VictoryScreen'
+import RetirementScreenMockup from './mockups/RetirementScreen'
+
+// Real screen stubs
+import CountrySelectionScreen from './screens/CountrySelectionScreen'
+import EventLobbyScreen from './screens/EventLobbyScreen'
+import ShootingHUDScreen from './screens/ShootingHUDScreen'
+import PostEventLeaderboardScreen from './screens/PostEventLeaderboardScreen'
+import SeasonSummaryScreen from './screens/SeasonSummaryScreen'
+import CareerScreen from './screens/CareerScreen'
+import VictoryScreen from './screens/VictoryScreen'
+import RetirementScreen from './screens/RetirementScreen'
+
+const MOCKUP_SCREENS = [
+  { path: 'country-selection',      label: 'Country Selection',      component: CountrySelectionMockup },
+  { path: 'event-lobby',            label: 'Event Lobby',            component: EventLobbyMockup },
+  { path: 'shooting-hud',           label: 'Shooting HUD',           component: ShootingHUDMockup },
+  { path: 'post-event-leaderboard', label: 'Post-Event Leaderboard', component: PostEventLeaderboardMockup },
+  { path: 'season-summary',         label: 'Season Summary',         component: SeasonSummaryMockup },
+  { path: 'career',                 label: 'Career',                 component: CareerScreenMockup },
+  { path: 'victory',                label: 'Victory',                component: VictoryScreenMockup },
+  { path: 'retirement',             label: 'Retirement',             component: RetirementScreenMockup },
 ]
 
+/** Draggable dev nav — visible only on /mockups/* routes */
 function DevNav() {
   const [pos, setPos] = useState({ x: 16, y: 16 })
   const dragging = useRef(false)
@@ -59,9 +72,14 @@ function DevNav() {
       onMouseDown={onMouseDown}
     >
       <span className={styles.devHandle}>⠿</span>
-      <span className={styles.devLabel}>screens</span>
-      {SCREENS.map(s => (
-        <Link key={s.path} to={s.path} className={styles.devLink} onMouseDown={e => e.stopPropagation()}>
+      <span className={styles.devLabel}>mockups</span>
+      {MOCKUP_SCREENS.map(s => (
+        <Link
+          key={s.path}
+          to={`/mockups/${s.path}`}
+          className={styles.devLink}
+          onMouseDown={e => e.stopPropagation()}
+        >
           {s.label}
         </Link>
       ))}
@@ -69,20 +87,36 @@ function DevNav() {
   )
 }
 
-function Home() {
+/** Layout wrapper for /mockups/* — injects the dev nav above each mockup */
+function MockupLayout() {
   return (
-    <div className={styles.home}>
-      <h1 className={styles.title}>Long Draw Archery</h1>
-      <p className={styles.sub}>mockup workspace</p>
-      <div className={styles.grid}>
-        {SCREENS.map(s => (
-          <Link key={s.path} to={s.path} className={styles.card}>
-            {s.label}
-          </Link>
-        ))}
-      </div>
-    </div>
+    <>
+      <DevNav />
+      <Outlet />
+    </>
   )
+}
+
+/**
+ * Entry-point gate — reads game phase and redirects to the appropriate screen.
+ *
+ * Playing sub-screen heuristic (for resume on direct / navigation):
+ *   - arrows in progress  → /game/shooting
+ *   - otherwise           → /game/event-lobby
+ *
+ * Once real screens are in place they drive navigation themselves via
+ * useNavigate(); this gate only determines the landing point on cold load.
+ */
+function PhaseGate() {
+  const phase             = useGameStore(s => s.phase)
+  const currentArrowIndex = useGameStore(s => s.currentArrowIndex)
+
+  if (phase === 'country-selection') return <Navigate to="/country-selection" replace />
+  if (phase === 'retired')           return <Navigate to="/retired"           replace />
+
+  // playing
+  if (currentArrowIndex > 0) return <Navigate to="/game/shooting"    replace />
+  return                            <Navigate to="/game/event-lobby" replace />
 }
 
 /** Block rendering until Zustand persist has hydrated from localStorage */
@@ -100,12 +134,26 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <DevNav />
       <Routes>
-        <Route path="/" element={<Home />} />
-        {SCREENS.map(s => (
-          <Route key={s.path} path={s.path} element={<s.component />} />
-        ))}
+        {/* Entry point — redirects based on game phase */}
+        <Route path="/" element={<PhaseGate />} />
+
+        {/* ── Real game screens ─────────────────────────────────────────── */}
+        <Route path="/country-selection"     element={<CountrySelectionScreen />} />
+        <Route path="/game/event-lobby"      element={<EventLobbyScreen />} />
+        <Route path="/game/shooting"         element={<ShootingHUDScreen />} />
+        <Route path="/game/post-event"       element={<PostEventLeaderboardScreen />} />
+        <Route path="/game/season-summary"   element={<SeasonSummaryScreen />} />
+        <Route path="/game/victory"          element={<VictoryScreen />} />
+        <Route path="/game/career"           element={<CareerScreen />} />
+        <Route path="/retired"               element={<RetirementScreen />} />
+
+        {/* ── Mockup routes (reference only — not part of game flow) ────── */}
+        <Route path="/mockups" element={<MockupLayout />}>
+          {MOCKUP_SCREENS.map(s => (
+            <Route key={s.path} path={s.path} element={<s.component />} />
+          ))}
+        </Route>
       </Routes>
     </BrowserRouter>
   )
