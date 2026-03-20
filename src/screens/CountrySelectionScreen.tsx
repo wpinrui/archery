@@ -86,7 +86,7 @@ export default function CountrySelectionScreen() {
                   role="button"
                   tabIndex={0}
                   onClick={() => setSelectedCode(c.code)}
-                  onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setSelectedCode(c.code) }}
+                  onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedCode(c.code) } }}
                 >
                   <Flag code={c.code} className={styles.itemFlag} />
                   <span className={styles.itemName}>{c.name}</span>
