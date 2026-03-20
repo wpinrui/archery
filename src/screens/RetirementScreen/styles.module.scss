@@ -86,8 +86,8 @@
     background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 10%, rgba(0,0,0,0.85) 100%);
   }
 
-  // Slide 5 ends at 12.5 + 4.0 = 16.5s → overlay exits at 17.0s
-  animation: overlayExit 0.8s ease-out 17.0s forwards;
+  // Slide 6 ends at 15.5 + 4.0 = 19.5s → overlay exits at 20.0s
+  animation: overlayExit 0.8s ease-out 20.0s forwards;
 }
 
 // ── Highlight slide ──────────────────────────────────────────────────
@@ -96,12 +96,29 @@
   position: absolute;
   z-index: 2;
 
-  // 3.0s per slide, 3.0s apart
+  // 3.0s per slide, 3.0s apart — title card is :nth-child(1)
   &:nth-child(1) { animation: highlightCycle 3.0s ease-in-out 0.5s  both; }
   &:nth-child(2) { animation: highlightCycle 3.0s ease-in-out 3.5s  both; }
   &:nth-child(3) { animation: highlightCycle 3.0s ease-in-out 6.5s  both; }
   &:nth-child(4) { animation: highlightCycle 3.0s ease-in-out 9.5s  both; }
-  &:nth-child(5) { animation: champCycle     4.0s ease-in-out 12.5s both; }
+  &:nth-child(5) { animation: highlightCycle 3.0s ease-in-out 12.5s both; }
+  &:nth-child(6) { animation: champCycle     4.0s ease-in-out 15.5s both; }
+}
+
+// ── Title slide ──────────────────────────────────────────────────────
+
+.titleSlide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.titleSlideText {
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  color: rgba(255,255,255,0.7);
 }
 
 // ── Card ─────────────────────────────────────────────────────────────
@@ -113,9 +130,11 @@
   background: rgba(10, 10, 10, 0.88);
   border: 1px solid rgba(255,255,255,0.1);
   backdrop-filter: blur(8px);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.06), 0 0 60px rgba(255, 255, 255, 0.03);
 
   .slideChamp & {
     border-color: rgba(232, 200, 74, 0.3);
+    box-shadow: 0 0 30px rgba(232, 200, 74, 0.12), 0 0 60px rgba(232, 200, 74, 0.06);
   }
 }
 
@@ -131,17 +150,6 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(to bottom, transparent 20%, rgba(10, 10, 10, 0.88) 100%);
-}
-
-.slideFlag {
-  position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  width: 2rem;
-  height: auto;
-  border-radius: 3px;
-  display: block;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
 // Accomplishment text below photo
@@ -211,7 +219,7 @@
   flex-direction: column;
   gap: 1.5rem;
 
-  animation: fadeUp 0.8s ease-out 17.0s both;
+  animation: fadeUp 0.8s ease-out 20.0s both;
 }
 
 // ── Identity header ──────────────────────────────────────────────────
@@ -229,7 +237,7 @@
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(232, 200, 74, 0.4), transparent);
   margin-bottom: 0.3rem;
-  animation: lineExpand 1.2s ease-out 17.3s both;
+  animation: lineExpand 1.2s ease-out 20.3s both;
 }
 
 .identity {
@@ -337,13 +345,15 @@
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .pill {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.35rem 0.75rem;
+  gap: 0.25rem;
+  padding: 0.4rem 0.75rem;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 0.3rem;
@@ -352,6 +362,12 @@
 .pillChamp {
   border-color: rgba(232, 200, 74, 0.25);
   background: rgba(232, 200, 74, 0.04);
+}
+
+.pillTop {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .pillEmoji {
@@ -367,6 +383,11 @@
 
 .pillChamp .pillLabel {
   color: rgba(232, 200, 74, 0.6);
+}
+
+.pillPos {
+  font-size: 0.7rem;
+  font-weight: 700;
 }
 
 // ── Career record table ──────────────────────────────────────────────

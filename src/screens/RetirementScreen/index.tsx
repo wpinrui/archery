@@ -42,11 +42,11 @@ const RETIRE_AGE  = 32
 // Per GDD: 4 individual event medals, then best championship finish with count
 
 const SLIDES = [
-  { emoji: '🥉', title: 'Bronze Medal',   detail: 'Cape Town Cup',     meta: 'Season 3 · Age 20', image: '/trees-capetown.jpg', flag: 'ZAF' },
-  { emoji: '🥈', title: 'Silver Medal',   detail: 'Paris Open',        meta: 'Season 4 · Age 21', image: '/trees-paris.jpg',    flag: 'FRA' },
-  { emoji: '🥇', title: 'Gold Medal',     detail: 'Seoul Cup',         meta: 'Season 5 · Age 22', image: '/trees-seoul.jpg',    flag: 'KOR' },
-  { emoji: '🥇', title: 'Gold Medal',     detail: 'Las Vegas Classic', meta: 'Season 8 · Age 25', image: '/trees-vegas.jpg',    flag: 'USA' },
-  { emoji: '🏆', title: 'World Champion', detail: '× 2',              meta: 'Seasons 8 & 9',     image: '/champ.jpg',          flag: PLAYER_CODE },
+  { emoji: '🥉', title: 'Bronze Medal',   detail: 'Cape Town Cup',     meta: 'Season 3 · Age 20', image: '/trees-capetown.jpg', eventPos: 3 },
+  { emoji: '🥈', title: 'Silver Medal',   detail: 'Paris Open',        meta: 'Season 4 · Age 21', image: '/trees-paris.jpg',    eventPos: 2 },
+  { emoji: '🥇', title: 'Gold Medal',     detail: 'Seoul Cup',         meta: 'Season 5 · Age 22', image: '/trees-seoul.jpg',    eventPos: 1 },
+  { emoji: '🥇', title: 'Gold Medal',     detail: 'Las Vegas Classic', meta: 'Season 8 · Age 25', image: '/trees-vegas.jpg',    eventPos: 1 },
+  { emoji: '🏆', title: 'World Champion', detail: '× 2',              meta: 'Seasons 8 & 9',     image: '/champ.jpg',          eventPos: 1 },
 ]
 
 // ── Helpers ────────────────────────────────────────────────────────────
@@ -76,19 +76,23 @@ export default function RetirementScreen() {
 
       {/* ── Phase 1: Full-screen highlight slides ──────────── */}
       <div className={styles.overlay}>
+        {/* Title card — context before the highlights begin */}
+        <div className={`${styles.slide} ${styles.titleSlide}`}>
+          <span className={styles.titleSlideText}>Career Highlights</span>
+        </div>
+
         {SLIDES.map((s, i) => (
           <div
             key={i}
             className={`${styles.slide} ${i === 4 ? styles.slideChamp : ''}`}
           >
             <div className={styles.slideCard}>
-              {/* Event photo with gradient fade + flag */}
+              {/* Event photo with gradient fade */}
               <div
                 className={styles.slidePhoto}
                 style={{ backgroundImage: `url(${s.image})` }}
               >
                 <div className={styles.slidePhotoFade} />
-                <Flag code={s.flag} className={styles.slideFlag} />
               </div>
 
               {/* Accomplishment */}
@@ -162,9 +166,14 @@ export default function RetirementScreen() {
         <div className={styles.pillStrip}>
           {SLIDES.map((s, i) => (
             <div key={i} className={`${styles.pill} ${i === 4 ? styles.pillChamp : ''}`}>
-              <span className={styles.pillEmoji}>{s.emoji}</span>
-              <span className={styles.pillLabel}>
-                {i === 4 ? `Champion ${s.detail}` : s.detail}
+              <div className={styles.pillTop}>
+                <span className={styles.pillEmoji}>{s.emoji}</span>
+                <span className={styles.pillLabel}>
+                  {i === 4 ? `Champion ${s.detail}` : s.detail}
+                </span>
+              </div>
+              <span className={styles.pillPos} style={{ color: posColor(s.eventPos) }}>
+                P{s.eventPos}
               </span>
             </div>
           ))}
