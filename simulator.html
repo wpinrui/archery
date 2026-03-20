@@ -216,6 +216,36 @@
       color: #475569;
     }
 
+    /* ── Tooltip ─────────────────────────────────────────── */
+
+    [data-tip] {
+      position: relative;
+      cursor: default;
+    }
+
+    [data-tip]::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e2330;
+      border: 1px solid #3d4560;
+      color: #e2e8f0;
+      font-size: 11px;
+      white-space: nowrap;
+      padding: 4px 8px;
+      border-radius: 5px;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 10;
+      transition: opacity 0.1s;
+    }
+
+    [data-tip]:hover::after {
+      opacity: 1;
+    }
+
     /* ── Skill comparison ────────────────────────────────── */
 
     .comparison-section {
@@ -576,9 +606,11 @@ function renderOverview() {
       const heightPx = s === 0
         ? Math.round((counts[0] / n) * 64)
         : Math.round((counts[s] / refMax) * 64)
-      html += `<div class="bar-col">
+      const minH = counts[s] > 0 ? Math.max(heightPx, 3) : 0
+      const tip = `${s}: ${counts[s].toLocaleString()} (${(pct*100).toFixed(2)}%)`
+      html += `<div class="bar-col" data-tip="${tip}">
         <div class="bar-fill ${scoreColorClass(s)}${s === 0 ? ' zero-bar' : ''}"
-             style="height:${heightPx}px;" title="${s}: ${(pct*100).toFixed(1)}%"></div>
+             style="height:${minH}px;"></div>
       </div>`
     }
 
@@ -629,10 +661,11 @@ function renderComparison() {
       const heightPx = s === 0
         ? Math.round((counts[0] / n) * 80)
         : Math.round((counts[s] / ref) * 80)
-      html += `<div class="comp-bar-col">
+      const minH = counts[s] > 0 ? Math.max(heightPx, 3) : 0
+      const tip = `${s}: ${counts[s].toLocaleString()} (${(counts[s]/n*100).toFixed(2)}%)`
+      html += `<div class="comp-bar-col" data-tip="${tip}">
         <div class="comp-bar-fill ${scoreColorClass(s)}${s === 0 ? ' zero-bar' : ''}"
-             style="height:${heightPx}px"
-             title="${s}: ${(counts[s]/n*100).toFixed(1)}%"></div>
+             style="height:${minH}px"></div>
         <div class="comp-bar-label">${s}</div>
       </div>`
     }
@@ -667,10 +700,12 @@ function renderDetail() {
     const heightPx = s === 0
       ? Math.round(pct * 120)
       : Math.round((counts[s] / ref) * 120)
-    html += `<div class="detail-bar-col">
-      <div class="detail-pct">${(pct*100).toFixed(1)}%</div>
+    const minH = counts[s] > 0 ? Math.max(heightPx, 3) : 0
+    const tip = `${s}: ${counts[s].toLocaleString()} hits (${(pct*100).toFixed(3)}%)`
+    html += `<div class="detail-bar-col" data-tip="${tip}">
+      <div class="detail-pct">${(pct*100).toFixed(2)}%</div>
       <div class="detail-bar-fill ${scoreColorClass(s)}${s === 0 ? ' zero-bar' : ''}"
-           style="height:${heightPx}px"></div>
+           style="height:${minH}px"></div>
       <div class="detail-score">${s}</div>
     </div>`
   }
