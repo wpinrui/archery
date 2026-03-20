@@ -12,7 +12,7 @@ const DEBUG_TUNING = false
 
 // ── Visual constants (presentation only — not tunable) ──────────────
 const DISTANCE_TARGET_SIZE: Record<Distance, number> = {
-  18: 350, 30: 312, 50: 275, 70: 237, 90: 200,
+  18: 450, 30: 412, 50: 375, 70: 337, 90: 300,
 }
 const DISTANCE_ZOOM_IN_MS: Record<Distance, number> = {
   18: 1200, 30: 1440, 50: 1728, 70: 2074, 90: 2488,
@@ -26,9 +26,9 @@ const ZOOM_OUT_MS = 700
 const TIMER_MAX = 20
 
 // ── Default tuning values ───────────────────────────────────────────
-const DEFAULT_AMPLITUDE_FACTOR = 0.28
-const DEFAULT_GRAVITY_FACTOR = 40
-const DEFAULT_WIND_FACTOR = 1.25
+const DEFAULT_AMPLITUDE_FACTOR = 0.33
+const DEFAULT_GRAVITY_FACTOR = 87
+const DEFAULT_WIND_FACTOR = 5
 
 // ── Helpers ─────────────────────────────────────────────────────────
 
@@ -94,10 +94,19 @@ function makeTransform(cx: number, cy: number, scale: number) {
   return `translate(calc(-50% + ${-cx * scale}px), calc(-50% + ${-cy * scale}px)) scale(${scale})`
 }
 
+/** Linear ramp: 0 at 18 m, 1 at 90 m */
+function distanceNorm(distance: Distance): number {
+  return (distance - 18) / (90 - 18)
+}
+
 /** Gravity is distance-dependent: negligible at 18 m, significant at 90 m */
 function gravityForDistance(distance: Distance, factor: number): number {
-  const norm = (distance - 18) / (90 - 18)
-  return factor * norm * norm
+  return factor * distanceNorm(distance)
+}
+
+/** Wind scales with distance: 30% effect at 18 m, 100% at 90 m */
+function windForDistance(distance: Distance, kmh: number, dir: 'left' | 'right', factor: number): number {
+  return (dir === 'left' ? -1 : 1) * kmh * factor * (0.3 + 0.7 * distanceNorm(distance))
 }
 
 /** 5 rows centred on the player */
@@ -138,6 +147,7 @@ export default function ShootingHUDScreen() {
   const [dbgWindDirOverride, setDbgWindDirOverride] = useState<'left' | 'right' | null>(null)
   const [dbgWindAmtOverride, setDbgWindAmtOverride] = useState<number | null>(null)
   const [exportJson, setExportJson] = useState<string | null>(null)
+  const [showDbgCrosshair, setShowDbgCrosshair] = useState(true)
 
   // ── Core state ────────────────────────────────────────────────────
   const containerRef = useRef<HTMLDivElement>(null)
@@ -233,13 +243,24 @@ export default function ShootingHUDScreen() {
 
   // ── Timer ─────────────────────────────────────────────────────────
   useEffect(() => {
-    if (phase !== 'ready') return
+    if (phase !== 'ready' || DEBUG_TUNING) return
     const id = setInterval(() => setTimeLeft(t => Math.max(0, t - 1)), 1000)
     return () => clearInterval(id)
   }, [phase])
 
   // ── Advance to next arrow or complete event ───────────────────────
   const advanceArrow = useCallback(() => {
+    // Debug mode: stay on arrow 1, just reset to idle
+    if (DEBUG_TUNING) {
+      setTimedOut(false)
+      setShowScore(false)
+      setShowHole(false)
+      setLastHit(null)
+      setTimeLeft(TIMER_MAX)
+      setPhase('idle')
+      return
+    }
+
     const curIdx = localArrowIdxRef.current
     const nextIdx = curIdx + 1
 
@@ -331,7 +352,7 @@ export default function ShootingHUDScreen() {
 
     const radius = targetSizeRef.current / 2
     const gravPx = gravityForDistance(currentDistance, gravityFactor)
-    const windOff = (effectiveWindDir === 'left' ? -1 : 1) * effectiveWindKmh * windFactor
+    const windOff = windForDistance(currentDistance, effectiveWindKmh, effectiveWindDir, windFactor)
     const aimX = mouse.x + shake.x
     const aimY = mouse.y + shake.y
     const impX = aimX + windOff
@@ -342,7 +363,7 @@ export default function ShootingHUDScreen() {
     setShowHole(false)
     setShowScore(false)
     setPhase('result')
-    recordShot(score)
+    if (!DEBUG_TUNING) recordShot(score)
 
     const zoomInMs = DISTANCE_ZOOM_IN_MS[currentDistance]
     cancelAnimationFrame(zoomRafRef.current)
@@ -371,8 +392,8 @@ export default function ShootingHUDScreen() {
       testShakiness: dbgShakiness,
       notes: {
         shakeAmplitude: `shakiness * ${amplitudeFactor} = amplitude_px`,
-        gravity: `gravity_px = ${gravityFactor} * ((distance - 18) / 72)^2`,
-        wind: `wind_offset_px = kmh * ${windFactor}`,
+        gravity: `gravity_px = ${gravityFactor} * (distance - 18) / 72`,
+        wind: `wind_offset_px = kmh * ${windFactor} * (0.3 + 0.7 * (distance - 18) / 72)`,
       },
     }, null, 2))
   }
@@ -437,6 +458,26 @@ export default function ShootingHUDScreen() {
           <div className={`${styles.arm} ${styles.armRight}`} />
         </div>
       )}
+
+      {/* Debug: bullseye compensation crosshair */}
+      {DEBUG_TUNING && showDbgCrosshair && phase === 'ready' && (() => {
+        const gravPx = gravityForDistance(currentDistance, gravityFactor)
+        const windOff = windForDistance(currentDistance, effectiveWindKmh, effectiveWindDir, windFactor)
+        const compX = -windOff
+        const compY = -gravPx
+        return (
+          <div
+            className={styles.dbgCrosshair}
+            style={{ transform: `translate(calc(-50% + ${compX}px), calc(-50% + ${compY}px))` }}
+            aria-hidden
+          >
+            <div className={`${styles.dbgArm} ${styles.dbgArmTop}`} />
+            <div className={`${styles.dbgArm} ${styles.dbgArmBottom}`} />
+            <div className={`${styles.dbgArm} ${styles.dbgArmLeft}`} />
+            <div className={`${styles.dbgArm} ${styles.dbgArmRight}`} />
+          </div>
+        )
+      })()}
 
       {/* Ready button */}
       {phase === 'idle' && (
@@ -575,8 +616,14 @@ export default function ShootingHUDScreen() {
           <div className={styles.debugInfo}>
             <div>Eff. amplitude: {shakeAmplitude.toFixed(1)}px</div>
             <div>Gravity @ {currentDistance}m: {gravityForDistance(currentDistance, gravityFactor).toFixed(1)}px</div>
-            <div>Wind: {effectiveWindKmh.toFixed(1)} km/h {effectiveWindDir} → {(effectiveWindKmh * windFactor).toFixed(1)}px</div>
+            <div>Wind: {effectiveWindKmh.toFixed(1)} km/h {effectiveWindDir} → {Math.abs(windForDistance(currentDistance, effectiveWindKmh, effectiveWindDir, windFactor)).toFixed(1)}px</div>
           </div>
+
+          <button className={styles.debugAutoBtn} onClick={() => setShowDbgCrosshair(v => !v)}>
+            {showDbgCrosshair ? 'Hide' : 'Show'} Bullseye Crosshair
+          </button>
+
+          <div className={styles.debugDivider} />
 
           <button className={styles.debugExportBtn} onClick={handleExport}>
             Export Values

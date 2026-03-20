@@ -214,6 +214,29 @@ $arm-thick: 2px;
 .armLeft   { height: $arm-thick; width: $arm-len; top: 0; right: $arm-gap;   transform: translateY(-50%); }
 .armRight  { height: $arm-thick; width: $arm-len; top: 0; left: $arm-gap;    transform: translateY(-50%); }
 
+// ── Debug bullseye crosshair ──────────────────────────────────────────
+
+.dbgCrosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  z-index: 19;
+  pointer-events: none;
+}
+
+.dbgArm {
+  position: absolute;
+  background: rgba(255, 60, 60, 0.85);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6);
+}
+
+.dbgArmTop    { width: $arm-thick; height: $arm-len; left: 0; bottom: $arm-gap; transform: translateX(-50%); }
+.dbgArmBottom { width: $arm-thick; height: $arm-len; left: 0; top: $arm-gap;    transform: translateX(-50%); }
+.dbgArmLeft   { height: $arm-thick; width: $arm-len; top: 0; right: $arm-gap;   transform: translateY(-50%); }
+.dbgArmRight  { height: $arm-thick; width: $arm-len; top: 0; left: $arm-gap;    transform: translateY(-50%); }
+
 // ── Ready button ──────────────────────────────────────────────────────
 
 .readyBtn {
@@ -447,13 +470,18 @@ $arm-thick: 2px;
   }
 
   select {
-    background: rgba(255,255,255,0.08);
+    background: #1a1a1a;
     border: 1px solid rgba(255,255,255,0.15);
     border-radius: 0.2rem;
     color: var(--text);
     padding: 0.2rem 0.4rem;
     font-size: 0.7rem;
     cursor: pointer;
+
+    option {
+      background: #1a1a1a;
+      color: var(--text);
+    }
   }
 }
 
