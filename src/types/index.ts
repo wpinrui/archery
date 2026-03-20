@@ -349,6 +349,10 @@ export const AGING_THRESHOLD = 30
 export const RETIREMENT_PER_SEASON = 5
 export const ROOKIE_AGE_MIN = 18
 export const ROOKIE_AGE_MAX = 25
+export const GROWTH_RATE = 2.0
+export const GROWTH_AGE_MIN = 18
+export const GROWTH_AGE_MAX = 29
+export const GROWTH_SPAN = GROWTH_AGE_MAX - GROWTH_AGE_MIN + 1 // 12
 
 /**
  * Shakiness reduction brackets by championship finish position.

@@ -14,6 +14,10 @@ import {
   AGING_THRESHOLD,
   DISTANCE_BONUS,
   DISTANCE_SIGMA,
+  GROWTH_AGE_MAX,
+  GROWTH_AGE_MIN,
+  GROWTH_RATE,
+  GROWTH_SPAN,
   ROOKIE_AGE_MAX,
   ROOKIE_AGE_MIN,
   SKILL_BASE,
@@ -108,14 +112,20 @@ export function generateRookie(countryCode: CountryCode): Athlete {
 // ── Progression ─────────────────────────────────────────────────────
 
 /**
- * Apply competitor aging for one season.
- * Skill degrades proportionally to the player's shakiness curve:
- *   skill_loss = 0.1 × (age − 30)²  (for age >= 30)
- * Then age increments by 1.
+ * Apply competitor skill changes for one season, then increment age.
+ *
+ * Ages 18–29: skill grows each season (largest gains when young, tapering to ~0 by 30).
+ *   seasonal_gain = GROWTH_RATE × (1 − (age − 18) / 12)
+ *
+ * Ages 30+: skill degrades proportionally to the player's shakiness curve:
+ *   skill_loss = 0.1 × (age − 30)²
  */
 export function ageCompetitor(competitor: Athlete): Athlete {
   let { skill } = competitor
-  if (competitor.age >= AGING_THRESHOLD) {
+  if (competitor.age >= GROWTH_AGE_MIN && competitor.age <= GROWTH_AGE_MAX) {
+    const gain = GROWTH_RATE * (1 - (competitor.age - GROWTH_AGE_MIN) / GROWTH_SPAN)
+    skill = Math.min(SKILL_MAX, skill + gain)
+  } else if (competitor.age >= AGING_THRESHOLD) {
     const loss = 0.1 * (competitor.age - AGING_THRESHOLD) ** 2
     skill = Math.max(SKILL_MIN, skill - loss)
   }
