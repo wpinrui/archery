@@ -2,10 +2,19 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { useNavigate, Navigate } from 'react-router-dom'
 import { useGameStore } from '../store/gameStore'
 import { expandDistances } from '../store/helpers'
-import type { Distance, Score } from '../types'
+import type { Distance, EventId, Score } from '../types'
 import type { EventLeaderboardRow } from '../types'
 import Flag from '../components/Flag'
 import styles from './ShootingHUDScreen.module.scss'
+
+// ── Per-event backgrounds ───────────────────────────────────────────
+const EVENT_BACKGROUNDS: Record<EventId, string> = {
+  'seoul-cup': '/trees-seoul.jpg',
+  'paris-open': '/trees-paris.jpg',
+  'las-vegas-classic': '/trees-vegas.jpg',
+  'sydney-international': '/trees-sydney.jpg',
+  'cape-town-cup': '/trees-capetown.jpg',
+}
 
 // ── Debug flag ──────────────────────────────────────────────────────
 const DEBUG_TUNING = false
@@ -420,7 +429,7 @@ export default function ShootingHUDScreen() {
       ref={containerRef}
       className={`${styles.container} ${phase === 'ready' ? styles.aiming : ''}`}
     >
-      <div className={styles.bg} style={{ transform: `scale(${bgScale})` }} />
+      <div className={styles.bg} style={{ transform: `scale(${bgScale})`, backgroundImage: `url('${EVENT_BACKGROUNDS[currentEvent.id]}')` }} />
       <div className={styles.vignette} />
 
       {/* Top-left: event + arrow count */}
