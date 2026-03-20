@@ -88,10 +88,6 @@ export default function EventLobbyScreen() {
   // Timeline: player results per event from standings data
   const playerEventResults = playerStanding?.events ?? Array(EVENTS_PER_SEASON).fill(null)
 
-  // Standings: show all rows; pin the player below a separator if outside top 5
-  const playerInTop5 = standings.slice(0, 5).some(r => r.isPlayer)
-  const pinnedPlayerRow = !playerInTop5 ? playerStanding : null
-
   return (
     <div className={styles.container}>
       <div className={styles.bg} />
@@ -191,12 +187,6 @@ export default function EventLobbyScreen() {
                 <span className={styles.cTotal}>Total</span>
               </div>
               {standings.map(row => renderStandingsRow(row, currentEventIndex))}
-              {pinnedPlayerRow && (
-                <>
-                  <div className={styles.standingsSep}>···</div>
-                  {renderStandingsRow(pinnedPlayerRow, currentEventIndex)}
-                </>
-              )}
             </div>
           </div>
         </div>
