@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import { useGameStore } from '../store/gameStore'
 import { expandDistances } from '../store/helpers'
 import type { Distance, Score } from '../types'
@@ -127,7 +127,7 @@ export default function ShootingHUDScreen() {
   const navigate = useNavigate()
 
   // ── Store ─────────────────────────────────────────────────────────
-  const player = useGameStore(s => s.player)!
+  const player = useGameStore(s => s.player)
   const storeArrowIndex = useGameStore(s => s.currentArrowIndex)
   const getCurrentEvent = useGameStore(s => s.getCurrentEvent)
   const getEventLeaderboard = useGameStore(s => s.getEventLeaderboard)
@@ -139,7 +139,7 @@ export default function ShootingHUDScreen() {
   const totalArrows = arrowDistances.length
 
   // ── Debug tuning state ────────────────────────────────────────────
-  const [dbgShakiness, setDbgShakiness] = useState(player.shakiness)
+  const [dbgShakiness, setDbgShakiness] = useState(player?.shakiness ?? 100)
   const [amplitudeFactor, setAmplitudeFactor] = useState(DEFAULT_AMPLITUDE_FACTOR)
   const [gravityFactor, setGravityFactor] = useState(DEFAULT_GRAVITY_FACTOR)
   const [windFactor, setWindFactor] = useState(DEFAULT_WIND_FACTOR)
@@ -166,8 +166,9 @@ export default function ShootingHUDScreen() {
     duration: number
   } | null>(null)
 
-  const [mouse, setMouse] = useState({ x: 0, y: 0 })
-  const [shake, setShake] = useState({ x: 0, y: 0 })
+  const mouseRef = useRef({ x: 0, y: 0 })
+  const shakeRef = useRef({ x: 0, y: 0 })
+  const crosshairRef = useRef<HTMLDivElement>(null)
   const [timeLeft, setTimeLeft] = useState(TIMER_MAX)
   const [phase, setPhase] = useState<'distance' | 'idle' | 'ready' | 'result'>('distance')
   const [lastHit, setLastHit] = useState<ArrowHit | null>(null)
@@ -180,7 +181,7 @@ export default function ShootingHUDScreen() {
   const [wind, setWind] = useState<{ dir: 'left' | 'right'; kmh: number }>({ dir: 'left', kmh: 5 })
 
   // ── Derived values ────────────────────────────────────────────────
-  const effectiveShakiness = DEBUG_TUNING ? dbgShakiness : player.shakiness
+  const effectiveShakiness = DEBUG_TUNING ? dbgShakiness : (player?.shakiness ?? 100)
   const shakeAmplitude = effectiveShakiness * amplitudeFactor
 
   const currentDistance: Distance = (DEBUG_TUNING && dbgDistanceOverride)
@@ -192,8 +193,6 @@ export default function ShootingHUDScreen() {
 
   const currentTargetSize = DISTANCE_TARGET_SIZE[currentDistance]
   const bgScale = BG_SCALE[currentDistance]
-  const crossX = mouse.x + shake.x
-  const crossY = mouse.y + shake.y
   const urgent = timeLeft <= 5 && phase === 'ready'
   const timerPct = (timeLeft / TIMER_MAX) * 100
   const wColor = windColor(effectiveWindKmh)
@@ -209,11 +208,17 @@ export default function ShootingHUDScreen() {
     targetSizeRef.current = DISTANCE_TARGET_SIZE[currentDistance]
   }, [localArrowIdx, currentDistance])
 
-  // ── Shake loop ────────────────────────────────────────────────────
+  // ── Shake loop (writes directly to DOM — no React re-renders) ────
   useEffect(() => {
     const loop = () => {
       const t = (performance.now() - t0Ref.current) / 1000
-      setShake(computeShake(t, shakeAmplitude))
+      shakeRef.current = computeShake(t, shakeAmplitude)
+      const el = crosshairRef.current
+      if (el) {
+        const m = mouseRef.current
+        const s = shakeRef.current
+        el.style.transform = `translate(calc(-50% + ${m.x + s.x}px), calc(-50% + ${m.y + s.y}px))`
+      }
       shakeRafRef.current = requestAnimationFrame(loop)
     }
     shakeRafRef.current = requestAnimationFrame(loop)
@@ -294,13 +299,19 @@ export default function ShootingHUDScreen() {
 
   useEffect(() => () => { if (timeoutResetRef.current) clearTimeout(timeoutResetRef.current) }, [])
 
-  // ── Mouse tracking ────────────────────────────────────────────────
+  // ── Mouse tracking (writes to ref + updates crosshair DOM) ───────
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
-      const el = containerRef.current
-      if (!el) return
-      const r = el.getBoundingClientRect()
-      setMouse({ x: e.clientX - r.left - r.width / 2, y: e.clientY - r.top - r.height / 2 })
+      const ctr = containerRef.current
+      if (!ctr) return
+      const r = ctr.getBoundingClientRect()
+      mouseRef.current = { x: e.clientX - r.left - r.width / 2, y: e.clientY - r.top - r.height / 2 }
+      const el = crosshairRef.current
+      if (el) {
+        const m = mouseRef.current
+        const s = shakeRef.current
+        el.style.transform = `translate(calc(-50% + ${m.x + s.x}px), calc(-50% + ${m.y + s.y}px))`
+      }
     }
     window.addEventListener('mousemove', onMove)
     return () => window.removeEventListener('mousemove', onMove)
@@ -353,8 +364,10 @@ export default function ShootingHUDScreen() {
     const radius = targetSizeRef.current / 2
     const gravPx = gravityForDistance(currentDistance, gravityFactor)
     const windOff = windForDistance(currentDistance, effectiveWindKmh, effectiveWindDir, windFactor)
-    const aimX = mouse.x + shake.x
-    const aimY = mouse.y + shake.y
+    const m = mouseRef.current
+    const s = shakeRef.current
+    const aimX = m.x + s.x
+    const aimY = m.y + s.y
     const impX = aimX + windOff
     const impY = aimY + gravPx
     const score = impactToScore(impX, impY, radius) as Score
@@ -374,7 +387,7 @@ export default function ShootingHUDScreen() {
       duration: zoomInMs,
     }
     zoomRafRef.current = requestAnimationFrame(runZoom)
-  }, [phase, mouse, shake, effectiveWindDir, effectiveWindKmh, currentDistance, gravityFactor, windFactor, recordShot, runZoom])
+  }, [phase, effectiveWindDir, effectiveWindKmh, currentDistance, gravityFactor, windFactor, recordShot, runZoom])
 
   useEffect(() => {
     window.addEventListener('click', fire)
@@ -397,6 +410,9 @@ export default function ShootingHUDScreen() {
       },
     }, null, 2))
   }
+
+  // ── Guard: redirect if no active career ────────────────────────────
+  if (!player) return <Navigate to="/" replace />
 
   // ── Render ────────────────────────────────────────────────────────
   return (
@@ -448,8 +464,8 @@ export default function ShootingHUDScreen() {
       {/* Crosshair */}
       {phase === 'ready' && (
         <div
+          ref={crosshairRef}
           className={styles.crosshair}
-          style={{ transform: `translate(calc(-50% + ${crossX}px), calc(-50% + ${crossY}px))` }}
           aria-hidden
         >
           <div className={`${styles.arm} ${styles.armTop}`} />
