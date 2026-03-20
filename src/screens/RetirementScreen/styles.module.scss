@@ -359,10 +359,7 @@
   border-radius: 0.3rem;
 }
 
-.pillChamp {
-  border-color: rgba(232, 200, 74, 0.25);
-  background: rgba(232, 200, 74, 0.04);
-}
+.pillChamp {}
 
 .pillTop {
   display: flex;
@@ -382,9 +379,7 @@
   white-space: nowrap;
 }
 
-.pillChamp .pillLabel {
-  color: rgba(232, 200, 74, 0.6);
-}
+.pillChamp .pillLabel {}
 
 .pillPos {
   font-size: 0.7rem;

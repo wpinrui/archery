@@ -158,9 +158,12 @@ summary screen → next season begins.
      Highlights 1–4: Individual event medal finishes (one
        medal per highlight). Selection priority within the
        career's medal pool: gold > silver > bronze. When
-       multiple medals exist at the same tier, one is chosen
-       at random. Each highlight shows the medal emoji, event
-       name, season number, and player age.
+       multiple medals exist at the same tier, prefer medals
+       from different events (countries) for variety; break
+       remaining ties at random. If the player earned all
+       their medals at the same event, all four highlights
+       may show that event. Each highlight shows the medal
+       emoji, event name, season number, and player age.
      Highlight 5: Best championship finish. If the player
        won the championship more than once, the count is
        shown (e.g., "World Champion × 2").
