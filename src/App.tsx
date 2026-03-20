@@ -14,6 +14,7 @@ import VictoryScreenMockup from './mockups/VictoryScreen'
 import RetirementScreenMockup from './mockups/RetirementScreen'
 
 // Real screen stubs
+import TitleScreen from './screens/TitleScreen'
 import CountrySelectionScreen from './screens/CountrySelectionScreen'
 import EventLobbyScreen from './screens/EventLobbyScreen'
 import ShootingHUDScreen from './screens/ShootingHUDScreen'
@@ -135,8 +136,11 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Entry point — redirects based on game phase */}
-        <Route path="/" element={<PhaseGate />} />
+        {/* Entry point — title screen on cold start */}
+        <Route path="/" element={<TitleScreen />} />
+
+        {/* Resume gate — reads phase and redirects to the correct in-game screen */}
+        <Route path="/play" element={<PhaseGate />} />
 
         {/* ── Real game screens ─────────────────────────────────────────── */}
         <Route path="/country-selection"     element={<CountrySelectionScreen />} />
