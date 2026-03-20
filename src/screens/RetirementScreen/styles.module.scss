@@ -1,6 +1,6 @@
 // ── Animations ────────────────────────────────────────────────────────
 
-// Highlight slides: fade in → hold → fade out (2.0s cycle)
+// Highlight slides: fade in → hold → fade out (3.0s cycle)
 @keyframes highlightCycle {
   0%    { opacity: 0; transform: translateY(24px); }
   20%   { opacity: 1; transform: translateY(0); }
@@ -8,15 +8,14 @@
   100%  { opacity: 0; transform: translateY(-10px); }
 }
 
-// Championship slide: longer hold for the climax (2.5s cycle)
+// Championship slide: longer hold for the climax (4.0s cycle)
 @keyframes champCycle {
   0%    { opacity: 0; transform: translateY(24px) scale(0.96); }
-  16%   { opacity: 1; transform: translateY(0) scale(1); }
-  84%   { opacity: 1; transform: translateY(0) scale(1); }
+  15%   { opacity: 1; transform: translateY(0) scale(1); }
+  85%   { opacity: 1; transform: translateY(0) scale(1); }
   100%  { opacity: 0; transform: translateY(-10px); }
 }
 
-// Overlay exits after all slides finish
 @keyframes overlayExit {
   0%    { opacity: 1; }
   100%  { opacity: 0; pointer-events: none; }
@@ -60,82 +59,143 @@
 }
 
 // ── Phase 1: Highlights overlay ──────────────────────────────────────
-// Opaque dark layer that covers the summary. Each slide appears
-// one at a time, then the overlay fades out to reveal Phase 2.
 
 .overlay {
   position: fixed;
   inset: 0;
   z-index: 10;
-  background: radial-gradient(ellipse 60% 50% at 50% 50%, #111, #0a0a0a);
+  background: var(--bg);
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  // Slide 5 ends at 8.5 + 2.5 = 11.0s → overlay exits at 11.5s
-  animation: overlayExit 0.8s ease-out 11.5s forwards;
+  // Atmospheric blurred background behind the cards
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -2rem;
+    background: url('/menus-bg.jpg') center / cover no-repeat;
+    filter: blur(20px) brightness(0.15);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 10%, rgba(0,0,0,0.85) 100%);
+  }
+
+  // Slide 5 ends at 12.5 + 4.0 = 16.5s → overlay exits at 17.0s
+  animation: overlayExit 0.8s ease-out 17.0s forwards;
 }
 
-// Individual highlight slide (stacked, only one visible at a time)
+// ── Highlight slide ──────────────────────────────────────────────────
+
 .slide {
   position: absolute;
+  z-index: 2;
+
+  // 3.0s per slide, 3.0s apart
+  &:nth-child(1) { animation: highlightCycle 3.0s ease-in-out 0.5s  both; }
+  &:nth-child(2) { animation: highlightCycle 3.0s ease-in-out 3.5s  both; }
+  &:nth-child(3) { animation: highlightCycle 3.0s ease-in-out 6.5s  both; }
+  &:nth-child(4) { animation: highlightCycle 3.0s ease-in-out 9.5s  both; }
+  &:nth-child(5) { animation: champCycle     4.0s ease-in-out 12.5s both; }
+}
+
+// ── Card ─────────────────────────────────────────────────────────────
+
+.slideCard {
+  width: 400px;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: rgba(10, 10, 10, 0.88);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
+
+  .slideChamp & {
+    border-color: rgba(232, 200, 74, 0.3);
+  }
+}
+
+// Photo area with gradient fade into card background
+.slidePhoto {
+  position: relative;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+}
+
+.slidePhotoFade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 20%, rgba(10, 10, 10, 0.88) 100%);
+}
+
+.slideFlag {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  width: 2rem;
+  height: auto;
+  border-radius: 3px;
+  display: block;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+// Accomplishment text below photo
+.slideContent {
+  padding: 1.25rem 1.5rem 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 0.5rem;
-
-  // Timing: 2.0s per slide, 2.0s apart
-  &:nth-child(1) { animation: highlightCycle 2.0s ease-in-out 0.5s both; }
-  &:nth-child(2) { animation: highlightCycle 2.0s ease-in-out 2.5s both; }
-  &:nth-child(3) { animation: highlightCycle 2.0s ease-in-out 4.5s both; }
-  &:nth-child(4) { animation: highlightCycle 2.0s ease-in-out 6.5s both; }
-  &:nth-child(5) { animation: champCycle     2.5s ease-in-out 8.5s both; }
+  gap: 0.3rem;
 }
 
 .slideEmoji {
-  font-size: 4rem;
+  font-size: 2.5rem;
   line-height: 1;
-  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.5));
+  margin-bottom: 0.2rem;
 }
 
 .slideChamp .slideEmoji {
-  font-size: 5rem;
-  filter: drop-shadow(0 0 24px rgba(232, 200, 74, 0.3));
+  font-size: 3rem;
+  filter: drop-shadow(0 0 16px rgba(232, 200, 74, 0.3));
 }
 
 .slideTitle {
-  font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+  font-size: clamp(0.85rem, 1.3vw, 1rem);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.25em;
   color: var(--text);
-  margin-top: 0.3rem;
 }
 
 .slideChamp .slideTitle {
-  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
   color: var(--accent);
   letter-spacing: 0.3em;
 }
 
 .slideDetail {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: rgba(255,255,255,0.55);
 }
 
 .slideChamp .slideDetail {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: rgba(232, 200, 74, 0.7);
 }
 
 .slideMeta {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: rgba(255,255,255,0.25);
-  margin-top: 0.2rem;
+  margin-top: 0.15rem;
 }
 
 // ── Phase 2: Retirement summary ──────────────────────────────────────
@@ -151,8 +211,7 @@
   flex-direction: column;
   gap: 1.5rem;
 
-  // Fades in as overlay exits
-  animation: fadeUp 0.8s ease-out 11.5s both;
+  animation: fadeUp 0.8s ease-out 17.0s both;
 }
 
 // ── Identity header ──────────────────────────────────────────────────
@@ -170,7 +229,7 @@
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(232, 200, 74, 0.4), transparent);
   margin-bottom: 0.3rem;
-  animation: lineExpand 1.2s ease-out 11.8s both;
+  animation: lineExpand 1.2s ease-out 17.3s both;
 }
 
 .identity {

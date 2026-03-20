@@ -42,11 +42,11 @@ const RETIRE_AGE  = 32
 // Per GDD: 4 individual event medals, then best championship finish with count
 
 const SLIDES = [
-  { emoji: '🥉', title: 'Bronze Medal',   detail: 'Cape Town Cup',     meta: 'Season 3 · Age 20' },
-  { emoji: '🥈', title: 'Silver Medal',   detail: 'Paris Open',        meta: 'Season 4 · Age 21' },
-  { emoji: '🥇', title: 'Gold Medal',     detail: 'Seoul Cup',         meta: 'Season 5 · Age 22' },
-  { emoji: '🥇', title: 'Gold Medal',     detail: 'Las Vegas Classic', meta: 'Season 8 · Age 25' },
-  { emoji: '🏆', title: 'World Champion', detail: '× 2',              meta: 'Seasons 8 & 9' },
+  { emoji: '🥉', title: 'Bronze Medal',   detail: 'Cape Town Cup',     meta: 'Season 3 · Age 20', image: '/trees-capetown.jpg', flag: 'ZAF' },
+  { emoji: '🥈', title: 'Silver Medal',   detail: 'Paris Open',        meta: 'Season 4 · Age 21', image: '/trees-paris.jpg',    flag: 'FRA' },
+  { emoji: '🥇', title: 'Gold Medal',     detail: 'Seoul Cup',         meta: 'Season 5 · Age 22', image: '/trees-seoul.jpg',    flag: 'KOR' },
+  { emoji: '🥇', title: 'Gold Medal',     detail: 'Las Vegas Classic', meta: 'Season 8 · Age 25', image: '/trees-vegas.jpg',    flag: 'USA' },
+  { emoji: '🏆', title: 'World Champion', detail: '× 2',              meta: 'Seasons 8 & 9',     image: '/champ.jpg',          flag: PLAYER_CODE },
 ]
 
 // ── Helpers ────────────────────────────────────────────────────────────
@@ -81,10 +81,24 @@ export default function RetirementScreen() {
             key={i}
             className={`${styles.slide} ${i === 4 ? styles.slideChamp : ''}`}
           >
-            <span className={styles.slideEmoji}>{s.emoji}</span>
-            <span className={styles.slideTitle}>{s.title}</span>
-            <span className={styles.slideDetail}>{s.detail}</span>
-            <span className={styles.slideMeta}>{s.meta}</span>
+            <div className={styles.slideCard}>
+              {/* Event photo with gradient fade + flag */}
+              <div
+                className={styles.slidePhoto}
+                style={{ backgroundImage: `url(${s.image})` }}
+              >
+                <div className={styles.slidePhotoFade} />
+                <Flag code={s.flag} className={styles.slideFlag} />
+              </div>
+
+              {/* Accomplishment */}
+              <div className={styles.slideContent}>
+                <span className={styles.slideEmoji}>{s.emoji}</span>
+                <span className={styles.slideTitle}>{s.title}</span>
+                <span className={styles.slideDetail}>{s.detail}</span>
+                <span className={styles.slideMeta}>{s.meta}</span>
+              </div>
+            </div>
           </div>
         ))}
       </div>
