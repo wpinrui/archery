@@ -222,10 +222,9 @@ summary screen → next season begins.
    post-event leaderboard thereafter). Displays the event
    name, host country flag, and the three distances for the
    event. Shows current season standings for all 50 competitors
-   in a scrollable list; the player is pinned below a separator
-   if outside the top 5. A "Start Event" button advances to the
-   Shooting HUD. The career screen is accessible from here via
-   a persistent button.
+   in a scrollable table. A "Start Event" button advances to
+   the Shooting HUD. The career screen is accessible from here
+   via a persistent button.
 
 ## Progression & Aging
 
