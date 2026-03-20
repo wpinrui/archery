@@ -55,7 +55,8 @@ Cape Town Cup is the most demanding — a dramatic jump from
 18m to 70m/90m tests full range adaptation.
 
 After each arrow, a mini leaderboard card shows the player's
-running event total with 2 competitors above and 2 below.
+running event total with 2 competitors above and 2 below,
+plus each athlete's most recent arrow scores (up to 3).
 Expandable to show all 50. The top 3 finishers receive
 event medals (gold, silver, bronze).
 
@@ -77,9 +78,10 @@ standings for all 50 athletes.
 
 ## Athletes & Roster
 
-The world tour has 50 athletes, one per country. Countries are
-fixed — the same 50 nations appear every season. Each athlete
-has a name, country, flag, age, and skill level.
+The world tour has 50 athletes, one per country. Each country
+has an ISO 3166-1 alpha-3 code and a display name. Countries
+are fixed — the same 50 nations appear every season. Each
+athlete has a name, country, flag, age, and skill level.
 
 "Skill" is an AI-only term and does not apply to the player.
 The player's difficulty is governed by shakiness (see Progression
