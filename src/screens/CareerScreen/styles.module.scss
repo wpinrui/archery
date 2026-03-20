@@ -148,23 +148,21 @@
 .champDisplay {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.3rem;
   line-height: 1.1;
-}
-
-.champStar {
-  font-size: 1.15rem;
-  color: var(--accent);
 }
 
 .champCount {
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--accent);
-  margin-left: 0.15rem;
 }
 
-// Medal tally
+.champTrophy {
+  font-size: 1.2rem;
+}
+
+// Medal tally (stat strip)
 .medalTally {
   display: flex;
   align-items: center;
@@ -175,25 +173,6 @@
 .medalG { font-size: 1rem; font-weight: 700; color: #e8c84a; }
 .medalS { font-size: 1rem; font-weight: 700; color: #9eb8cc; }
 .medalB { font-size: 1rem; font-weight: 700; color: #c8824a; }
-
-// Current shakiness
-.currentShake {
-  display: flex;
-  align-items: baseline;
-  gap: 0.45rem;
-  line-height: 1.1;
-}
-
-.shakeValue {
-  font-size: 1.3rem;
-  font-weight: 700;
-}
-
-.shakeTrend {
-  font-size: 0.75rem;
-  color: #e05a5a;
-  opacity: 0.7;
-}
 
 // ── Career record table ───────────────────────────────────────────────
 
@@ -236,10 +215,10 @@
   &::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.15); border-radius: 2px; }
 }
 
-// Grid: # | Age | Championship | Points | Medals | Shakiness
+// Grid: # | Age | Finish | Pts | Medals
 .row {
   display: grid;
-  grid-template-columns: 2.5rem 3rem 5.5rem 4rem 7.5rem 1fr;
+  grid-template-columns: 2.5rem 3rem 5rem 4rem 1fr;
   align-items: center;
   gap: 0;
   padding: 0.5rem 1rem;
@@ -305,43 +284,43 @@
 .cMedals {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 0.8rem;
-  font-weight: 700;
+  gap: 0.4rem;
 }
 
-.mG    { color: #e8c84a; }
-.mS    { color: #9eb8cc; }
-.mB    { color: #c8824a; }
-.mNone { color: rgba(255,255,255,0.2); font-weight: 400; }
-
-.cShake {
+// Medal circles
+.medalCircle {
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding-right: 0.5rem;
-}
-
-.shakeNum {
-  font-size: 0.82rem;
-  font-family: var(--font-mono);
-  font-weight: 600;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
   flex-shrink: 0;
-  width: 2rem;
 }
 
-.shakeBar {
-  flex: 1;
-  height: 3px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 2px;
-  overflow: hidden;
+.medalCircleG {
+  background: rgba(232, 200, 74, 0.12);
+  border: 1.5px solid rgba(232, 200, 74, 0.55);
+  color: #e8c84a;
 }
 
-.shakeFill {
-  height: 100%;
-  border-radius: 2px;
-  transition: width 0.2s ease;
+.medalCircleS {
+  background: rgba(158, 184, 204, 0.12);
+  border: 1.5px solid rgba(158, 184, 204, 0.55);
+  color: #9eb8cc;
+}
+
+.medalCircleB {
+  background: rgba(200, 130, 74, 0.12);
+  border: 1.5px solid rgba(200, 130, 74, 0.55);
+  color: #c8824a;
+}
+
+.mNone {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.2);
 }
 
 // ── Action row ────────────────────────────────────────────────────────
