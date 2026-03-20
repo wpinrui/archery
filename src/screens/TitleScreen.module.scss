@@ -82,17 +82,10 @@
 .target {
   width: 1.35em;
   height: 1.35em;
-  border-radius: 50%;
   flex-shrink: 0;
   align-self: center;
-  background: radial-gradient(circle,
-    var(--accent) 0% 20%,
-    #0a0a0a 20% 36%,
-    var(--accent) 36% 54%,
-    #0a0a0a 54% 70%,
-    var(--accent) 70% 86%,
-    #0a0a0a 86% 100%
-  );
+  display: block;
+  overflow: visible;
 }
 
 .titleText {

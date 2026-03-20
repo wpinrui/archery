@@ -38,7 +38,15 @@ export default function TitleScreen() {
         {/* ── Title ─────────────────────────────────────────────────── */}
         <div className={styles.titleBlock}>
           <h1 className={styles.title}>
-            <div className={styles.target} />
+            <svg className={styles.target} viewBox="0 0 100 100" aria-hidden="true">
+              <circle cx="50" cy="50" r="50" fill="#0a0a0a" />
+              <circle cx="50" cy="50" r="43" fill="var(--accent)" />
+              <circle cx="50" cy="50" r="35" fill="#0a0a0a" />
+              <circle cx="50" cy="50" r="27" fill="var(--accent)" />
+              <circle cx="50" cy="50" r="18" fill="#0a0a0a" />
+              <circle cx="50" cy="50" r="10" fill="var(--accent)" />
+              <circle cx="50" cy="50" r="10" fill="none" stroke="#000" strokeWidth="1.5" />
+            </svg>
             <span className={styles.titleText}>
               <span className={styles.titleAccent}>Long Draw</span>
               <span>Archery</span>
