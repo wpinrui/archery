@@ -12,17 +12,6 @@ interface SeasonRecord {
   champ:  boolean
 }
 
-interface Highlight {
-  season:   number
-  age:      number
-  title:    string
-  subtitle: string
-  pos:      number
-  pts:      number
-  medals:   { g: number; s: number; b: number }
-  champ:    boolean
-}
-
 // ── Career data (same arc as CareerScreen) ─────────────────────────────
 // 15 seasons: early struggle → peak (2 championships) → aging decline
 
@@ -48,14 +37,16 @@ const PLAYER_NAME = 'Player One'
 const PLAYER_CODE = 'ZAF'
 const RETIRE_AGE  = 32
 
-// ── 5 career highlights (GDD priority: championships → podiums → best positions) ──
+// ── Highlight slides ───────────────────────────────────────────────────
+// Ascending order of greatness: bronze → silver → gold → gold → championship
+// Per GDD: 4 individual event medals, then best championship finish with count
 
-const HIGHLIGHTS: Highlight[] = [
-  { season: 8,  age: 25, title: 'World Champion',         subtitle: '1st career championship',                pos: 1, pts: 420, medals: { g:3, s:1, b:0 }, champ: true  },
-  { season: 9,  age: 26, title: 'Back-to-Back Champion',  subtitle: '2nd championship · career-best 445 pts', pos: 1, pts: 445, medals: { g:2, s:2, b:1 }, champ: true  },
-  { season: 6,  age: 23, title: 'Breakout Season',        subtitle: '2 gold medals · first top-5 finish',     pos: 4, pts: 285, medals: { g:2, s:1, b:1 }, champ: false },
-  { season: 7,  age: 24, title: 'Championship Runner-Up', subtitle: '4 event medals · closest to the title',  pos: 2, pts: 365, medals: { g:2, s:2, b:0 }, champ: false },
-  { season: 10, age: 27, title: 'Championship Podium',    subtitle: 'P3 finish · 4 event medals',             pos: 3, pts: 340, medals: { g:1, s:2, b:1 }, champ: false },
+const SLIDES = [
+  { emoji: '🥉', title: 'Bronze Medal',   detail: 'Cape Town Cup',     meta: 'Season 3 · Age 20' },
+  { emoji: '🥈', title: 'Silver Medal',   detail: 'Paris Open',        meta: 'Season 4 · Age 21' },
+  { emoji: '🥇', title: 'Gold Medal',     detail: 'Seoul Cup',         meta: 'Season 5 · Age 22' },
+  { emoji: '🥇', title: 'Gold Medal',     detail: 'Las Vegas Classic', meta: 'Season 8 · Age 25' },
+  { emoji: '🏆', title: 'World Champion', detail: '× 2',              meta: 'Seasons 8 & 9' },
 ]
 
 // ── Helpers ────────────────────────────────────────────────────────────
@@ -79,12 +70,29 @@ export default function RetirementScreen() {
 
   return (
     <div className={styles.container}>
+      {/* ── Shared background ──────────────────────────────── */}
       <div className={styles.bg} />
       <div className={styles.vignette} />
 
-      <div className={styles.content}>
+      {/* ── Phase 1: Full-screen highlight slides ──────────── */}
+      <div className={styles.overlay}>
+        {SLIDES.map((s, i) => (
+          <div
+            key={i}
+            className={`${styles.slide} ${i === 4 ? styles.slideChamp : ''}`}
+          >
+            <span className={styles.slideEmoji}>{s.emoji}</span>
+            <span className={styles.slideTitle}>{s.title}</span>
+            <span className={styles.slideDetail}>{s.detail}</span>
+            <span className={styles.slideMeta}>{s.meta}</span>
+          </div>
+        ))}
+      </div>
 
-        {/* ── Identity header ──────────────────────────────────── */}
+      {/* ── Phase 2: Retirement summary ────────────────────── */}
+      <div className={styles.summary}>
+
+        {/* ── Identity header ──────────────────────────────── */}
         <div className={styles.header}>
           <div className={styles.revealLine} />
           <div className={styles.identity}>
@@ -96,7 +104,7 @@ export default function RetirementScreen() {
           </span>
         </div>
 
-        {/* ── Career stat strip ────────────────────────────────── */}
+        {/* ── Career stat strip ────────────────────────────── */}
         <div className={styles.statStrip}>
 
           <div className={styles.statCard}>
@@ -136,41 +144,21 @@ export default function RetirementScreen() {
 
         </div>
 
-        {/* ── Highlights sequence ──────────────────────────────── */}
-        <div className={styles.highlightsSection}>
-          <span className={styles.highlightsLabel}>Career Highlights</span>
-
-          <div className={styles.highlights}>
-            {HIGHLIGHTS.map((h, i) => (
-              <div
-                key={h.season}
-                className={`${styles.highlightCard} ${h.champ ? styles.highlightChamp : ''}`}
-                style={{ animationDelay: `${2.8 + i * 1.5}s` }}
-              >
-                <div className={styles.highlightMeta}>
-                  Season {h.season} · Age {h.age}
-                </div>
-                <div className={styles.highlightTitle}>{h.title}</div>
-                <div className={styles.highlightSub}>{h.subtitle}</div>
-                <div className={styles.highlightStats}>
-                  <span style={{ color: posColor(h.pos), fontWeight: 700 }}>P{h.pos}</span>
-                  <span className={styles.highlightPts}>{h.pts} pts</span>
-                  {(h.medals.g + h.medals.s + h.medals.b > 0) && (
-                    <div className={styles.highlightMedals}>
-                      {h.medals.g > 0 && <span className={styles.medalG}>{h.medals.g}G</span>}
-                      {h.medals.s > 0 && <span className={styles.medalS}>{h.medals.s}S</span>}
-                      {h.medals.b > 0 && <span className={styles.medalB}>{h.medals.b}B</span>}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* ── Concise highlights strip ─────────────────────── */}
+        <div className={styles.pillStrip}>
+          {SLIDES.map((s, i) => (
+            <div key={i} className={`${styles.pill} ${i === 4 ? styles.pillChamp : ''}`}>
+              <span className={styles.pillEmoji}>{s.emoji}</span>
+              <span className={styles.pillLabel}>
+                {i === 4 ? `Champion ${s.detail}` : s.detail}
+              </span>
+            </div>
+          ))}
         </div>
 
-        {/* ── Full career record ───────────────────────────────── */}
+        {/* ── Full career record ───────────────────────────── */}
         <div className={styles.tableSection}>
-          <span className={styles.sectionLabel}>Full Career Record</span>
+          <span className={styles.sectionLabel}>Career Record</span>
 
           <div className={styles.tableWrap}>
 

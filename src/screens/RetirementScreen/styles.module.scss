@@ -1,39 +1,44 @@
 // ── Animations ────────────────────────────────────────────────────────
 
-@keyframes lineExpand {
-  0%   { transform: scaleX(0); opacity: 0; }
-  50%  { opacity: 1; }
-  100% { transform: scaleX(1); opacity: 1; }
+// Highlight slides: fade in → hold → fade out (2.0s cycle)
+@keyframes highlightCycle {
+  0%    { opacity: 0; transform: translateY(24px); }
+  20%   { opacity: 1; transform: translateY(0); }
+  80%   { opacity: 1; transform: translateY(0); }
+  100%  { opacity: 0; transform: translateY(-10px); }
+}
+
+// Championship slide: longer hold for the climax (2.5s cycle)
+@keyframes champCycle {
+  0%    { opacity: 0; transform: translateY(24px) scale(0.96); }
+  16%   { opacity: 1; transform: translateY(0) scale(1); }
+  84%   { opacity: 1; transform: translateY(0) scale(1); }
+  100%  { opacity: 0; transform: translateY(-10px); }
+}
+
+// Overlay exits after all slides finish
+@keyframes overlayExit {
+  0%    { opacity: 1; }
+  100%  { opacity: 0; pointer-events: none; }
 }
 
 @keyframes fadeUp {
-  0%   { opacity: 0; transform: translateY(12px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0%    { opacity: 0; transform: translateY(12px); }
+  100%  { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes highlightReveal {
-  0% {
-    opacity: 0;
-    transform: translateY(20px) scale(0.98);
-  }
-  60% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+@keyframes lineExpand {
+  0%    { transform: scaleX(0); opacity: 0; }
+  50%   { opacity: 1; }
+  100%  { transform: scaleX(1); opacity: 1; }
 }
 
 // ── Container ─────────────────────────────────────────────────────────
 
 .container {
-  height: 100vh;
+  min-height: 100vh;
   background: var(--bg);
   position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 
 .bg {
@@ -54,7 +59,88 @@
   z-index: 1;
 }
 
-.content {
+// ── Phase 1: Highlights overlay ──────────────────────────────────────
+// Opaque dark layer that covers the summary. Each slide appears
+// one at a time, then the overlay fades out to reveal Phase 2.
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, #111, #0a0a0a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // Slide 5 ends at 8.5 + 2.5 = 11.0s → overlay exits at 11.5s
+  animation: overlayExit 0.8s ease-out 11.5s forwards;
+}
+
+// Individual highlight slide (stacked, only one visible at a time)
+.slide {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+
+  // Timing: 2.0s per slide, 2.0s apart
+  &:nth-child(1) { animation: highlightCycle 2.0s ease-in-out 0.5s both; }
+  &:nth-child(2) { animation: highlightCycle 2.0s ease-in-out 2.5s both; }
+  &:nth-child(3) { animation: highlightCycle 2.0s ease-in-out 4.5s both; }
+  &:nth-child(4) { animation: highlightCycle 2.0s ease-in-out 6.5s both; }
+  &:nth-child(5) { animation: champCycle     2.5s ease-in-out 8.5s both; }
+}
+
+.slideEmoji {
+  font-size: 4rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.5));
+}
+
+.slideChamp .slideEmoji {
+  font-size: 5rem;
+  filter: drop-shadow(0 0 24px rgba(232, 200, 74, 0.3));
+}
+
+.slideTitle {
+  font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--text);
+  margin-top: 0.3rem;
+}
+
+.slideChamp .slideTitle {
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  color: var(--accent);
+  letter-spacing: 0.3em;
+}
+
+.slideDetail {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.55);
+}
+
+.slideChamp .slideDetail {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: rgba(232, 200, 74, 0.7);
+}
+
+.slideMeta {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.25);
+  margin-top: 0.2rem;
+}
+
+// ── Phase 2: Retirement summary ──────────────────────────────────────
+
+.summary {
   position: relative;
   z-index: 2;
   width: 100%;
@@ -64,6 +150,9 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+
+  // Fades in as overlay exits
+  animation: fadeUp 0.8s ease-out 11.5s both;
 }
 
 // ── Identity header ──────────────────────────────────────────────────
@@ -74,7 +163,6 @@
   align-items: center;
   text-align: center;
   gap: 0.8rem;
-  animation: fadeUp 1s ease-out 0.5s both;
 }
 
 .revealLine {
@@ -82,7 +170,7 @@
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(232, 200, 74, 0.4), transparent);
   margin-bottom: 0.3rem;
-  animation: lineExpand 1.2s ease-out 0.2s both;
+  animation: lineExpand 1.2s ease-out 11.8s both;
 }
 
 .identity {
@@ -125,7 +213,6 @@
   border-radius: 0.5rem;
   backdrop-filter: blur(6px);
   overflow: hidden;
-  animation: fadeUp 0.8s ease-out 1.2s both;
 }
 
 .statCard {
@@ -157,7 +244,6 @@
   line-height: 1.1;
 }
 
-// Championships
 .champDisplay {
   display: flex;
   align-items: center;
@@ -175,7 +261,6 @@
   font-size: 1.2rem;
 }
 
-// Medal tally (stat strip)
 .medalTally {
   display: flex;
   align-items: center;
@@ -187,92 +272,50 @@
 .medalS { font-size: 1rem; font-weight: 700; color: #9eb8cc; }
 .medalB { font-size: 1rem; font-weight: 700; color: #c8824a; }
 
-// ── Highlights section ───────────────────────────────────────────────
+// ── Concise highlights strip ─────────────────────────────────────────
 
-.highlightsSection {
+.pillStrip {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
-.highlightsLabel {
-  font-size: 0.82rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: rgba(255,255,255,0.6);
-  animation: fadeUp 0.6s ease-out 2.0s both;
-}
-
-.highlights {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-// Individual highlight card
-.highlightCard {
-  background: rgba(8, 8, 8, 0.75);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-left: 3px solid rgba(255,255,255,0.12);
-  border-radius: 0.5rem;
-  padding: 1rem 1.25rem;
-  backdrop-filter: blur(6px);
-  animation: highlightReveal 1s ease-out both;
-  // animation-delay set via inline style
-}
-
-// Championship highlight — warm amber accent
-.highlightChamp {
-  border-left-color: rgba(232, 200, 74, 0.6);
-  background: rgba(232, 200, 74, 0.03);
-}
-
-.highlightMeta {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: rgba(255,255,255,0.3);
-  margin-bottom: 0.3rem;
-}
-
-.highlightTitle {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1.2;
-  margin-bottom: 0.15rem;
-}
-
-.highlightSub {
-  font-size: 0.82rem;
-  color: rgba(255,255,255,0.45);
-  margin-bottom: 0.6rem;
-}
-
-.highlightStats {
+.pill {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-size: 0.88rem;
-}
-
-.highlightPts {
-  color: rgba(255,255,255,0.55);
-}
-
-.highlightMedals {
-  display: flex;
   gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.3rem;
 }
 
-// ── Full career table ────────────────────────────────────────────────
+.pillChamp {
+  border-color: rgba(232, 200, 74, 0.25);
+  background: rgba(232, 200, 74, 0.04);
+}
+
+.pillEmoji {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.pillLabel {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.02em;
+}
+
+.pillChamp .pillLabel {
+  color: rgba(232, 200, 74, 0.6);
+}
+
+// ── Career record table ──────────────────────────────────────────────
 
 .tableSection {
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
-  animation: fadeUp 0.8s ease-out 10.3s both;
 }
 
 .sectionLabel {
@@ -333,8 +376,7 @@
   background: rgba(232, 200, 74, 0.04);
 }
 
-// Column cells ─────────────────────────────────────────────────────────
-
+// Column cells
 .cSeason {
   font-size: 0.82rem;
   font-family: var(--font-mono);
@@ -367,7 +409,6 @@
   gap: 0.4rem;
 }
 
-// Medal circles
 .medalCircle {
   width: 1.55rem;
   height: 1.55rem;
