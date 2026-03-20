@@ -157,26 +157,44 @@ summary screen → next season begins.
 
 ### Screens
 
-1. **Shooting HUD** — active gameplay view (see Core Shooting
+1. **Title screen** — shown on app cold-start before any phase
+   routing. Displays the game title and entry actions based on
+   career state.
+
+   A career exists once the player has completed country
+   selection. Players with no career see a single "New Game"
+   button. Players with an active or retired career see both
+   "Continue" and "New Game".
+
+   "Continue" routes to the phase gate, which determines the
+   correct screen for the player's current career state.
+   Retired players who continue return to the retirement
+   screen to revisit their career stats; they cannot advance
+   the season from there.
+
+   "New Game" when a career exists requires inline
+   confirmation before save data is cleared.
+
+2. **Shooting HUD** — active gameplay view (see Core Shooting
    Mechanic)
 
-2. **Post-event leaderboard** — full event results after the
+3. **Post-event leaderboard** — full event results after the
    final arrow of each event
 
-3. **Season summary** — final championship standings for all
+4. **Season summary** — final championship standings for all
    50 athletes after the 5th event
 
-4. **Career screen** — accessible at any time; shows
+5. **Career screen** — accessible at any time; shows
    championship finish position for each completed season
    and all medals earned (event podium + championship cups)
 
-5. **Victory screen** — played when the player wins the
+6. **Victory screen** — played when the player wins the
    championship; a victory animation followed by the option
    to continue or retire
 
-6. **Country selection** — shown once on first launch
+7. **Country selection** — shown once on first launch
 
-7. **Retirement screen** — shown when the player retires.
+8. **Retirement screen** — shown when the player retires.
    Opens with a full-screen animated sequence of 5 career
    highlights, displayed one at a time in ascending order
    of greatness (weakest first, strongest last):
@@ -199,7 +217,7 @@ summary screen → next season begins.
    table (one row per season with age, championship
    position, points total, and medals earned that season).
 
-8. **Event lobby** — shown before each event begins (after
+9. **Event lobby** — shown before each event begins (after
    country selection on first launch, and after each
    post-event leaderboard thereafter). Displays the event
    name, host country flag, and the three distances for the

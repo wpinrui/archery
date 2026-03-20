@@ -17,8 +17,10 @@ The game tracks your full career history: championship positions, medals earned,
 Photos from [Unsplash](https://unsplash.com):
 
 - [Ameer Basheer](https://unsplash.com/photos/JHDqhEFZJjs)
+- [Bill Fairs](https://unsplash.com/photos/0iA5B6g_vXo)
 - [Guillaume Flandre](https://unsplash.com/photos/0YMcQKJXtc4)
 - [Hwang Inkeom](https://unsplash.com/photos/NNGxaQpgQrM)
+- [Joshua Olsen](https://unsplash.com/photos/zR3wTk9End8)
 - [Leif Christoph Gottwald](https://unsplash.com/photos/hu52naQz1uk)
 - [Nerissa J](https://unsplash.com/photos/FDmOJZOA2sk)
 - [Roman Grachev](https://unsplash.com/photos/XP-b7U3dVX8)
