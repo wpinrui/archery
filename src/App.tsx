@@ -1,5 +1,6 @@
-import { useRef, useState, useCallback, useEffect } from 'react'
+import { useRef, useState, useCallback, useEffect, useSyncExternalStore } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { useGameStore } from './store/gameStore'
 import styles from './App.module.scss'
 import CountrySelection from './screens/CountrySelection'
 import ShootingHUD from './screens/ShootingHUD'
@@ -84,7 +85,19 @@ function Home() {
   )
 }
 
+/** Block rendering until Zustand persist has hydrated from localStorage */
+function useHasHydrated() {
+  return useSyncExternalStore(
+    useGameStore.persist.onFinishHydration,
+    () => useGameStore.persist.hasHydrated(),
+    () => false,
+  )
+}
+
 export default function App() {
+  const hydrated = useHasHydrated()
+  if (!hydrated) return null
+
   return (
     <BrowserRouter>
       <DevNav />

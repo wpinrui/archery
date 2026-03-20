@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type {
   Athlete,
   CountryCode,
@@ -58,32 +59,22 @@ export interface CompletedEvent {
 
 export type GamePhase = 'country-selection' | 'playing' | 'retired'
 
-interface GameState {
-  // Overall phase
+/** Data-only portion of the store (persisted to localStorage) */
+export interface GameData {
   phase: GamePhase
-
-  // Player (null before career starts)
   player: Player | null
-
-  // 49 AI competitors
   competitors: Athlete[]
-
-  // Season / event tracking
   currentSeason: number
   currentEventIndex: number
-
-  // Arrow-by-arrow tracking for the current event
   currentArrowIndex: number
   playerArrowScores: Score[]
   competitorArrowScores: Score[][]
-
-  // Completed events this season
   completedEvents: CompletedEvent[]
-
-  // Career-long records
   careerHistory: SeasonRecord[]
   medalHistory: MedalRecord[]
+}
 
+interface GameState extends GameData {
   // ── Actions ─────────────────────────────────────────────────────
 
   /** Initialise a new career: create player, generate 49 AI competitors */
@@ -107,6 +98,9 @@ interface GameState {
   /** End the career and return the 5 retirement highlight slides */
   retire: () => RetirementHighlight[]
 
+  /** Wipe persisted state and start fresh (back to country selection) */
+  resetCareer: () => void
+
   // ── Derived-state helpers ───────────────────────────────────────
 
   /** The event definition for the current event index */
@@ -125,22 +119,36 @@ interface GameState {
   getPlayerEventBreakdown: () => DistanceGroup[]
 }
 
+// ── Persistence ─────────────────────────────────────────────────────
+
+/**
+ * Bump this when the persisted state shape changes.
+ * On version mismatch the saved career is wiped (acceptable per GDD).
+ */
+const STORE_VERSION = 1
+
+function initialState(): GameData {
+  return {
+    phase: 'country-selection',
+    player: null,
+    competitors: [],
+    currentSeason: 1,
+    currentEventIndex: 0,
+    currentArrowIndex: 0,
+    playerArrowScores: [],
+    competitorArrowScores: [],
+    completedEvents: [],
+    careerHistory: [],
+    medalHistory: [],
+  }
+}
+
 // ── Store ───────────────────────────────────────────────────────────
 
-export const useGameStore = create<GameState>((set, get) => ({
+export const useGameStore = create<GameState>()(persist((set, get) => ({
   // ── Initial state ───────────────────────────────────────────────
 
-  phase: 'country-selection',
-  player: null,
-  competitors: [],
-  currentSeason: 1,
-  currentEventIndex: 0,
-  currentArrowIndex: 0,
-  playerArrowScores: [],
-  competitorArrowScores: [],
-  completedEvents: [],
-  careerHistory: [],
-  medalHistory: [],
+  ...initialState(),
 
   // ── Actions ─────────────────────────────────────────────────────
 
@@ -365,6 +373,10 @@ export const useGameStore = create<GameState>((set, get) => ({
     return computeRetirementHighlights(state.medalHistory, state.careerHistory)
   },
 
+  resetCareer: () => {
+    set(initialState())
+  },
+
   // ── Derived-state helpers ───────────────────────────────────────
 
   getCurrentEvent: () => {
@@ -485,4 +497,21 @@ export const useGameStore = create<GameState>((set, get) => ({
     const event = EVENT_SCHEDULE[idx]
     return groupScoresByDistance(state.playerArrowScores, event.distances)
   },
+}), {
+  name: 'long-draw-archery',
+  version: STORE_VERSION,
+  migrate: () => initialState(),
+  partialize: (state): GameData => ({
+    phase: state.phase,
+    player: state.player,
+    competitors: state.competitors,
+    currentSeason: state.currentSeason,
+    currentEventIndex: state.currentEventIndex,
+    currentArrowIndex: state.currentArrowIndex,
+    playerArrowScores: state.playerArrowScores,
+    competitorArrowScores: state.competitorArrowScores,
+    completedEvents: state.completedEvents,
+    careerHistory: state.careerHistory,
+    medalHistory: state.medalHistory,
+  }),
 }))
