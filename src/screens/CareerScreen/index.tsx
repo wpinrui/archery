@@ -105,9 +105,9 @@ export default function CareerScreen() {
           <div className={styles.statCard}>
             <span className={styles.statLabel}>Event Medals</span>
             <div className={styles.medalTally}>
-              <span className={styles.medalG}>{totalG}G</span>
-              <span className={styles.medalS}>{totalS}S</span>
-              <span className={styles.medalB}>{totalB}B</span>
+              <span className={`${styles.medalCircle} ${styles.medalCircleG}`}>{totalG}</span>
+              <span className={`${styles.medalCircle} ${styles.medalCircleS}`}>{totalS}</span>
+              <span className={`${styles.medalCircle} ${styles.medalCircleB}`}>{totalB}</span>
             </div>
           </div>
 
