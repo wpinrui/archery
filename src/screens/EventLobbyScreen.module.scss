@@ -1,0 +1,607 @@
+// ── Container ─────────────────────────────────────────────────────────
+
+.container {
+  height: 100vh;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.bg {
+  position: absolute;
+  inset: -4rem;
+  background: url('/hub.jpg') center / cover no-repeat;
+  filter: blur(10px);
+  z-index: 0;
+  animation: bgDrift 15s ease-in-out infinite alternate;
+  transform-origin: 55% 45%;
+}
+
+@keyframes bgDrift {
+  0%   { transform: scale(1)    translate(0, 0); }
+  33%  { transform: scale(1.04) translate(-0.8%, 0.5%); }
+  66%  { transform: scale(1.02) translate(0.5%, -0.6%); }
+  100% { transform: scale(1.05) translate(-0.3%, 0.8%); }
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 80% at 50% 50%, transparent 20%, rgba(0,0,0,0.82) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.5) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 860px;
+  height: 100%;
+  padding: 48px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+// ── Season bar ────────────────────────────────────────────────────────
+
+.seasonBar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--panel-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  padding: 0.9rem 1.5rem;
+}
+
+.seasonBarItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.seasonBarLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.5);
+}
+
+.seasonBarValue {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+.seasonBarOf {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.5);
+}
+
+.seasonBarDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  flex-shrink: 0;
+}
+
+// ── Timeline ──────────────────────────────────────────────────────────
+
+.timeline {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  position: relative;
+  background: var(--panel-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+}
+
+.timelineStep {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 1rem 0.5rem;
+  position: relative;
+  z-index: 1;
+  transition: background 0.15s;
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(255,255,255,0.05);
+  }
+}
+
+.stepDone {
+  .timelineName    { color: rgba(255,255,255,0.8); }
+  .timelineResult  { color: var(--accent); }
+}
+
+.stepCurrent {
+  background: rgba(232, 200, 74, 0.07);
+  .timelineName    { color: var(--text); font-weight: 600; }
+  .timelineCurrent { color: var(--accent); }
+}
+
+.stepAhead {
+  .timelineName { color: rgba(255,255,255,0.25); }
+  .timelineFlag { opacity: 0.3; }
+  .timelineAhead { color: rgba(255,255,255,0.15); }
+}
+
+.timelineFlagWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timelineFlag {
+  width: 1.75rem;
+  height: auto;
+  border-radius: 2px;
+  display: block;
+}
+
+.timelinePulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 3px;
+  border: 1px solid var(--accent);
+  opacity: 0.6;
+}
+
+.timelineName {
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.timelineResult {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+.timelineCurrent {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.timelineAhead {
+  font-size: 0.75rem;
+}
+
+// ── Current event block ───────────────────────────────────────────────
+
+.eventBlock {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background: var(--panel-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-left: 3px solid var(--accent);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  padding: 1.25rem 1.5rem;
+}
+
+.eventLeft {
+  flex: 1;
+  min-width: 0;
+}
+
+.eventMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.35rem;
+}
+
+.eventHostFlag {
+  width: 1.1rem;
+  height: auto;
+  border-radius: 1px;
+  display: block;
+}
+
+.eventHostName {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.5);
+}
+
+.eventName {
+  font-size: clamp(24px, 2.5vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.distancesStrip {
+  display: flex;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.distanceCard {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid;
+  border-radius: 0.4rem;
+  padding: 0.6rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 80px;
+}
+
+.distanceValue {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.arrowCount {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+}
+
+// ── Championship standings ────────────────────────────────────────────
+
+.standings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+  min-height: 0;
+}
+
+.standingsLabelRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.standingsLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.75);
+}
+
+.infoBtn {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.5);
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-style: italic;
+  font-family: Georgia, serif;
+  line-height: 1;
+  padding: 2px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover {
+    border-color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.8);
+  }
+}
+
+.standingsTable {
+  background: var(--panel-bg-inner);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.standingsBody {
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+
+  &::-webkit-scrollbar       { width: 3px; }
+  &::-webkit-scrollbar-track  { background: transparent; }
+  &::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.15); border-radius: 2px; }
+}
+
+// Grid: # | athlete-flag | name | E1 | E2 | E3 | E4 | E5 | Total
+.standingsRow {
+  display: grid;
+  grid-template-columns: 2rem 1.6rem 1fr repeat(5, 3.2rem) 3.5rem;
+  align-items: center;
+  gap: 0;
+  padding: 0.45rem 0.75rem;
+  border-left: 2px solid transparent;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+
+  &:last-child { border-bottom: none; }
+}
+
+.standingsHeaderRow {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 0.3rem 0.75rem;
+  background: var(--panel-bg-inner);
+  border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+}
+
+.playerRow {
+  border-left: 2px solid var(--accent);
+  background: rgba(232, 200, 74, 0.05);
+
+  .cName  { color: var(--accent); }
+  .cTotal { color: var(--accent); }
+}
+
+// Shared column cells
+.cRank {
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: rgba(255,255,255,0.5);
+}
+
+.cFlag {
+  width: 1.1rem;
+  height: auto;
+  border-radius: 1px;
+  display: block;
+}
+
+.cName {
+  font-size: 0.88rem;
+  color: rgba(240,240,240,0.85);
+  padding-right: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cEvent {
+  font-family: var(--font-mono);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+}
+
+.cEventPos {
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  line-height: 1;
+}
+
+.cEventPts {
+  font-size: 0.72rem;
+  line-height: 1;
+  color: rgba(255,255,255,0.55);
+}
+
+.cEventDone  { color: rgba(240,240,240,0.9); }
+
+.cEventCurrent {
+  color: rgba(240,240,240,0.25);
+  background: rgba(232, 200, 74, 0.06);
+  height: 100%;
+  border-left: 1px solid rgba(232, 200, 74, 0.15);
+  border-right: 1px solid rgba(232, 200, 74, 0.15);
+}
+
+.cEventAhead { color: rgba(255,255,255,0.15); }
+
+.cTotal {
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text);
+  text-align: right;
+}
+
+.standingsHeaderRow .cTotal {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+}
+
+.headerFlag {
+  width: 1.1rem;
+  height: auto;
+  border-radius: 1px;
+  display: block;
+}
+
+// ── Action row ────────────────────────────────────────────────────────
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.25rem;
+}
+
+.careerBtn {
+  padding: 0.55rem 1.4rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 0.3rem;
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.06);
+  transition: border-color 0.15s, background 0.15s;
+  cursor: pointer;
+
+  &:hover {
+    border-color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.1);
+  }
+}
+
+.startBtn {
+  padding: 0.7rem 2.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  background: var(--accent);
+  color: #0d0d0d;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  letter-spacing: 0.01em;
+
+  &:hover { opacity: 0.88; }
+}
+
+// ── Points system dialog ─────────────────────────────────────────────
+
+.dialogOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: overlayIn 0.15s ease-out;
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes dialogIn {
+  from { opacity: 0; transform: scale(0.96) translateY(6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.dialog {
+  background: var(--panel-bg);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 0.6rem;
+  backdrop-filter: blur(16px);
+  width: 340px;
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: dialogIn 0.2s ease-out;
+
+  &::-webkit-scrollbar       { width: 3px; }
+  &::-webkit-scrollbar-track  { background: transparent; }
+  &::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.15); border-radius: 2px; }
+}
+
+.dialogHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.3rem 0.9rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.dialogTitle {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.75);
+}
+
+.dialogClose {
+  font-size: 1.2rem;
+  color: rgba(255,255,255,0.3);
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.15s;
+
+  &:hover { color: var(--text); }
+}
+
+.pointsGrid {
+  padding: 0.5rem 1.3rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.pointsRow {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr 2.5rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+
+  &:last-child { border-bottom: none; }
+}
+
+.pointsRowAccented {
+  padding: 0.5rem 0;
+}
+
+.pointsPos {
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: rgba(255,255,255,0.45);
+  font-weight: 600;
+}
+
+.pointsBarTrack {
+  height: 4px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.pointsBar {
+  height: 100%;
+  border-radius: 2px;
+  opacity: 0.7;
+  transition: width 0.3s ease-out;
+}
+
+.pointsVal {
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+  text-align: right;
+}

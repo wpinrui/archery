@@ -66,9 +66,9 @@ Each season consists of 5 events. Points are awarded per event
 finish position and accumulate toward the World Championship.
 
 Points distribution (50 athletes):
-P1: 100 | P2: 85 | P3: 72 | P4: 61 | P5: 52 | P6: 44 | P7: 37
-P8: 31 | P9: 26 | P10: 22 | P11–15: 15 | P16–20: 10 | P21–30: 6
-P31–40: 3 | P41–50: 0
+#1: 100 | #2: 85 | #3: 72 | #4: 61 | #5: 52 | #6: 44 | #7: 37
+#8: 31 | #9: 26 | #10: 22 | #11–15: 15 | #16–20: 10 | #21–30: 6
+#31–40: 3 | #41–50: 0
 
 The athlete with the most points at season end wins the
 World Championship and receives the championship cup.
@@ -221,10 +221,10 @@ summary screen → next season begins.
    country selection on first launch, and after each
    post-event leaderboard thereafter). Displays the event
    name, host country flag, and the three distances for the
-   event. Shows current season standings (top 5 rows plus the
-   player's row if outside top 5). A "Start Event" button
-   advances to the Shooting HUD. The career screen is
-   accessible from here via a persistent button.
+   event. Shows current season standings for all 50 competitors
+   in a scrollable table. A "Start Event" button advances to
+   the Shooting HUD. The career screen is accessible from here
+   via a persistent button.
 
 ## Progression & Aging
 
@@ -241,12 +241,12 @@ championship position:
 
 | Position | Shakiness reduction |
 |----------|---------------------|
-| P1       | −8%                 |
-| P2–3     | −6%                 |
-| P4–10    | −4%                 |
-| P11–20   | −2%                 |
-| P21–40   | −1%                 |
-| P41–50   | 0%                  |
+| #1       | −8%                 |
+| #2–3     | −6%                 |
+| #4–10    | −4%                 |
+| #11–20   | −2%                 |
+| #21–40   | −1%                 |
+| #41–50   | 0%                  |
 
 Reductions are cumulative and permanent.
 
