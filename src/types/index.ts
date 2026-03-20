@@ -330,6 +330,16 @@ export interface ChampionshipHighlight {
 
 export type RetirementHighlight = MedalHighlight | ChampionshipHighlight
 
+// ── Medal Record ────────────────────────────────────────────────────
+
+/** Detailed medal record for retirement highlight computation */
+export interface MedalRecord {
+  eventId: EventId
+  medal: MedalType
+  season: number
+  age: number
+}
+
 // ── Progression & Aging ──────────────────────────────────────────────
 
 export const STARTING_AGE = 18
