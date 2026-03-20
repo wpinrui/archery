@@ -319,6 +319,7 @@ export interface MedalHighlight {
 
 export interface ChampionshipHighlight {
   type: 'championship'
+  bestPosition: number
   season: number
   age: number
   timesWon: number
