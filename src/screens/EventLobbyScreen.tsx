@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../store/gameStore'
 import { COUNTRIES } from '../data/countries'
@@ -23,6 +24,17 @@ function posColor(pos: number): string {
 const countryNameMap = new Map<CountryCode, string>(
   COUNTRIES.map(c => [c.code, c.name]),
 )
+
+const POINTS_TABLE: { label: string; pts: number }[] = [
+  { label: 'P1',    pts: 100 }, { label: 'P2',    pts: 85 },
+  { label: 'P3',    pts: 72 },  { label: 'P4',    pts: 61 },
+  { label: 'P5',    pts: 52 },  { label: 'P6',    pts: 44 },
+  { label: 'P7',    pts: 37 },  { label: 'P8',    pts: 31 },
+  { label: 'P9',    pts: 26 },  { label: 'P10',   pts: 22 },
+  { label: 'P11–15', pts: 15 }, { label: 'P16–20', pts: 10 },
+  { label: 'P21–30', pts: 6 },  { label: 'P31–40', pts: 3 },
+  { label: 'P41–50', pts: 0 },
+]
 
 function renderStandingsRow(
   row: StandingsRow,
@@ -52,6 +64,7 @@ function renderStandingsRow(
 
 export default function EventLobbyScreen() {
   const navigate = useNavigate()
+  const [showPoints, setShowPoints] = useState(false)
 
   const currentSeason = useGameStore(s => s.currentSeason)
   const currentEventIndex = useGameStore(s => s.currentEventIndex)
@@ -154,7 +167,10 @@ export default function EventLobbyScreen() {
 
         {/* ── Championship standings ──────────────────────────────── */}
         <div className={styles.standings}>
-          <div className={styles.standingsLabel}>Championship Standings</div>
+          <div className={styles.standingsLabelRow}>
+            <span className={styles.standingsLabel}>Championship Standings</span>
+            <button className={styles.infoBtn} onClick={() => setShowPoints(true)} aria-label="Points system">i</button>
+          </div>
           <div className={styles.standingsTable}>
             {/* Column headers */}
             <div className={`${styles.standingsRow} ${styles.standingsHeaderRow}`}>
@@ -188,6 +204,26 @@ export default function EventLobbyScreen() {
         </div>
 
       </div>
+
+      {/* ── Points system dialog ──────────────────────────────── */}
+      {showPoints && (
+        <div className={styles.dialogOverlay} onClick={() => setShowPoints(false)}>
+          <div className={styles.dialog} onClick={e => e.stopPropagation()}>
+            <div className={styles.dialogHeader}>
+              <span className={styles.dialogTitle}>Points System</span>
+              <button className={styles.dialogClose} onClick={() => setShowPoints(false)}>×</button>
+            </div>
+            <div className={styles.pointsGrid}>
+              {POINTS_TABLE.map(({ label, pts }) => (
+                <div key={label} className={styles.pointsRow}>
+                  <span className={styles.pointsPos}>{label}</span>
+                  <span className={styles.pointsVal}>{pts}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
