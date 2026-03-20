@@ -138,7 +138,7 @@ export default function RetirementScreen() {
           <div className={styles.statCard}>
             <span className={styles.statLabel}>Best Finish</span>
             <span className={styles.statValue} style={{ color: posColor(bestPos) }}>
-              P{bestPos}
+              #{bestPos}
             </span>
           </div>
 
@@ -172,8 +172,8 @@ export default function RetirementScreen() {
                   {i === 4 ? `Champion ${s.detail}` : s.detail}
                 </span>
               </div>
-              <span className={styles.pillPos} style={{ color: posColor(s.eventPos) }}>
-                P{s.eventPos}
+              <span className={styles.pillPos} style={i < 4 ? { color: posColor(s.eventPos) } : undefined}>
+                {i === 4 ? `${s.eventPos} ${s.eventPos === 1 ? 'time' : 'times'}` : `#${s.eventPos}`}
               </span>
             </div>
           ))}
@@ -207,7 +207,7 @@ export default function RetirementScreen() {
                     <span className={styles.cAge}>{rec.age}</span>
 
                     <div className={styles.cPos}>
-                      <span style={{ color: posColor(rec.pos) }}>P{rec.pos}</span>
+                      <span style={{ color: posColor(rec.pos) }}>#{rec.pos}</span>
                     </div>
 
                     <span className={styles.cPts}>{rec.pts}</span>
