@@ -38,9 +38,8 @@ export default function TitleScreen() {
         {/* ── Title ─────────────────────────────────────────────────── */}
         <div className={styles.titleBlock}>
           <h1 className={styles.title}>
-            <span className={styles.titleAccent}>Long</span>
-            <span className={`${styles.titleAccent} ${styles.titleIndent}`}>Draw</span>
-            <span>🎯 Archery</span>
+            <span className={styles.titleAccent}>Long Draw</span>
+            <span>{'🎯\u2009Archery'}</span>
           </h1>
         </div>
 

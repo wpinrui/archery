@@ -76,15 +76,11 @@
   font-weight: 800;
   letter-spacing: -0.03em;
   color: var(--text);
-  line-height: 1;
+  line-height: 0.85;
 }
 
 .titleAccent {
   color: var(--accent);
-}
-
-.titleIndent {
-  padding-left: 2ch;
 }
 
 // ── Actions ───────────────────────────────────────────────────────────
