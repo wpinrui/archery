@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../store/gameStore'
-import { EVENT_SCHEDULE, EVENTS_PER_SEASON } from '../types'
-import type { EventId } from '../types'
+import { EVENT_BACKGROUNDS, EVENT_SCHEDULE, EVENTS_PER_SEASON } from '../types'
 import Flag from '../components/Flag'
 import styles from './PostEventLeaderboardScreen.module.scss'
 
@@ -26,14 +25,6 @@ function posColor(pos: number): string {
   if (pos === 2) return '#9eb8cc'
   if (pos === 3) return '#c8824a'
   return 'rgba(255,255,255,0.85)'
-}
-
-const EVENT_BACKGROUNDS: Record<EventId, string> = {
-  'seoul-cup': '/trees-seoul.jpg',
-  'paris-open': '/trees-paris.jpg',
-  'las-vegas-classic': '/trees-vegas.jpg',
-  'sydney-international': '/trees-sydney.jpg',
-  'cape-town-cup': '/trees-capetown.jpg',
 }
 
 // ── Component ─────────────────────────────────────────────────────────
@@ -88,8 +79,8 @@ export default function PostEventLeaderboardScreen() {
           </div>
           <div className={styles.seasonBarDot} />
           <div className={styles.seasonBarItem}>
-            <span className={styles.seasonBarLabel}>Event</span>
-            <span className={styles.seasonBarValue}>{eventNumber} <span className={styles.seasonBarOf}>of 5</span></span>
+            <span className={styles.seasonBarLabel}>Round</span>
+            <span className={styles.seasonBarValue}>{eventNumber} <span className={styles.seasonBarOf}>of {EVENTS_PER_SEASON}</span></span>
           </div>
           <div className={styles.seasonBarDot} />
           <div className={styles.seasonBarItem}>

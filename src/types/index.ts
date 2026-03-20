@@ -129,6 +129,15 @@ export const EVENT_SCHEDULE: readonly EventDefinition[] = [
   },
 ]
 
+/** Per-event background image paths */
+export const EVENT_BACKGROUNDS: Readonly<Record<EventId, string>> = {
+  'seoul-cup': '/trees-seoul.jpg',
+  'paris-open': '/trees-paris.jpg',
+  'las-vegas-classic': '/trees-vegas.jpg',
+  'sydney-international': '/trees-sydney.jpg',
+  'cape-town-cup': '/trees-capetown.jpg',
+}
+
 // ── Championship Points ──────────────────────────────────────────────
 
 /**
