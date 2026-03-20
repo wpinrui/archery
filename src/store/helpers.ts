@@ -95,14 +95,10 @@ export function generateInitialRoster(playerCountryCode: CountryCode): Athlete[]
     }))
 }
 
-function generateRookieName(countryCode: CountryCode): string {
-  return generateName(countryCode)
-}
-
 /** Generate a rookie to replace a retiring competitor */
 export function generateRookie(countryCode: CountryCode): Athlete {
   return {
-    name: generateRookieName(countryCode),
+    name: generateName(countryCode),
     countryCode,
     age: randInt(ROOKIE_AGE_MIN, ROOKIE_AGE_MAX),
     skill: Math.max(SKILL_MIN, Math.min(SKILL_MAX, Math.round(normalRandom(70, 10)))),
