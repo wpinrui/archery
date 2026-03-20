@@ -35,8 +35,9 @@
 
 .bg {
   position: absolute;
-  inset: 0;
+  inset: -2rem;
   background: url('/title-screen.jpg') center / cover no-repeat;
+  filter: blur(10px);
   z-index: 0;
 }
 
@@ -44,8 +45,8 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 80% at 50% 50%, transparent 10%, rgba(0,0,0,0.72) 100%),
-    linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 28%, transparent 65%, rgba(0,0,0,0.75) 100%);
+    radial-gradient(ellipse 80% 80% at 50% 50%, transparent 20%, rgba(0,0,0,0.82) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.5) 100%);
   pointer-events: none;
   z-index: 1;
 }
@@ -71,11 +72,11 @@
 }
 
 .eyebrow {
-  font-size: 0.85rem;
+  font-size: clamp(1.6rem, 3.5vw, 3rem);
   text-transform: uppercase;
-  letter-spacing: 0.48em;
+  letter-spacing: 0.18em;
   color: var(--accent);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .title {
@@ -102,7 +103,7 @@
 // Primary button — "Continue" and "New Game" when no career
 .continueBtn,
 .newGameBtn {
-  padding: 0.82rem 2.5rem;
+  padding: 0.7rem 2.25rem;
   font-size: 1rem;
   font-weight: 700;
   background: var(--accent);
@@ -111,7 +112,7 @@
   border-radius: 0.3rem;
   cursor: pointer;
   transition: opacity 0.15s;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   text-align: center;
 
   &:hover { opacity: 0.88; }
@@ -119,7 +120,7 @@
 
 // Secondary button — "New Game" when a career exists
 .newGameBtnSecondary {
-  padding: 0.82rem 2.5rem;
+  padding: 0.7rem 2.25rem;
   font-size: 1rem;
   font-weight: 600;
   background: transparent;
@@ -128,7 +129,7 @@
   border-radius: 0.3rem;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   text-align: center;
 
   &:hover {
