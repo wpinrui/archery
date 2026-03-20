@@ -72,17 +72,27 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 0.25em;
+  gap: 0.12em;
   font-size: clamp(4.5rem, 11vw, 8.5rem);
   font-weight: 800;
   letter-spacing: -0.03em;
   color: var(--text);
 }
 
-.titleEmoji {
-  font-size: 1.5em;
-  line-height: 1;
+.target {
+  width: 1.35em;
+  height: 1.35em;
+  border-radius: 50%;
   flex-shrink: 0;
+  align-self: center;
+  background: radial-gradient(circle,
+    var(--accent) 0% 20%,
+    #0a0a0a 20% 36%,
+    var(--accent) 36% 54%,
+    #0a0a0a 54% 70%,
+    var(--accent) 70% 86%,
+    #0a0a0a 86% 100%
+  );
 }
 
 .titleText {
