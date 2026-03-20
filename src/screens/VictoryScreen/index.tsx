@@ -26,6 +26,16 @@ export default function VictoryScreen() {
       <div className={styles.vignette} />
       <div className={styles.goldWash} />
 
+      {/* ── Fireworks ───────────────────────────────────────── */}
+      <div className={styles.fireworks}>
+        <div className={styles.burst} style={{ top: '18%', left: '12%' }} />
+        <div className={styles.burst} style={{ top: '25%', right: '15%' }} />
+        <div className={styles.burst} style={{ top: '40%', left: '8%' }} />
+        <div className={styles.burst} style={{ top: '10%', right: '25%' }} />
+        <div className={styles.burst} style={{ top: '55%', right: '10%' }} />
+        <div className={styles.burst} style={{ top: '35%', left: '22%' }} />
+      </div>
+
       <div className={styles.content}>
 
         {/* ── Gold reveal line ─────────────────────────────────── */}
@@ -60,7 +70,7 @@ export default function VictoryScreen() {
         {/* ── Actions ─────────────────────────────────────────── */}
         <div className={styles.actionRow}>
           <button className={styles.retireBtn}>Retire as Champion</button>
-          <button className={styles.continueBtn}>Next Season →</button>
+          <button className={styles.continueBtn}>Continue →</button>
         </div>
 
       </div>
