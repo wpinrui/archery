@@ -39,7 +39,7 @@ export default function TitleScreen() {
         <div className={styles.titleBlock}>
           <span className={styles.eyebrow}>Long Draw</span>
           <h1 className={styles.title}>
-            <span className={styles.titleEmoji}>🎯</span>Archery
+            <span>🎯</span>Archery
           </h1>
         </div>
 
