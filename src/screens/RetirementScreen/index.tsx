@@ -168,13 +168,13 @@ export default function RetirementScreen() {
             <div key={i} className={`${styles.pill} ${i === 4 ? styles.pillChamp : ''}`}>
               <div className={styles.pillTop}>
                 <span className={styles.pillEmoji}>{s.emoji}</span>
-                <span className={styles.pillLabel}>
-                  {i === 4 ? `Champion ${s.detail}` : s.detail}
-                </span>
+                <span className={styles.pillLabel}>{s.detail}</span>
               </div>
-              <span className={styles.pillPos} style={i < 4 ? { color: posColor(s.eventPos) } : undefined}>
-                {i === 4 ? `${s.eventPos} ${s.eventPos === 1 ? 'time' : 'times'}` : `#${s.eventPos}`}
-              </span>
+              {i < 4 && (
+                <span className={styles.pillPos} style={{ color: posColor(s.eventPos) }}>
+                  #{s.eventPos}
+                </span>
+              )}
             </div>
           ))}
         </div>
