@@ -479,7 +479,10 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   getPlayerEventBreakdown: () => {
     const state = get()
-    const event = EVENT_SCHEDULE[state.currentEventIndex]
+    const idx = state.currentEventIndex >= EVENTS_PER_SEASON
+      ? EVENTS_PER_SEASON - 1
+      : state.currentEventIndex
+    const event = EVENT_SCHEDULE[idx]
     return groupScoresByDistance(state.playerArrowScores, event.distances)
   },
 }))

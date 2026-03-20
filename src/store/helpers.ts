@@ -124,9 +124,9 @@ function generateRookieName(countryCode: CountryCode): string {
   const country = COUNTRIES.find(c => c.code === countryCode)
   if (!country) return 'Unknown'
 
-  // Take the surname (last word) from the default athlete name
+  // Take the surname (everything after the first word) to preserve compound surnames
   const parts = country.athleteName.split(' ')
-  const surname = parts[parts.length - 1]
+  const surname = parts.slice(1).join(' ')
 
   const region = COUNTRY_REGION[countryCode] ?? 'european'
   const firstNames = ROOKIE_FIRST_NAMES[region]
