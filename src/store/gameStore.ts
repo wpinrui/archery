@@ -203,7 +203,7 @@ export const useGameStore = create<GameState>()(persist((set, get) => ({
     const player = state.player!
 
     // Build unified results for all 50 athletes
-    const playerTotal = state.playerArrowScores.reduce((a, b) => a + b, 0)
+    const playerTotal = state.playerArrowScores.reduce<number>((a, b) => a + b, 0)
     const allEntries: (CompletedEventEntry & { _sortKey: number })[] = [
       {
         countryCode: player.countryCode,
@@ -218,7 +218,7 @@ export const useGameStore = create<GameState>()(persist((set, get) => ({
       ...state.competitors.map((c, i) => ({
         countryCode: c.countryCode,
         name: c.name,
-        totalScore: state.competitorArrowScores[i].reduce((a, b) => a + b, 0),
+        totalScore: state.competitorArrowScores[i].reduce<number>((a, b) => a + b, 0),
         position: 0,
         championshipPoints: 0,
         medal: null as MedalType | null,
@@ -398,7 +398,7 @@ export const useGameStore = create<GameState>()(persist((set, get) => ({
     const state = get()
     const player = state.player!
 
-    const playerTotal = state.playerArrowScores.reduce((a, b) => a + b, 0)
+    const playerTotal = state.playerArrowScores.reduce<number>((a, b) => a + b, 0)
 
     const rows: EventLeaderboardRow[] = [
       {
@@ -415,7 +415,7 @@ export const useGameStore = create<GameState>()(persist((set, get) => ({
           rank: 0,
           name: c.name,
           countryCode: c.countryCode,
-          runningTotal: scores.reduce((a, b) => a + b, 0),
+          runningTotal: scores.reduce<number>((a, b) => a + b, 0),
           recentScores: scores.slice(-3),
           isPlayer: false,
         }
