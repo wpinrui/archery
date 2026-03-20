@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { COUNTRIES } from '../data/countries'
 import type { CountryCode } from '../types'
 import Flag from '../components/Flag'
@@ -9,6 +10,7 @@ const SORTED_COUNTRIES = [...COUNTRIES].sort((a, b) => a.name.localeCompare(b.na
 
 export default function CountrySelectionScreen() {
   const startCareer = useGameStore(s => s.startCareer)
+  const navigate = useNavigate()
   const [name, setName] = useState('')
   const [selectedCode, setSelectedCode] = useState<CountryCode | null>(null)
 
@@ -18,6 +20,7 @@ export default function CountrySelectionScreen() {
   function handleBegin() {
     if (!canBegin) return
     startCareer(name.trim(), selectedCode!)
+    navigate('/game/event-lobby')
   }
 
   return (
