@@ -103,8 +103,8 @@ export default function EventLobbyScreen() {
           </div>
           <div className={styles.seasonBarDot} />
           <div className={styles.seasonBarItem}>
-            <span className={styles.seasonBarLabel}>Event</span>
-            <span className={styles.seasonBarValue}>{currentEventIndex + 1} <span className={styles.seasonBarOf}>of 5</span></span>
+            <span className={styles.seasonBarLabel}>Round</span>
+            <span className={styles.seasonBarValue}>{currentEventIndex + 1} <span className={styles.seasonBarOf}>of {EVENTS_PER_SEASON}</span></span>
           </div>
           <div className={styles.seasonBarDot} />
           <div className={styles.seasonBarItem}>
