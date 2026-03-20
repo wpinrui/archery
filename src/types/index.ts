@@ -353,6 +353,8 @@ export const GROWTH_RATE = 2.0
 export const GROWTH_AGE_MIN = 18
 export const GROWTH_AGE_MAX = 29
 export const GROWTH_SPAN = GROWTH_AGE_MAX - GROWTH_AGE_MIN + 1 // 12
+export const ROOKIE_SKILL_CREEP_RATE = 0.075
+export const ROOKIE_SKILL_MEAN = 70
 
 /**
  * Shakiness reduction brackets by championship finish position.

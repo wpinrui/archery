@@ -53,10 +53,11 @@ interface Sim {
   skill: number
 }
 
-function generateRookie(): Sim {
+function generateRookie(season: number = 0, creepRate: number = 0): Sim {
+  const rookieMean = 70 + season * creepRate
   return {
     age: randInt(ROOKIE_AGE_MIN, ROOKIE_AGE_MAX),
-    skill: clampSkill(Math.round(normalRandom(70, 10))),
+    skill: clampSkill(Math.round(normalRandom(rookieMean, 10))),
   }
 }
 
@@ -92,14 +93,14 @@ function stats(roster: Sim[]) {
 
 // ── Simulation ─────────────────────────────────────────────────────
 
-function simulate(totalSeasons: number, growthRate: number) {
+function simulate(totalSeasons: number, growthRate: number, creepRate: number) {
   // Initialize roster: same distribution as generateInitialRoster
   let roster: Sim[] = Array.from({ length: ROSTER_SIZE }, () => ({
     age: randInt(20, 35),
     skill: clampSkill(Math.round(normalRandom(75, 12))),
   }))
 
-  console.log(`\nSimulating ${totalSeasons} seasons with growth_rate = ${growthRate}`)
+  console.log(`\nSimulating ${totalSeasons} seasons with growth_rate = ${growthRate}, creep_rate = ${creepRate}`)
   console.log(`Roster size: ${ROSTER_SIZE} competitors\n`)
   console.log(
     'Season'.padStart(7) +
@@ -124,7 +125,7 @@ function simulate(totalSeasons: number, growthRate: number) {
     roster.sort((a, b) => a.skill - b.skill)
     roster = roster.slice(RETIREMENT_PER_SEASON)
     for (let i = 0; i < RETIREMENT_PER_SEASON; i++) {
-      roster.push(generateRookie())
+      roster.push(generateRookie(season, creepRate))
     }
 
     const s = stats(roster)
@@ -210,4 +211,5 @@ function simulate(totalSeasons: number, growthRate: number) {
 
 const seasons = parseInt(process.argv[2] || '100', 10)
 const growthRate = parseFloat(process.argv[3] || '2.0')
-simulate(seasons, growthRate)
+const creepRate = parseFloat(process.argv[4] || '0')
+simulate(seasons, growthRate, creepRate)

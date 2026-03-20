@@ -20,6 +20,8 @@ import {
   GROWTH_SPAN,
   ROOKIE_AGE_MAX,
   ROOKIE_AGE_MIN,
+  ROOKIE_SKILL_CREEP_RATE,
+  ROOKIE_SKILL_MEAN,
   SKILL_BASE,
   SKILL_COEFFICIENT,
   SKILL_MAX,
@@ -100,12 +102,13 @@ export function generateInitialRoster(playerCountryCode: CountryCode): Athlete[]
 }
 
 /** Generate a rookie to replace a retiring competitor */
-export function generateRookie(countryCode: CountryCode): Athlete {
+export function generateRookie(countryCode: CountryCode, season: number = 1): Athlete {
+  const rookieMean = ROOKIE_SKILL_MEAN + season * ROOKIE_SKILL_CREEP_RATE
   return {
     name: generateName(countryCode),
     countryCode,
     age: randInt(ROOKIE_AGE_MIN, ROOKIE_AGE_MAX),
-    skill: Math.max(SKILL_MIN, Math.min(SKILL_MAX, Math.round(normalRandom(70, 10)))),
+    skill: Math.max(SKILL_MIN, Math.min(SKILL_MAX, Math.round(normalRandom(rookieMean, 10)))),
   }
 }
 

@@ -14,7 +14,7 @@
 
 Created `scripts/simulate-balance.ts` — a standalone simulation that runs N seasons of the full roster lifecycle (growth, decay, retirement, rookie replacement) and reports skill distribution stats.
 
-Usage: `npx tsx scripts/simulate-balance.ts [seasons=100] [growth_rate=2.0]`
+Usage: `npx tsx scripts/simulate-balance.ts [seasons=100] [growth_rate=2.0] [creep_rate=0]`
 
 ### Simulation results
 
@@ -56,6 +56,24 @@ Age  Skill   Change
 40    50.0   (floor)
 ```
 
+### Generational skill creep
+
+Added `ROOKIE_SKILL_CREEP_RATE` to simulate real-world generational improvement. Rookie entry skill mean drifts upward: `rookie_mean = 70 + season * creep_rate`.
+
+Tested four creep_rate values over 100 seasons:
+
+| creep_rate | Mean at S50 | Mean at S100 | Drift  | Feel                              |
+|------------|-------------|--------------|--------|-----------------------------------|
+| 0          | ~81         | ~81          | -0.46  | Flat — no generational improvement |
+| 0.05       | ~83         | ~87          | +3.4   | Very subtle                       |
+| **0.075**  | **~83**     | **~89**      | **+2.6** | **Subtle but perceptible**      |
+| 0.1        | ~85         | ~89          | +5.4   | Noticeable                        |
+| 0.2        | ~90         | ~96          | +8.4   | Too aggressive — hits ceiling     |
+
+Selected **0.075**: over a typical 15–20 season career the field improves by ~1–2 points. Over 100 seasons, mean rises from ~80 to ~89 — enough to feel like the sport is evolving without breaking balance.
+
 ### Conclusion
 
-`growth_rate = 2.0` is confirmed as the correct default. The system reaches equilibrium with mean skill ~80, stddev ~8.5, and no drift in either direction. The distribution stays roughly normal — no runaway inflation or deflation.
+- `growth_rate = 2.0` confirmed correct for individual career arcs
+- `creep_rate = 0.075` chosen for subtle generational improvement
+- Skill hard-clamped to [50, 100]

@@ -346,7 +346,7 @@ export const useGameStore = create<GameState>()(persist((set, get) => ({
       bySkill.slice(0, RETIREMENT_PER_SEASON).map(c => c.countryCode),
     )
     newCompetitors = newCompetitors.map(c =>
-      retireCodes.has(c.countryCode) ? generateRookie(c.countryCode) : c,
+      retireCodes.has(c.countryCode) ? generateRookie(c.countryCode, state.currentSeason) : c,
     )
 
     // ── 6. Advance ───────────────────────────────────────────────
