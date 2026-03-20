@@ -14,6 +14,7 @@ import VictoryScreenMockup from './mockups/VictoryScreen'
 import RetirementScreenMockup from './mockups/RetirementScreen'
 
 // Real screen stubs
+import TitleScreen from './screens/TitleScreen'
 import CountrySelectionScreen from './screens/CountrySelectionScreen'
 import EventLobbyScreen from './screens/EventLobbyScreen'
 import ShootingHUDScreen from './screens/ShootingHUDScreen'
@@ -98,14 +99,15 @@ function MockupLayout() {
 }
 
 /**
- * Entry-point gate — reads game phase and redirects to the appropriate screen.
+ * Resume gate — reads game phase and redirects to the appropriate in-game screen.
+ * Mounted at /play; reached when the player chooses "Continue" on TitleScreen.
  *
- * Playing sub-screen heuristic (for resume on direct / navigation):
+ * Playing sub-screen heuristic (for resume):
  *   - arrows in progress  → /game/shooting
  *   - otherwise           → /game/event-lobby
  *
  * Once real screens are in place they drive navigation themselves via
- * useNavigate(); this gate only determines the landing point on cold load.
+ * useNavigate(); this gate only determines the landing point on resume.
  */
 function PhaseGate() {
   const phase             = useGameStore(s => s.phase)
@@ -135,8 +137,11 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Entry point — redirects based on game phase */}
-        <Route path="/" element={<PhaseGate />} />
+        {/* Entry point — title screen on cold start */}
+        <Route path="/" element={<TitleScreen />} />
+
+        {/* Resume gate — reads phase and redirects to the correct in-game screen */}
+        <Route path="/play" element={<PhaseGate />} />
 
         {/* ── Real game screens ─────────────────────────────────────────── */}
         <Route path="/country-selection"     element={<CountrySelectionScreen />} />
