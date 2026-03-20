@@ -89,8 +89,8 @@ The player's difficulty is governed by shakiness (see Progression
 
 ### Skill & Shot Simulation
 
-Skill ranges from 50 to 100. Each competitor shot is sampled
-from a normal distribution:
+Skill ranges from 50 to 100 (hard-clamped at both ends). Each
+competitor shot is sampled from a normal distribution:
 
   mean(skill, distance) = base_mean(skill) + distance_bonus(distance)
   base_mean(skill) = 0.085 × skill + 0.25
@@ -121,7 +121,7 @@ The gain is largest when young and tapers toward zero at 30:
 
 growth_rate is a tunable constant (default 2.0). At age 18
 the gain is 2.0 per season; by age 29 it is ~0.17. Skill is
-clamped to a maximum of 100.
+clamped to [50, 100].
 
 From age 30 onward, competitors' skill degrades following the
 same quadratic curve as the player's shakiness (proportionally
@@ -131,6 +131,18 @@ Each season, the 5 lowest-skill competitors retire and are
 replaced by rookies aged 18–25 with normally distributed
 skill — allowing for rare wunderkind entrants. Country slots
 never change.
+
+#### Generational Skill Creep
+
+Rookie entry skill drifts upward over time to simulate
+improving coaching, equipment, and talent development:
+
+  rookie_mean = 70 + season × creep_rate
+
+creep_rate is a tunable constant (default 0.075). The effect
+is subtle — over a 20-season career the field improves by
+roughly 1–2 points. Over 100 seasons, the mean rises from
+~80 to ~89. Skill remains hard-clamped to [50, 100].
 
 ## Career & Screens
 
