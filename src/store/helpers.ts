@@ -108,16 +108,34 @@ const ROOKIE_FIRST_NAMES: Record<string, string[]> = {
 }
 
 const COUNTRY_REGION: Partial<Record<CountryCode, string>> = {
-  ARG: 'americas', AUS: 'anglophone', AUT: 'european', BEL: 'european', BRA: 'americas',
-  CAN: 'anglophone', CHE: 'european', CHN: 'eastAsian', CMR: 'african', CZE: 'european',
-  DEU: 'european', DNK: 'european', EGY: 'southAsian', ESP: 'european', ETH: 'african',
-  FIN: 'european', FRA: 'european', GBR: 'anglophone', GHA: 'african', GRC: 'european',
-  HRV: 'european', HUN: 'european', IND: 'southAsian', IRN: 'southAsian', ITA: 'european',
-  JPN: 'eastAsian', KEN: 'african', KOR: 'eastAsian', MAR: 'southAsian', MEX: 'americas',
-  NGA: 'african', NLD: 'european', NOR: 'european', NZL: 'anglophone', PAK: 'southAsian',
-  POL: 'european', PRT: 'european', ROU: 'european', RUS: 'european', SEN: 'african',
-  SRB: 'european', SWE: 'european', TUN: 'southAsian', TUR: 'southAsian', TZA: 'african',
-  UGA: 'african', UKR: 'european', USA: 'anglophone', ZAF: 'anglophone', ZMB: 'african',
+  // East Asia
+  KOR: 'eastAsian', JPN: 'eastAsian', CHN: 'eastAsian', TWN: 'eastAsian', MNG: 'eastAsian', HKG: 'eastAsian',
+  // Southeast Asia
+  SGP: 'eastAsian', IDN: 'southAsian', PHL: 'americas', THA: 'eastAsian', VNM: 'eastAsian', MYS: 'southAsian',
+  // South Asia
+  IND: 'southAsian', NPL: 'southAsian',
+  // Central / West Asia
+  TUR: 'southAsian', KAZ: 'eastAsian',
+  // Oceania
+  AUS: 'anglophone', NZL: 'anglophone',
+  // North America
+  USA: 'anglophone', CAN: 'anglophone', MEX: 'americas',
+  // Central America & Caribbean
+  CRI: 'americas', JAM: 'anglophone',
+  // South America
+  BRA: 'americas', ARG: 'americas', COL: 'americas', CHL: 'americas',
+  // Western Europe
+  GBR: 'anglophone', FRA: 'european', DEU: 'european', ESP: 'european', ITA: 'european', NLD: 'european', PRT: 'european',
+  // Northern Europe
+  SWE: 'european', NOR: 'european', DNK: 'european', FIN: 'european',
+  // Eastern Europe
+  POL: 'european', CZE: 'european', ROU: 'european',
+  // Southern Europe
+  GRC: 'european', HRV: 'european',
+  // Africa
+  ZAF: 'anglophone', KEN: 'african', NGA: 'african', MAR: 'southAsian', EGY: 'southAsian',
+  // Europe (remaining)
+  IRL: 'anglophone', CHE: 'european',
 }
 
 function generateRookieName(countryCode: CountryCode): string {
