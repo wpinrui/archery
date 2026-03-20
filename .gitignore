@@ -15,6 +15,7 @@ dist-ssr
 # Agent infrastructure (local only)
 agents/
 .claude/
+agent-notes.md
 
 # Editor directories and files
 .vscode/*
