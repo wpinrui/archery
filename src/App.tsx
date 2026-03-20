@@ -2,24 +2,24 @@ import { useRef, useState, useCallback, useEffect, useSyncExternalStore } from '
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import { useGameStore } from './store/gameStore'
 import styles from './App.module.scss'
-import CountrySelection from './screens/CountrySelection'
-import ShootingHUD from './screens/ShootingHUD'
-import PostEventLeaderboard from './screens/PostEventLeaderboard'
-import SeasonSummary from './screens/SeasonSummary'
-import CareerScreen from './screens/CareerScreen'
-import VictoryScreen from './screens/VictoryScreen'
-import RetirementScreen from './screens/RetirementScreen'
-import EventLobby from './screens/EventLobby'
+import CountrySelection from './mockups/CountrySelection'
+import ShootingHUD from './mockups/ShootingHUD'
+import PostEventLeaderboard from './mockups/PostEventLeaderboard'
+import SeasonSummary from './mockups/SeasonSummary'
+import CareerScreen from './mockups/CareerScreen'
+import VictoryScreen from './mockups/VictoryScreen'
+import RetirementScreen from './mockups/RetirementScreen'
+import EventLobby from './mockups/EventLobby'
 
 const SCREENS = [
-  { path: '/country-selection',      label: 'Country Selection',      component: CountrySelection },
-  { path: '/event-lobby',            label: 'Event Lobby',            component: EventLobby },
-  { path: '/shooting-hud',           label: 'Shooting HUD',           component: ShootingHUD },
-  { path: '/post-event-leaderboard', label: 'Post-Event Leaderboard', component: PostEventLeaderboard },
-  { path: '/season-summary',         label: 'Season Summary',         component: SeasonSummary },
-  { path: '/career',                 label: 'Career',                 component: CareerScreen },
-  { path: '/victory',                label: 'Victory',                component: VictoryScreen },
-  { path: '/retirement',             label: 'Retirement',             component: RetirementScreen },
+  { path: '/mockups/country-selection',      label: 'Country Selection',      component: CountrySelection },
+  { path: '/mockups/event-lobby',            label: 'Event Lobby',            component: EventLobby },
+  { path: '/mockups/shooting-hud',           label: 'Shooting HUD',           component: ShootingHUD },
+  { path: '/mockups/post-event-leaderboard', label: 'Post-Event Leaderboard', component: PostEventLeaderboard },
+  { path: '/mockups/season-summary',         label: 'Season Summary',         component: SeasonSummary },
+  { path: '/mockups/career',                 label: 'Career',                 component: CareerScreen },
+  { path: '/mockups/victory',                label: 'Victory',                component: VictoryScreen },
+  { path: '/mockups/retirement',             label: 'Retirement',             component: RetirementScreen },
 ]
 
 function DevNav() {
