@@ -86,7 +86,7 @@ export default function CareerScreen() {
           <div className={styles.statCard}>
             <span className={styles.statLabel}>Championships</span>
             <div className={styles.champDisplay}>
-              <span className={styles.champCount}>{totalChamps}x</span>
+              <span className={styles.champCount}>{totalChamps}×</span>
               <span className={styles.champTrophy}>🏆</span>
             </div>
           </div>
