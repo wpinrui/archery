@@ -10,7 +10,7 @@
  * so we can verify skill stays normally distributed and doesn't
  * trend toward extremes.
  *
- * Usage: npx tsx scripts/simulate-balance.ts [seasons=100] [growth_rate=2.0]
+ * Usage: npx tsx scripts/simulate-balance.ts [seasons=100] [growth_rate=2.0] [creep_rate=0]
  */
 
 // ── Inline constants (mirrors src/types/index.ts) ──────────────────
