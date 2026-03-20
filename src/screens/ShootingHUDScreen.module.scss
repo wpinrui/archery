@@ -1,0 +1,523 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  cursor: default;
+  user-select: none;
+  padding-top: 2rem;
+}
+
+.aiming {
+  cursor: none;
+}
+
+// ── Background ────────────────────────────────────────────────────────
+
+.bg {
+  position: absolute;
+  inset: -2rem;
+  background: url('/trees-capetown.jpg') center / cover no-repeat;
+  filter: blur(10px);
+  z-index: 0;
+  transition: transform 1.5s ease;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 70% at 50% 52%, transparent 25%, rgba(0,0,0,0.75) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.4) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+// ── Card base ─────────────────────────────────────────────────────────
+
+%card {
+  background: rgba(8, 8, 8, 0.85);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 0.3rem;
+  backdrop-filter: blur(8px);
+}
+
+// ── Top-left ──────────────────────────────────────────────────────────
+
+.topLeft {
+  position: absolute;
+  top: 3.5rem;
+  left: 2rem;
+  z-index: 10;
+}
+
+.eventLabel {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 0.4rem;
+}
+
+.arrowCount {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+
+// ── Centre top: wind + distance ───────────────────────────────────────
+
+.centerTop {
+  position: absolute;
+  top: 3.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.windCard {
+  @extend %card;
+  padding: 0.4rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.windArrows {
+  font-size: 2.5rem;
+  letter-spacing: 0.15em;
+  line-height: 1;
+}
+
+.windVal {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-family: var(--font-mono);
+  opacity: 0.8;
+}
+
+.distanceCard {
+  @extend %card;
+  padding: 0.25rem 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+}
+
+// ── Timer ─────────────────────────────────────────────────────────────
+
+.timerWrap {
+  position: absolute;
+  top: 3.5rem;
+  right: 2rem;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.timerNum {
+  font-size: 4rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text);
+  line-height: 1;
+  transition: color 0.3s;
+}
+
+.timerTrack {
+  width: 4rem;
+  height: 2px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.timerFill {
+  height: 100%;
+  background: var(--text);
+  transition: width 1s linear, background 0.3s;
+}
+
+.urgent {
+  .timerNum  { color: var(--danger); }
+  .timerFill { background: var(--danger); }
+}
+
+// ── Target ────────────────────────────────────────────────────────────
+
+.targetWrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+}
+
+.target {
+  position: relative;
+
+  img {
+    display: block;
+    pointer-events: none;
+  }
+}
+
+.hole {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+  animation: holeAppear 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes holeAppear {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+// ── Crosshair ─────────────────────────────────────────────────────────
+
+$arm-len:   0.75rem;
+$arm-gap:   0.35rem;
+$arm-thick: 2px;
+
+.crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.arm {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.9);
+}
+
+.armTop    { width: $arm-thick; height: $arm-len; left: 0; bottom: $arm-gap; transform: translateX(-50%); }
+.armBottom { width: $arm-thick; height: $arm-len; left: 0; top: $arm-gap;    transform: translateX(-50%); }
+.armLeft   { height: $arm-thick; width: $arm-len; top: 0; right: $arm-gap;   transform: translateY(-50%); }
+.armRight  { height: $arm-thick; width: $arm-len; top: 0; left: $arm-gap;    transform: translateY(-50%); }
+
+// ── Ready button ──────────────────────────────────────────────────────
+
+.readyBtn {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  @extend %card;
+  padding: 0.75rem 3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text);
+  border-color: rgba(255,255,255,0.2);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+
+  &:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.5);
+  }
+}
+
+// ── Result score ──────────────────────────────────────────────────────
+
+.resultOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: none;
+  animation: scoreReveal 1.8s ease forwards;
+  @extend %card;
+  padding: 1.25rem 2.5rem;
+}
+
+.resultScore {
+  font-size: 6rem;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  line-height: 1;
+}
+
+.resultMessage {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.resultTag {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.5);
+}
+
+@keyframes scoreReveal {
+  0%   { opacity: 0; transform: translate(-50%, calc(-50% + 0.75rem)) scale(0.9); }
+  15%  { opacity: 1; transform: translate(-50%, -50%)                  scale(1);   }
+  75%  { opacity: 1; transform: translate(-50%, -50%)                  scale(1);   }
+  100% { opacity: 0; transform: translate(-50%, calc(-50% - 0.5rem))  scale(0.97); }
+}
+
+// ── Leaderboard ───────────────────────────────────────────────────────
+
+.lb {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 10;
+  width: 18rem;
+  @extend %card;
+  overflow: hidden;
+}
+
+.lbHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.6);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  cursor: pointer;
+  transition: color 0.15s;
+
+  &:hover { color: var(--text); }
+}
+
+.lbToggle { font-size: 0.6rem; }
+
+.lbExpanded {
+  max-height: 16rem;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar { width: 3px; }
+  &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+}
+
+.lbRow {
+  display: grid;
+  grid-template-columns: 1.4rem 1.4rem 1fr auto 2.2rem;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.4rem 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+
+  &:last-child { border-bottom: none; }
+}
+
+.lbPlayer {
+  background: rgba(255,255,255,0.04);
+  .lbName { color: var(--accent); }
+  .lbPts  { color: var(--accent); }
+}
+
+.lbRank { font-size: 0.7rem;  font-family: var(--font-mono); color: rgba(255,255,255,0.55); }
+.lbFlag { width: 1.1rem; height: auto; border-radius: 1px; display: block; }
+.lbName { font-size: 0.8rem;  color: rgba(255,255,255,0.85); }
+.lbPts  { text-align: right;  font-size: 0.8rem; font-family: var(--font-mono); color: var(--text); }
+
+.lbRecent {
+  display: flex;
+  gap: 0.2rem;
+  justify-content: flex-end;
+}
+
+.lbRecentScore {
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  border-radius: 0.15rem;
+  padding: 0.05rem 0.25rem;
+}
+
+// ── Distance transition overlay ────────────────────────────────────────
+
+.distanceOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(14px);
+  pointer-events: none;
+  animation: distanceFade 2s ease forwards;
+}
+
+.distancePanel {
+  @extend %card;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2rem 5rem;
+}
+
+.distanceLabel {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.distancePanelValue {
+  font-size: 5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+@keyframes distanceFade {
+  0%   { opacity: 0; }
+  12%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+// ── Debug tuning panel ────────────────────────────────────────────────
+
+.debugPanel {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 100;
+  width: 20rem;
+  @extend %card;
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.85);
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  cursor: default;
+
+  &::-webkit-scrollbar { width: 3px; }
+  &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+}
+
+.debugTitle {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 0.75rem;
+}
+
+.debugLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.6rem;
+  color: rgba(255,255,255,0.7);
+
+  input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  select {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 0.2rem;
+    color: var(--text);
+    padding: 0.2rem 0.4rem;
+    font-size: 0.7rem;
+    cursor: pointer;
+  }
+}
+
+.debugDivider {
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  margin: 0.6rem 0;
+}
+
+.debugInfo {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+  margin-bottom: 0.6rem;
+}
+
+.debugAutoBtn {
+  font-size: 0.6rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.15rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  align-self: flex-start;
+
+  &:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--text);
+  }
+}
+
+.debugExportBtn {
+  @extend %card;
+  width: 100%;
+  padding: 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  border-color: rgba(255,255,255,0.15);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+
+  &:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: var(--accent);
+  }
+}
+
+.debugExportPre {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.7);
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 10rem;
+  overflow-y: auto;
+  user-select: all;
+}
