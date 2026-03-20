@@ -177,9 +177,12 @@ export interface Player {
 // ── AI Shot Simulation ───────────────────────────────────────────────
 
 /**
- * base_mean(skill) = 0.085 × skill + 0.25
+ * base_mean(skill) = SKILL_COEFFICIENT × skill + SKILL_BASE
  * mean(skill, distance) = base_mean + distance_bonus
  */
+export const SKILL_COEFFICIENT = 0.085
+export const SKILL_BASE = 0.25
+
 export const DISTANCE_BONUS: Readonly<Record<Distance, number>> = {
   18: 1.5, 30: 0.8, 50: 0.0, 70: -0.8, 90: -1.675,
 }
@@ -351,11 +354,13 @@ export const SHAKINESS_REDUCTION_BRACKETS = [
 ] as const
 
 /**
- * Aging formula (applied from age 31 onward, i.e. when age > AGING_THRESHOLD):
+ * Aging formula (from age 30 onward):
  *   added_shake = (age - 30)²
  *
+ * Note: at exactly age 30, (30-30)² = 0 so no shake is added.
+ *
  * Season order of operations:
- *   1. Add aging shake (if age > 30)
+ *   1. Add aging shake (if age >= AGING_THRESHOLD)
  *   2. Apply finish-position reduction percentage
  */
 
