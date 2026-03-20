@@ -4,9 +4,9 @@ import type {
   CountryCode,
   DistanceGroup,
   EventDefinition,
-  EventId,
   EventLeaderboardRow,
   Distance,
+  MedalRecord,
   MedalTally,
   MedalType,
   Player,
@@ -52,14 +52,6 @@ export interface CompletedEvent {
   eventIndex: number
   results: CompletedEventEntry[]
   playerBreakdown: DistanceGroup[]
-}
-
-/** Detailed medal record for retirement highlight computation */
-export interface MedalRecord {
-  eventId: EventId
-  medal: MedalType
-  season: number
-  age: number
 }
 
 // ── State shape ─────────────────────────────────────────────────────
@@ -178,6 +170,10 @@ export const useGameStore = create<GameState>((set, get) => ({
     const state = get()
     const event = EVENT_SCHEDULE[state.currentEventIndex]
     const arrowDistances = expandDistances(event.distances)
+
+    // Guard: ignore shots beyond the event's arrow count
+    if (state.currentArrowIndex >= arrowDistances.length) return
+
     const distance = arrowDistances[state.currentArrowIndex]
 
     // Simulate one arrow for every competitor at the same distance
@@ -372,13 +368,17 @@ export const useGameStore = create<GameState>((set, get) => ({
   // ── Derived-state helpers ───────────────────────────────────────
 
   getCurrentEvent: () => {
-    return EVENT_SCHEDULE[get().currentEventIndex]
+    const idx = get().currentEventIndex
+    if (idx >= EVENTS_PER_SEASON) return EVENT_SCHEDULE[EVENTS_PER_SEASON - 1]
+    return EVENT_SCHEDULE[idx]
   },
 
   getCurrentArrowDistance: () => {
     const state = get()
+    if (state.currentEventIndex >= EVENTS_PER_SEASON) return 18 as Distance
     const event = EVENT_SCHEDULE[state.currentEventIndex]
     const arrowDistances = expandDistances(event.distances)
+    if (state.currentArrowIndex >= arrowDistances.length) return arrowDistances[arrowDistances.length - 1]
     return arrowDistances[state.currentArrowIndex]
   },
 
@@ -394,7 +394,7 @@ export const useGameStore = create<GameState>((set, get) => ({
         name: player.name,
         countryCode: player.countryCode,
         runningTotal: playerTotal,
-        recentScores: state.playerArrowScores.slice(-3) as Score[],
+        recentScores: state.playerArrowScores.slice(-3),
         isPlayer: true,
       },
       ...state.competitors.map((c, i) => {
@@ -404,7 +404,7 @@ export const useGameStore = create<GameState>((set, get) => ({
           name: c.name,
           countryCode: c.countryCode,
           runningTotal: scores.reduce((a, b) => a + b, 0),
-          recentScores: scores.slice(-3) as Score[],
+          recentScores: scores.slice(-3),
           isPlayer: false,
         }
       }),

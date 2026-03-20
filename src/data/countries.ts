@@ -1,8 +1,6 @@
-import type { CountryCode } from '../types'
+import type { Country } from '../types'
 
-export interface CountryData {
-  code: CountryCode
-  name: string
+export interface CountryData extends Country {
   athleteName: string
 }
 
