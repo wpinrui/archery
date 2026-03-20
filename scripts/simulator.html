@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Long Draw Archery — Shot Simulator</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      padding: 24px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #f8fafc;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 24px;
+    }
+
+    /* ── Controls ───────────────────────────────────────── */
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      align-items: flex-end;
+      background: #1e2330;
+      border: 1px solid #2d3348;
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 28px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .skill-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    input[type="range"] {
+      width: 200px;
+      accent-color: #6366f1;
+      cursor: pointer;
+    }
+
+    .skill-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #6366f1;
+      min-width: 36px;
+    }
+
+    .skill-label {
+      font-size: 12px;
+      color: #64748b;
+      white-space: nowrap;
+    }
+
+    .sample-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    select {
+      background: #2d3348;
+      border: 1px solid #3d4560;
+      color: #e2e8f0;
+      font-size: 14px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    select:focus { outline: 2px solid #6366f1; }
+
+    .btn {
+      background: #6366f1;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 18px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn:hover { background: #4f52d9; }
+
+    /* ── Overview matrix ─────────────────────────────────── */
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      margin-bottom: 14px;
+    }
+
+    .matrix-section {
+      margin-bottom: 32px;
+    }
+
+    .matrix {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .matrix-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .dist-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #94a3b8;
+      width: 52px;
+      flex-shrink: 0;
+      text-align: right;
+      padding-right: 12px;
+    }
+
+    .matrix-bars {
+      display: flex;
+      gap: 3px;
+      align-items: flex-end;
+      height: 64px;
+      flex: 1;
+    }
+
+    .bar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      flex: 1;
+    }
+
+    .bar-fill {
+      width: 100%;
+      border-radius: 3px 3px 0 0;
+      min-height: 1px;
+      transition: height 0.2s ease;
+    }
+
+    .bar-score-label {
+      font-size: 9px;
+      color: #475569;
+    }
+
+    .matrix-stats {
+      width: 200px;
+      flex-shrink: 0;
+      display: flex;
+      gap: 16px;
+      padding-left: 16px;
+      font-size: 12px;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-label {
+      color: #64748b;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-value {
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+
+    .score-axis {
+      display: flex;
+      gap: 3px;
+      margin-left: 52px;
+    }
+
+    .score-axis-label {
+      flex: 1;
+      text-align: center;
+      font-size: 10px;
+      color: #475569;
+    }
+
+    /* ── Tooltip ─────────────────────────────────────────── */
+
+    [data-tip] {
+      position: relative;
+      cursor: default;
+    }
+
+    [data-tip]::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e2330;
+      border: 1px solid #3d4560;
+      color: #e2e8f0;
+      font-size: 11px;
+      white-space: nowrap;
+      padding: 4px 8px;
+      border-radius: 5px;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 10;
+      transition: opacity 0.1s;
+    }
+
+    [data-tip]:hover::after {
+      opacity: 1;
+    }
+
+    /* ── Skill comparison ────────────────────────────────── */
+
+    .comparison-section {
+      margin-bottom: 32px;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .comp-card {
+      background: #1e2330;
+      border: 1px solid #2d3348;
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .comp-card-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-bottom: 12px;
+    }
+
+    .comp-card-skill {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .comp-chart {
+      display: flex;
+      gap: 2px;
+      align-items: flex-end;
+      height: 80px;
+      margin-top: 8px;
+    }
+
+    .comp-bar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+    }
+
+    .comp-bar-fill {
+      width: 100%;
+      border-radius: 2px 2px 0 0;
+      min-height: 1px;
+    }
+
+    .comp-bar-label {
+      font-size: 8px;
+      color: #475569;
+      margin-top: 2px;
+    }
+
+    .comp-mean-line {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 8px;
+    }
+
+    .comp-mean-value {
+      font-weight: 600;
+      color: #a5b4fc;
+    }
+
+    /* ── Detail panel ────────────────────────────────────── */
+
+    .detail-section {
+      margin-bottom: 32px;
+    }
+
+    .detail-controls {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .detail-chart {
+      background: #1e2330;
+      border: 1px solid #2d3348;
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .detail-bars {
+      display: flex;
+      gap: 6px;
+      align-items: flex-end;
+      height: 120px;
+      margin-bottom: 8px;
+    }
+
+    .detail-bar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+    }
+
+    .detail-pct {
+      font-size: 9px;
+      color: #64748b;
+      margin-bottom: 3px;
+    }
+
+    .detail-bar-fill {
+      width: 100%;
+      border-radius: 4px 4px 0 0;
+      min-height: 1px;
+    }
+
+    .detail-score {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .detail-stats-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #2d3348;
+    }
+
+    .detail-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .detail-stat-label {
+      font-size: 11px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .detail-stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    .detail-stat-value.highlight { color: #6366f1; }
+
+    /* score 0 special */
+    .zero-bar { opacity: 0.5; }
+
+    /* colour scale by score: 0=red, 5=orange, 10=green */
+    .score-color-0  { background: #ef4444; }
+    .score-color-1  { background: #f97316; }
+    .score-color-2  { background: #f59e0b; }
+    .score-color-3  { background: #eab308; }
+    .score-color-4  { background: #84cc16; }
+    .score-color-5  { background: #22c55e; }
+    .score-color-6  { background: #10b981; }
+    .score-color-7  { background: #14b8a6; }
+    .score-color-8  { background: #38bdf8; }
+    .score-color-9  { background: #818cf8; }
+    .score-color-10 { background: #a855f7; }
+
+    /* skill tone by value */
+    .skill-50  { color: #ef4444; }
+    .skill-65  { color: #f97316; }
+    .skill-75  { color: #eab308; }
+    .skill-85  { color: #22c55e; }
+    .skill-100 { color: #a855f7; }
+
+    hr {
+      border: none;
+      border-top: 1px solid #2d3348;
+      margin: 8px 0 20px;
+    }
+
+    /* ── Constants panel ─────────────────────────────────── */
+
+    .const-panel {
+      background: #161b27;
+      border: 1px solid #2d3348;
+      border-radius: 10px;
+      padding: 16px 24px 20px;
+      margin-bottom: 20px;
+    }
+
+    .const-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .const-header .section-title { margin-bottom: 0; }
+
+    .preset-btn {
+      background: #2d3348;
+      border: 1px solid #3d4560;
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .preset-btn:hover { background: #3d4560; color: #e2e8f0; }
+    .preset-btn.active { background: #6366f1; border-color: #6366f1; color: #fff; }
+
+    .const-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .const-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .const-field label {
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    .const-field input[type="number"] {
+      background: #2d3348;
+      border: 1px solid #3d4560;
+      color: #e2e8f0;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 5px 8px;
+      border-radius: 6px;
+      width: 100%;
+    }
+
+    .const-field input[type="number"]:focus {
+      outline: 2px solid #6366f1;
+    }
+
+    .theory-table {
+      margin-top: 16px;
+      border-top: 1px solid #2d3348;
+      padding-top: 14px;
+    }
+
+    .theory-table table {
+      border-collapse: collapse;
+      font-size: 12px;
+      width: 100%;
+    }
+
+    .theory-table th {
+      color: #64748b;
+      font-weight: 600;
+      text-align: right;
+      padding: 3px 10px 3px 0;
+    }
+
+    .theory-table th:first-child { text-align: left; }
+
+    .theory-table td {
+      text-align: right;
+      padding: 3px 10px 3px 0;
+      color: #e2e8f0;
+      font-weight: 500;
+    }
+
+    .theory-table td:first-child { color: #94a3b8; text-align: left; }
+
+    .theory-table td.hi  { color: #a855f7; }
+    .theory-table td.ok  { color: #22c55e; }
+    .theory-table td.mid { color: #eab308; }
+    .theory-table td.lo  { color: #f97316; }
+  </style>
+</head>
+<body>
+
+<h1>Long Draw Archery — Shot Simulator</h1>
+<p class="subtitle">Analyse skill × distance → score distribution.</p>
+
+<!-- ── Constants panel ──────────────────────────────────── -->
+
+<div class="const-panel">
+  <div class="const-header">
+    <div class="section-title">Constants</div>
+    <button class="preset-btn" id="btnGDD"      onclick="applyPreset('gdd')">GDD original</button>
+    <button class="preset-btn active" id="btnProp" onclick="applyPreset('proposed')">Proposed</button>
+  </div>
+  <div class="const-grid">
+    <div class="const-field">
+      <label>SKILL_COEFFICIENT</label>
+      <input type="number" id="c_coeff" step="0.005" min="0" onchange="onConstChange()">
+    </div>
+    <div class="const-field">
+      <label>SKILL_BASE</label>
+      <input type="number" id="c_base" step="0.05" onchange="onConstChange()">
+    </div>
+    <div class="const-field">
+      <label>DISTANCE_BONUS 18m</label>
+      <input type="number" id="c_b18" step="0.1" onchange="onConstChange()">
+    </div>
+    <div class="const-field">
+      <label>DISTANCE_BONUS 30m</label>
+      <input type="number" id="c_b30" step="0.1" onchange="onConstChange()">
+    </div>
+    <div class="const-field">
+      <label>DISTANCE_BONUS 50m</label>
+      <input type="number" id="c_b50" step="0.1" onchange="onConstChange()">
+    </div>
+    <div class="const-field">
+      <label>DISTANCE_BONUS 70m</label>
+      <input type="number" id="c_b70" step="0.1" onchange="onConstChange()">
+    </div>
+    <div class="const-field">
+      <label>DISTANCE_BONUS 90m</label>
+      <input type="number" id="c_b90" step="0.1" onchange="onConstChange()">
+    </div>
+    <div class="const-field">
+      <label>SIGMA 18m</label>
+      <input type="number" id="c_s18" step="0.1" min="0.1" onchange="onConstChange()">
+    </div>
+    <div class="const-field">
+      <label>SIGMA 30m</label>
+      <input type="number" id="c_s30" step="0.1" min="0.1" onchange="onConstChange()">
+    </div>
+    <div class="const-field">
+      <label>SIGMA 50m</label>
+      <input type="number" id="c_s50" step="0.1" min="0.1" onchange="onConstChange()">
+    </div>
+    <div class="const-field">
+      <label>SIGMA 70m</label>
+      <input type="number" id="c_s70" step="0.1" min="0.1" onchange="onConstChange()">
+    </div>
+    <div class="const-field">
+      <label>SIGMA 90m</label>
+      <input type="number" id="c_s90" step="0.1" min="0.1" onchange="onConstChange()">
+    </div>
+  </div>
+  <div class="theory-table" id="theoryTable"></div>
+</div>
+
+<!-- ── Controls ─────────────────────────────────────────── -->
+
+<div class="controls">
+  <div class="control-group">
+    <label>Skill level</label>
+    <div class="skill-row">
+      <input type="range" id="skillSlider" min="50" max="100" value="75">
+      <span class="skill-value" id="skillDisplay">75</span>
+      <span class="skill-label">range 50–100</span>
+    </div>
+  </div>
+  <div class="control-group">
+    <label>Sample size</label>
+    <div class="sample-row">
+      <select id="sampleSize">
+        <option value="1000">1 000</option>
+        <option value="5000" selected>5 000</option>
+        <option value="20000">20 000</option>
+        <option value="100000">100 000</option>
+      </select>
+    </div>
+  </div>
+  <div class="control-group">
+    <label>&nbsp;</label>
+    <button class="btn" onclick="runAll()">Re-simulate</button>
+  </div>
+</div>
+
+<!-- ── Overview: all distances for selected skill ─────── -->
+
+<div class="matrix-section">
+  <div class="section-title">All distances — skill <span id="overviewSkillLabel">75</span></div>
+  <div class="matrix" id="overviewMatrix"></div>
+</div>
+
+<hr>
+
+<!-- ── Skill comparison at selected distance ─────────── -->
+
+<div class="comparison-section">
+  <div style="display:flex; align-items:center; gap:16px; margin-bottom:14px;">
+    <div class="section-title" style="margin-bottom:0">Skill comparison at distance</div>
+    <select id="compDistance" onchange="renderComparison()">
+      <option value="18">18m</option>
+      <option value="30">30m</option>
+      <option value="50" selected>50m</option>
+      <option value="70">70m</option>
+      <option value="90">90m</option>
+    </select>
+  </div>
+  <div class="comparison-grid" id="compGrid"></div>
+</div>
+
+<hr>
+
+<!-- ── Detail: single skill + distance ───────────────── -->
+
+<div class="detail-section">
+  <div style="display:flex; align-items:center; gap:16px; margin-bottom:14px;">
+    <div class="section-title" style="margin-bottom:0">Detail</div>
+    <select id="detailDistance" onchange="renderDetail()">
+      <option value="18">18m</option>
+      <option value="30" selected>30m</option>
+      <option value="50">50m</option>
+      <option value="70">70m</option>
+      <option value="90">90m</option>
+    </select>
+  </div>
+  <div class="detail-chart" id="detailChart"></div>
+</div>
+
+<script>
+// ── Constants (live-editable) ────────────────────────────
+
+let SKILL_COEFFICIENT = 0.035
+let SKILL_BASE        = 4.75
+let DISTANCE_BONUS    = { 18: 1.5, 30: 0.8, 50: 0.3, 70:  0.0, 90: -0.5  }
+let DISTANCE_SIGMA    = { 18: 0.8, 30: 1.2, 50: 1.6, 70: 2.0,  90: 2.0   }
+const DISTANCES       = [18, 30, 50, 70, 90]
+const SKILL_LEVELS    = [50, 65, 75, 85, 100]
+
+const PRESETS = {
+  gdd: {
+    coeff: 0.085, base: 0.25,
+    b18: 1.5, b30: 0.8, b50: 0.0, b70: -0.8,  b90: -1.675,
+    s18: 0.8, s30: 1.2, s50: 1.6, s70: 2.0,   s90: 2.5,
+  },
+  proposed: {
+    coeff: 0.035, base: 4.75,
+    b18: 1.5, b30: 0.8, b50: 0.3, b70:  0.0,  b90: -0.5,
+    s18: 0.8, s30: 1.2, s50: 1.6, s70: 2.0,   s90: 2.0,
+  },
+}
+
+function applyPreset(name) {
+  const p = PRESETS[name]
+  document.getElementById('c_coeff').value = p.coeff
+  document.getElementById('c_base').value  = p.base
+  document.getElementById('c_b18').value   = p.b18
+  document.getElementById('c_b30').value   = p.b30
+  document.getElementById('c_b50').value   = p.b50
+  document.getElementById('c_b70').value   = p.b70
+  document.getElementById('c_b90').value   = p.b90
+  document.getElementById('c_s18').value   = p.s18
+  document.getElementById('c_s30').value   = p.s30
+  document.getElementById('c_s50').value   = p.s50
+  document.getElementById('c_s70').value   = p.s70
+  document.getElementById('c_s90').value   = p.s90
+  document.getElementById('btnGDD').classList.toggle('active',      name === 'gdd')
+  document.getElementById('btnProp').classList.toggle('active', name === 'proposed')
+  onConstChange()
+}
+
+function readConstants() {
+  SKILL_COEFFICIENT     = parseFloat(document.getElementById('c_coeff').value)
+  SKILL_BASE            = parseFloat(document.getElementById('c_base').value)
+  DISTANCE_BONUS[18]    = parseFloat(document.getElementById('c_b18').value)
+  DISTANCE_BONUS[30]    = parseFloat(document.getElementById('c_b30').value)
+  DISTANCE_BONUS[50]    = parseFloat(document.getElementById('c_b50').value)
+  DISTANCE_BONUS[70]    = parseFloat(document.getElementById('c_b70').value)
+  DISTANCE_BONUS[90]    = parseFloat(document.getElementById('c_b90').value)
+  DISTANCE_SIGMA[18]    = parseFloat(document.getElementById('c_s18').value)
+  DISTANCE_SIGMA[30]    = parseFloat(document.getElementById('c_s30').value)
+  DISTANCE_SIGMA[50]    = parseFloat(document.getElementById('c_s50').value)
+  DISTANCE_SIGMA[70]    = parseFloat(document.getElementById('c_s70').value)
+  DISTANCE_SIGMA[90]    = parseFloat(document.getElementById('c_s90').value)
+}
+
+function onConstChange() {
+  readConstants()
+  renderTheoryTable()
+  runAll()
+}
+
+function renderTheoryTable() {
+  const rows = SKILL_LEVELS.map(skill => {
+    const cells = DISTANCES.map(dist => {
+      const m = SKILL_COEFFICIENT * skill + SKILL_BASE + DISTANCE_BONUS[dist]
+      const v = Math.max(0, Math.min(10, m))
+      const cls = v >= 9 ? 'hi' : v >= 7.5 ? 'ok' : v >= 6 ? 'mid' : 'lo'
+      return `<td class="${cls}">${m.toFixed(2)}</td>`
+    })
+    return `<tr><td>${skill}</td>${cells.join('')}</tr>`
+  })
+  document.getElementById('theoryTable').innerHTML = `
+    <table>
+      <thead><tr>
+        <th>Skill</th>
+        ${DISTANCES.map(d => `<th>${d}m</th>`).join('')}
+      </tr></thead>
+      <tbody>${rows.join('')}</tbody>
+    </table>
+    <div style="font-size:11px;color:#475569;margin-top:6px;">Theoretical means (pre-clamp). Simulated means will differ slightly at the extremes.</div>`
+}
+
+// ── Core functions ───────────────────────────────────────
+
+function normalRandom(mean, sigma) {
+  let u = 0, v = 0
+  while (u === 0) u = Math.random()
+  while (v === 0) v = Math.random()
+  const z = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v)
+  return mean + z * sigma
+}
+
+function simulateAIShot(skill, distance) {
+  const mean  = SKILL_COEFFICIENT * skill + SKILL_BASE + DISTANCE_BONUS[distance]
+  const sigma = DISTANCE_SIGMA[distance]
+  const raw   = Math.round(normalRandom(mean, sigma))
+  return Math.max(0, Math.min(10, raw))
+}
+
+function theoreticalMean(skill, distance) {
+  return SKILL_COEFFICIENT * skill + SKILL_BASE + DISTANCE_BONUS[distance]
+}
+
+function simulate(skill, distance, n) {
+  const counts = new Array(11).fill(0)
+  for (let i = 0; i < n; i++) counts[simulateAIShot(skill, distance)]++
+  return counts
+}
+
+function computeStats(counts, n) {
+  let mean = 0
+  for (let s = 0; s <= 10; s++) mean += s * counts[s] / n
+  let variance = 0
+  for (let s = 0; s <= 10; s++) variance += counts[s] / n * (s - mean) ** 2
+  const stddev = Math.sqrt(variance)
+  const missRate = counts[0] / n * 100
+  const tendScore = counts[9] / n * 100 + counts[10] / n * 100
+  return { mean, stddev, missRate, tendScore }
+}
+
+// ── Colour helpers ───────────────────────────────────────
+
+function scoreColorClass(score) {
+  return `score-color-${score}`
+}
+
+function skillColorClass(skill) {
+  const map = { 50: 'skill-50', 65: 'skill-65', 75: 'skill-75', 85: 'skill-85', 100: 'skill-100' }
+  return map[skill] ?? ''
+}
+
+// Cache: keyed by "skill-distance-n"
+const cache = new Map()
+
+function getCounts(skill, distance, n) {
+  const key = `${skill}-${distance}-${n}`
+  if (!cache.has(key)) cache.set(key, simulate(skill, distance, n))
+  return cache.get(key)
+}
+
+function clearCache() { cache.clear() }
+
+// ── Overview matrix ──────────────────────────────────────
+
+function renderOverview() {
+  const skill  = parseInt(document.getElementById('skillSlider').value)
+  const n      = parseInt(document.getElementById('sampleSize').value)
+  const el     = document.getElementById('overviewMatrix')
+  document.getElementById('overviewSkillLabel').textContent = skill
+
+  let html = `<div class="matrix-row">
+    <div class="dist-label"></div>
+    <div class="matrix-bars">`
+  for (let s = 0; s <= 10; s++) {
+    html += `<div class="bar-col"><div class="bar-score-label">${s}</div></div>`
+  }
+  html += `</div><div class="matrix-stats"></div></div>`
+
+  for (const dist of DISTANCES) {
+    const counts = getCounts(skill, dist, n)
+    const { mean, stddev, missRate } = computeStats(counts, n)
+
+    html += `<div class="matrix-row">
+      <div class="dist-label">${dist}m</div>
+      <div class="matrix-bars">`
+
+    for (let s = 0; s <= 10; s++) {
+      const pct = counts[s] / n
+      const refMax = counts.slice(1).reduce((a, b) => Math.max(a, b), 1)
+      const heightPx = s === 0
+        ? Math.round((counts[0] / n) * 64)
+        : Math.round((counts[s] / refMax) * 64)
+      const minH = counts[s] > 0 ? Math.max(heightPx, 3) : 0
+      const tip = `${s}: ${counts[s].toLocaleString()} (${(pct*100).toFixed(2)}%)`
+      html += `<div class="bar-col" data-tip="${tip}">
+        <div class="bar-fill ${scoreColorClass(s)}${s === 0 ? ' zero-bar' : ''}"
+             style="height:${minH}px;"></div>
+      </div>`
+    }
+
+    html += `</div>
+      <div class="matrix-stats">
+        <div class="stat">
+          <span class="stat-label">Mean</span>
+          <span class="stat-value">${mean.toFixed(2)}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">σ</span>
+          <span class="stat-value">${stddev.toFixed(2)}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Miss%</span>
+          <span class="stat-value">${missRate.toFixed(1)}%</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Th.mean</span>
+          <span class="stat-value">${theoreticalMean(skill, dist).toFixed(2)}</span>
+        </div>
+      </div>
+    </div>`
+  }
+
+  el.innerHTML = html
+}
+
+// ── Skill comparison ─────────────────────────────────────
+
+function renderComparison() {
+  const dist = parseInt(document.getElementById('compDistance').value)
+  const n    = parseInt(document.getElementById('sampleSize').value)
+  const el   = document.getElementById('compGrid')
+
+  let html = ''
+  for (const skill of SKILL_LEVELS) {
+    const counts = getCounts(skill, dist, n)
+    const { mean, stddev, missRate } = computeStats(counts, n)
+
+    html += `<div class="comp-card">
+      <div class="comp-card-title">Skill <span class="comp-card-skill ${skillColorClass(skill)}">${skill}</span></div>
+      <div class="comp-chart">`
+
+    for (let s = 0; s <= 10; s++) {
+      const ref = Math.max(...counts.slice(1), 1)
+      const heightPx = s === 0
+        ? Math.round((counts[0] / n) * 80)
+        : Math.round((counts[s] / ref) * 80)
+      const minH = counts[s] > 0 ? Math.max(heightPx, 3) : 0
+      const tip = `${s}: ${counts[s].toLocaleString()} (${(counts[s]/n*100).toFixed(2)}%)`
+      html += `<div class="comp-bar-col" data-tip="${tip}">
+        <div class="comp-bar-fill ${scoreColorClass(s)}${s === 0 ? ' zero-bar' : ''}"
+             style="height:${minH}px"></div>
+        <div class="comp-bar-label">${s}</div>
+      </div>`
+    }
+
+    html += `</div>
+      <div class="comp-mean-line">Mean: <span class="comp-mean-value">${mean.toFixed(2)}</span></div>
+      <div class="comp-mean-line">σ: <span class="comp-mean-value">${stddev.toFixed(2)}</span></div>
+      <div class="comp-mean-line">Miss: <span class="comp-mean-value">${missRate.toFixed(1)}%</span></div>
+    </div>`
+  }
+
+  el.innerHTML = html
+}
+
+// ── Detail ───────────────────────────────────────────────
+
+function renderDetail() {
+  const skill = parseInt(document.getElementById('skillSlider').value)
+  const dist  = parseInt(document.getElementById('detailDistance').value)
+  const n     = parseInt(document.getElementById('sampleSize').value)
+  const el    = document.getElementById('detailChart')
+
+  const counts = getCounts(skill, dist, n)
+  const { mean, stddev, missRate, tendScore } = computeStats(counts, n)
+  const tMean = theoreticalMean(skill, dist)
+
+  let html = `<div class="detail-bars">`
+  for (let s = 0; s <= 10; s++) {
+    const pct = counts[s] / n
+    const ref = Math.max(...counts.slice(1), 1)
+    const heightPx = s === 0
+      ? Math.round(pct * 120)
+      : Math.round((counts[s] / ref) * 120)
+    const minH = counts[s] > 0 ? Math.max(heightPx, 3) : 0
+    const tip = `${s}: ${counts[s].toLocaleString()} hits (${(pct*100).toFixed(3)}%)`
+    html += `<div class="detail-bar-col" data-tip="${tip}">
+      <div class="detail-pct">${(pct*100).toFixed(2)}%</div>
+      <div class="detail-bar-fill ${scoreColorClass(s)}${s === 0 ? ' zero-bar' : ''}"
+           style="height:${minH}px"></div>
+      <div class="detail-score">${s}</div>
+    </div>`
+  }
+  html += `</div>
+
+  <div class="detail-stats-row">
+    <div class="detail-stat">
+      <span class="detail-stat-label">Simulated mean</span>
+      <span class="detail-stat-value highlight">${mean.toFixed(3)}</span>
+    </div>
+    <div class="detail-stat">
+      <span class="detail-stat-label">Theoretical mean</span>
+      <span class="detail-stat-value">${tMean.toFixed(3)}</span>
+    </div>
+    <div class="detail-stat">
+      <span class="detail-stat-label">Std dev (σ)</span>
+      <span class="detail-stat-value">${stddev.toFixed(3)}</span>
+    </div>
+    <div class="detail-stat">
+      <span class="detail-stat-label">σ input</span>
+      <span class="detail-stat-value">${DISTANCE_SIGMA[dist]}</span>
+    </div>
+    <div class="detail-stat">
+      <span class="detail-stat-label">Miss rate (0)</span>
+      <span class="detail-stat-value">${missRate.toFixed(2)}%</span>
+    </div>
+    <div class="detail-stat">
+      <span class="detail-stat-label">9–10 rate</span>
+      <span class="detail-stat-value">${tendScore.toFixed(2)}%</span>
+    </div>
+    <div class="detail-stat">
+      <span class="detail-stat-label">Samples</span>
+      <span class="detail-stat-value">${n.toLocaleString()}</span>
+    </div>
+  </div>`
+
+  el.innerHTML = html
+}
+
+// ── Wiring ───────────────────────────────────────────────
+
+function runAll() {
+  clearCache()
+  renderOverview()
+  renderComparison()
+  renderDetail()
+}
+
+document.getElementById('skillSlider').addEventListener('input', () => {
+  const v = document.getElementById('skillSlider').value
+  document.getElementById('skillDisplay').textContent = v
+  renderOverview()
+  renderDetail()
+})
+
+document.getElementById('sampleSize').addEventListener('change', runAll)
+
+// initial render — apply proposed preset to populate inputs, then render
+applyPreset('proposed')
+</script>
+</body>
+</html>

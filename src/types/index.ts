@@ -180,16 +180,16 @@ export interface Player {
  * base_mean(skill) = SKILL_COEFFICIENT × skill + SKILL_BASE
  * mean(skill, distance) = base_mean + distance_bonus
  */
-export const SKILL_COEFFICIENT = 0.085
-export const SKILL_BASE = 0.25
+export const SKILL_COEFFICIENT = 0.035
+export const SKILL_BASE = 4.75
 
 export const DISTANCE_BONUS: Readonly<Record<Distance, number>> = {
-  18: 1.5, 30: 0.8, 50: 0.0, 70: -0.8, 90: -1.675,
+  18: 1.5, 30: 0.8, 50: 0.3, 70: 0.0, 90: -0.5,
 }
 
 /** Standard deviation per distance (same for all skill levels) */
 export const DISTANCE_SIGMA: Readonly<Record<Distance, number>> = {
-  18: 0.8, 30: 1.2, 50: 1.6, 70: 2.0, 90: 2.5,
+  18: 0.8, 30: 1.2, 50: 1.6, 70: 2.0, 90: 2.0,
 }
 
 export const SKILL_MIN = 50

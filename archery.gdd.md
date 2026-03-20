@@ -93,14 +93,14 @@ Skill ranges from 50 to 100 (hard-clamped at both ends). Each
 competitor shot is sampled from a normal distribution:
 
   mean(skill, distance) = base_mean(skill) + distance_bonus(distance)
-  base_mean(skill) = 0.085 × skill + 0.25
-    → skill 100 = 8.75 overall average, skill 50 = 4.5 overall average
+  base_mean(skill) = 0.035 × skill + 4.75
+    → skill 100 = 8.25 base, skill 50 = 6.5 base
 
   distance_bonus:
-    18m: +1.5 | 30m: +0.8 | 50m: 0.0 | 70m: −0.8 | 90m: −1.675
+    18m: +1.5 | 30m: +0.8 | 50m: +0.3 | 70m: 0.0 | 90m: −0.5
 
   σ(distance):
-    18m: 0.8 | 30m: 1.2 | 50m: 1.6 | 70m: 2.0 | 90m: 2.5
+    18m: 0.8 | 30m: 1.2 | 50m: 1.6 | 70m: 2.0 | 90m: 2.0
 
 Spread is the same regardless of skill — only the mean changes.
 Samples are rounded to the nearest integer and clamped to [0, 10].
