@@ -37,4 +37,29 @@ Derived from anchors: skill 50 at 18m → mean 8.0, skill 100 at 18m → mean 9.
 | 100 | 9.75 | 9.05 | 8.55 | 8.25 | 7.75 |
 
 ### Simulator
-`simulator.html` at repo root — open in browser. Live-editable constants, hover tooltips with exact counts, theory table, GDD-original vs current preset buttons.
+`scripts/simulator.html` — open in browser. Live-editable constants, hover tooltips with exact counts, theory table, GDD-original vs current preset buttons.
+
+---
+
+# Reviewer 1
+
+PR: https://github.com/wpinrui/archery/pull/15
+
+## Type errors: 0
+
+## Bugs found: 0
+
+## Code smells: 3
+
+- [simulator.html:1001-1004](simulator.html#L1001-L1004) — Initial JS variable values for `DISTANCE_BONUS` and `DISTANCE_SIGMA` don't match the proposed preset that `applyPreset('proposed')` immediately applies on load. At declaration: `50: 0.0, 70: -0.5, 90: -0.75` and `90: 2.5`. The proposed preset (and actual game constants) are `50: 0.3, 70: 0.0, 90: -0.5` and `90: 2.0`. No runtime impact since the preset fires on load, but the initial values are stale GDD-original numbers, which is misleading.
+
+- [simulator.html:1160](simulator.html#L1160), [simulator.html:1217](simulator.html#L1217), [simulator.html:1257](simulator.html#L1257) — `maxCount` is declared and immediately computed in `renderOverview`, `renderComparison`, and `renderDetail`, but never read. Each function recomputes the same value inline (`const ref = Math.max(...counts.slice(1), 1)`) inside the loop. Dead variable × 3.
+
+- [simulator.html](simulator.html) — Standalone HTML tool committed to the repo root. Per prior feedback, mockup HTML files are throwaway artifacts and should not be committed. **Judgment call needed**: this is more sophisticated than a typical mockup (live presets, theory table, multi-chart), so it may be intentionally kept. Flag for implementer to decide.
+
+## Issues created: 0
+
+## Judgment calls
+- The `normalRandom` and `randInt` duplication in `scripts/simulate-balance.ts` is intentional (comment says "Duplicated here so the script runs standalone without bundler resolution"). Not flagged.
+- `GROWTH_SPAN = 12` (not 11): the taper formula reaches ~0.083 at age 29, not exactly 0. This is intentional per the GDD ("by age 29 it is ~0.17"). Not a bug.
+- GDD states "over 100 seasons, the mean rises from ~80 to ~89" — this describes the equilibrium field mean (including growth), not just rookie_mean. The formula `70 + season × 0.075` gives 70→77.5 for rookie_mean only; the field average being ~80 at start is consistent with growth pushing the mean up. Not a discrepancy.
