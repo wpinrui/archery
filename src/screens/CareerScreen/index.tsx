@@ -96,7 +96,7 @@ export default function CareerScreen() {
           <div className={styles.statCard}>
             <span className={styles.statLabel}>Best Finish</span>
             <span className={styles.statValue} style={{ color: posColor(bestPos) }}>
-              P{bestPos}
+              #{bestPos}
             </span>
           </div>
 
@@ -105,9 +105,9 @@ export default function CareerScreen() {
           <div className={styles.statCard}>
             <span className={styles.statLabel}>Event Medals</span>
             <div className={styles.medalTally}>
-              <span className={styles.medalG}>{totalG}G</span>
-              <span className={styles.medalS}>{totalS}S</span>
-              <span className={styles.medalB}>{totalB}B</span>
+              <span className={`${styles.medalCircle} ${styles.medalCircleG}`}>{totalG}</span>
+              <span className={`${styles.medalCircle} ${styles.medalCircleS}`}>{totalS}</span>
+              <span className={`${styles.medalCircle} ${styles.medalCircleB}`}>{totalB}</span>
             </div>
           </div>
 
@@ -148,7 +148,7 @@ export default function CareerScreen() {
                     <span className={styles.cAge}>{rec.age}</span>
 
                     <div className={styles.cPos}>
-                      <span style={{ color: posColor(rec.pos) }}>P{rec.pos}</span>
+                      <span style={{ color: posColor(rec.pos) }}>#{rec.pos}</span>
                     </div>
 
                     <span className={styles.cPts}>{rec.pts}</span>

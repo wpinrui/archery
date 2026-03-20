@@ -152,14 +152,27 @@ summary screen → next season begins.
 6. **Country selection** — shown once on first launch
 
 7. **Retirement screen** — shown when the player retires.
-   Opens with an animated sequence highlighting 5 career
-   moments, prioritised as follows:
-     1. Championship wins (if any)
-     2. Event wins / podium finishes (if no championships)
-     3. Best championship position finishes (if no podiums)
-   After the 5 highlights, the full career summary table is
-   shown: one row per season, with age, championship position,
-   points total, and medals earned that season.
+   Opens with a full-screen animated sequence of 5 career
+   highlights, displayed one at a time in ascending order
+   of greatness (weakest first, strongest last):
+     Highlights 1–4: Individual event medal finishes (one
+       medal per highlight). Selection priority within the
+       career's medal pool: gold > silver > bronze. When
+       multiple medals exist at the same tier, prefer medals
+       from different events (countries) for variety; break
+       remaining ties at random. If the player earned all
+       their medals at the same event, all four highlights
+       may show that event. Each highlight shows the medal
+       emoji, event name, season number, and player age.
+     Highlight 5: Best championship finish. If the player
+       won the championship more than once, the count is
+       shown (e.g., "World Champion × 2").
+   Each highlight fades in, holds briefly, then fades out
+   before the next appears. After all five, the retirement
+   summary screen is shown with: player identity, career
+   stats, a compact highlights strip, and the full career
+   table (one row per season with age, championship
+   position, points total, and medals earned that season).
 
 8. **Event lobby** — shown before each event begins (after
    country selection on first launch, and after each

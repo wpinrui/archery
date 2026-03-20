@@ -103,7 +103,7 @@ export default function EventLobby() {
           <div className={styles.seasonBarDot} />
           <div className={styles.seasonBarItem}>
             <span className={styles.seasonBarLabel}>Standing</span>
-            <span className={styles.seasonBarValue}>P5 <span className={styles.seasonBarOf}>· 89 pts</span></span>
+            <span className={styles.seasonBarValue}>#5 <span className={styles.seasonBarOf}>· 89 pts</span></span>
           </div>
         </div>
 
@@ -121,7 +121,7 @@ export default function EventLobby() {
                 </div>
                 <span className={styles.timelineName}>{evt.shortName}</span>
                 {done && result && (
-                  <span className={styles.timelineResult}>P{result.pos} · {result.pts}pts</span>
+                  <span className={styles.timelineResult}>#{result.pos} · {result.pts}pts</span>
                 )}
                 {current && <span className={styles.timelineCurrent}>NOW</span>}
                 {!done && !current && <span className={styles.timelineAhead}>—</span>}

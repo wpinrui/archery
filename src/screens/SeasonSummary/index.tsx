@@ -158,7 +158,7 @@ export default function SeasonSummary() {
           <div className={styles.seasonBarItem}>
             <span className={styles.seasonBarLabel}>Final Standing</span>
             <span className={styles.seasonBarValue}>
-              P{PLAYER.rank} <span className={styles.seasonBarOf}>· {playerTotal} pts</span>
+              #{PLAYER.rank} <span className={styles.seasonBarOf}>· {playerTotal} pts</span>
             </span>
           </div>
           <div className={styles.seasonBarSpacer} />
@@ -182,7 +182,7 @@ export default function SeasonSummary() {
           <div className={styles.playerSide}>
             <span className={styles.playerSideLabel}>YOUR SEASON</span>
             <div className={styles.playerResult}>
-              <span className={styles.playerPos}>P{PLAYER.rank}</span>
+              <span className={styles.playerPos}>#{PLAYER.rank}</span>
               <span className={styles.playerPts}>{playerTotal} pts</span>
             </div>
             {gain > 0 && (
@@ -210,7 +210,7 @@ export default function SeasonSummary() {
                   className={styles.recapResult}
                   style={{ color: medal ? posColor(result.pos) : undefined }}
                 >
-                  P{result.pos} · {result.pts}pts
+                  #{result.pos} · {result.pts}pts
                 </span>
               </div>
             )
