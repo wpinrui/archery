@@ -83,7 +83,10 @@ export default function CountrySelectionScreen() {
                 <div
                   key={c.code}
                   className={`${styles.countryItem} ${c.code === selectedCode ? styles.countryItemSelected : ''}`}
+                  role="button"
+                  tabIndex={0}
                   onClick={() => setSelectedCode(c.code)}
+                  onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setSelectedCode(c.code) }}
                 >
                   <Flag code={c.code} className={styles.itemFlag} />
                   <span className={styles.itemName}>{c.name}</span>
