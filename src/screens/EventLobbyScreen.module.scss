@@ -12,10 +12,19 @@
 
 .bg {
   position: absolute;
-  inset: -2rem;
+  inset: -4rem;
   background: url('/hub.jpg') center / cover no-repeat;
   filter: blur(10px);
   z-index: 0;
+  animation: bgDrift 15s ease-in-out infinite alternate;
+  transform-origin: 55% 45%;
+}
+
+@keyframes bgDrift {
+  0%   { transform: scale(1)    translate(0, 0); }
+  33%  { transform: scale(1.04) translate(-0.8%, 0.5%); }
+  66%  { transform: scale(1.02) translate(0.5%, -0.6%); }
+  100% { transform: scale(1.05) translate(-0.3%, 0.8%); }
 }
 
 .vignette {
@@ -297,7 +306,7 @@
   font-style: italic;
   font-family: Georgia, serif;
   line-height: 1;
-  padding: 1px 0 0;
+  padding: 2px 0 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -339,14 +348,18 @@
   align-items: center;
   gap: 0;
   padding: 0.45rem 0.75rem;
+  border-left: 2px solid transparent;
   border-bottom: 1px solid rgba(255,255,255,0.04);
 
   &:last-child { border-bottom: none; }
 }
 
 .standingsHeaderRow {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   padding: 0.3rem 0.75rem;
-  background: rgba(255,255,255,0.025);
+  background: var(--panel-bg-inner);
   border-bottom: 1px solid rgba(255,255,255,0.07) !important;
 }
 
@@ -494,41 +507,58 @@
   position: fixed;
   inset: 0;
   z-index: 10;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: overlayIn 0.15s ease-out;
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes dialogIn {
+  from { opacity: 0; transform: scale(0.96) translateY(6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .dialog {
   background: var(--panel-bg);
   border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 0.5rem;
-  backdrop-filter: blur(12px);
-  width: 320px;
+  border-radius: 0.6rem;
+  backdrop-filter: blur(16px);
+  width: 340px;
   max-height: 80vh;
   overflow-y: auto;
+  animation: dialogIn 0.2s ease-out;
+
+  &::-webkit-scrollbar       { width: 3px; }
+  &::-webkit-scrollbar-track  { background: transparent; }
+  &::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.15); border-radius: 2px; }
 }
 
 .dialogHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 1.1rem 1.3rem 0.9rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
 }
 
 .dialogTitle {
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text);
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.75);
 }
 
 .dialogClose {
   font-size: 1.2rem;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.3);
   cursor: pointer;
   line-height: 1;
   transition: color 0.15s;
@@ -537,31 +567,51 @@
 }
 
 .pointsGrid {
-  padding: 0.75rem 1.25rem 1rem;
+  padding: 0.5rem 1.3rem 1.1rem;
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
 .pointsRow {
-  display: flex;
+  display: grid;
+  grid-template-columns: 3.5rem 1fr 2.5rem;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.35rem 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  gap: 0.75rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
 
   &:last-child { border-bottom: none; }
 }
 
+.pointsRowAccented {
+  padding: 0.5rem 0;
+}
+
 .pointsPos {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-family: var(--font-mono);
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.45);
+  font-weight: 600;
+}
+
+.pointsBarTrack {
+  height: 4px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.pointsBar {
+  height: 100%;
+  border-radius: 2px;
+  opacity: 0.7;
+  transition: width 0.3s ease-out;
 }
 
 .pointsVal {
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-family: var(--font-mono);
   font-weight: 700;
-  color: var(--text);
+  color: rgba(255,255,255,0.7);
+  text-align: right;
 }
