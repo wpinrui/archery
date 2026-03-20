@@ -163,15 +163,16 @@ export default function RetirementScreen() {
         </div>
 
         {/* ── Concise highlights strip ─────────────────────── */}
+        <span className={styles.sectionLabel}>Career Highlights</span>
         <div className={styles.pillStrip}>
-          {SLIDES.map((s, i) => (
-            <div key={i} className={`${styles.pill} ${i === 4 ? styles.pillChamp : ''}`}>
+          {SLIDES.slice(0, 4).map((s, i) => (
+            <div key={i} className={styles.pill}>
               <div className={styles.pillTop}>
                 <span className={styles.pillEmoji}>{s.emoji}</span>
-                <span className={styles.pillLabel}>{i === 4 ? 'Best championship finish: Champion' : s.detail}</span>
+                <span className={styles.pillLabel}>{s.detail}</span>
               </div>
-              <span className={styles.pillPos} style={i < 4 ? { color: posColor(s.eventPos) } : undefined}>
-                {i === 4 ? s.detail : `#${s.eventPos}`}
+              <span className={styles.pillPos} style={{ color: posColor(s.eventPos) }}>
+                #{s.eventPos}
               </span>
             </div>
           ))}
