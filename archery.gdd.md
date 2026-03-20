@@ -112,14 +112,25 @@ is already in the roster, the player replaces that athlete.
 Otherwise the player replaces the lowest-skill athlete and
 takes their country slot.
 
-### Aging & Retirement
+### Growth, Aging & Retirement
 
-Competitors age one year per season and their skill degrades
-following the same quadratic curve as the player's shakiness
-(proportionally scaled). Each season, the 5 lowest-skill
-competitors retire and are replaced by rookies aged 18–25
-with normally distributed skill — allowing for rare wunderkind
-entrants. Country slots never change.
+Between ages 18 and 29, competitors gain skill each season.
+The gain is largest when young and tapers toward zero at 30:
+
+  seasonal_gain = growth_rate × (1 − (age − 18) / 12)
+
+growth_rate is a tunable constant (default 2.0). At age 18
+the gain is 2.0 per season; by age 29 it is ~0.17. Skill is
+clamped to a maximum of 100.
+
+From age 30 onward, competitors' skill degrades following the
+same quadratic curve as the player's shakiness (proportionally
+scaled).
+
+Each season, the 5 lowest-skill competitors retire and are
+replaced by rookies aged 18–25 with normally distributed
+skill — allowing for rare wunderkind entrants. Country slots
+never change.
 
 ## Career & Screens
 

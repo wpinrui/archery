@@ -22,6 +22,7 @@ import {
   SKILL_MIN,
 } from '../types'
 import { COUNTRIES } from '../data/countries'
+import { generateName } from '../data/namePool'
 
 // ── Random helpers ──────────────────────────────────────────────────
 
@@ -94,51 +95,10 @@ export function generateInitialRoster(playerCountryCode: CountryCode): Athlete[]
     }))
 }
 
-/**
- * Pool of first names per region for rookie generation.
- * Keeps the original surname but swaps the first name for variety.
- */
-const ROOKIE_FIRST_NAMES: Record<string, string[]> = {
-  european: ['Jan', 'Luca', 'Emil', 'Oskar', 'Mateo', 'Nils', 'Tomas', 'Victor', 'Felix', 'Anton'],
-  eastAsian: ['Hiroshi', 'Jun', 'Min-Jun', 'Wei', 'Hao', 'Ryo', 'Sung', 'Kai', 'Tao', 'Yuki'],
-  southAsian: ['Raj', 'Vikram', 'Amir', 'Ravi', 'Hassan', 'Omar', 'Tariq', 'Farhan', 'Sami', 'Anil'],
-  african: ['Amara', 'Chidi', 'Kofi', 'Sekou', 'Jabari', 'Tendai', 'Ayo', 'Mamadou', 'Abdi', 'Emeka'],
-  americas: ['Diego', 'Rafael', 'Santiago', 'Gabriel', 'Matias', 'Andres', 'Luis', 'Jaime', 'Hugo', 'Oscar'],
-  anglophone: ['Ryan', 'Jack', 'Owen', 'Ethan', 'Callum', 'Finn', 'Blake', 'Riley', 'Mason', 'Coby'],
-}
-
-const COUNTRY_REGION: Partial<Record<CountryCode, string>> = {
-  ARG: 'americas', AUS: 'anglophone', AUT: 'european', BEL: 'european', BRA: 'americas',
-  CAN: 'anglophone', CHE: 'european', CHN: 'eastAsian', CMR: 'african', CZE: 'european',
-  DEU: 'european', DNK: 'european', EGY: 'southAsian', ESP: 'european', ETH: 'african',
-  FIN: 'european', FRA: 'european', GBR: 'anglophone', GHA: 'african', GRC: 'european',
-  HRV: 'european', HUN: 'european', IND: 'southAsian', IRN: 'southAsian', ITA: 'european',
-  JPN: 'eastAsian', KEN: 'african', KOR: 'eastAsian', MAR: 'southAsian', MEX: 'americas',
-  NGA: 'african', NLD: 'european', NOR: 'european', NZL: 'anglophone', PAK: 'southAsian',
-  POL: 'european', PRT: 'european', ROU: 'european', RUS: 'european', SEN: 'african',
-  SRB: 'european', SWE: 'european', TUN: 'southAsian', TUR: 'southAsian', TZA: 'african',
-  UGA: 'african', UKR: 'european', USA: 'anglophone', ZAF: 'anglophone', ZMB: 'african',
-}
-
-function generateRookieName(countryCode: CountryCode): string {
-  const country = COUNTRIES.find(c => c.code === countryCode)
-  if (!country) return 'Unknown'
-
-  // Take the surname (everything after the first word) to preserve compound surnames
-  const parts = country.athleteName.split(' ')
-  const surname = parts.slice(1).join(' ')
-
-  const region = COUNTRY_REGION[countryCode] ?? 'european'
-  const firstNames = ROOKIE_FIRST_NAMES[region]
-  const firstName = firstNames[randInt(0, firstNames.length - 1)]
-
-  return `${firstName} ${surname}`
-}
-
 /** Generate a rookie to replace a retiring competitor */
 export function generateRookie(countryCode: CountryCode): Athlete {
   return {
-    name: generateRookieName(countryCode),
+    name: generateName(countryCode),
     countryCode,
     age: randInt(ROOKIE_AGE_MIN, ROOKIE_AGE_MAX),
     skill: Math.max(SKILL_MIN, Math.min(SKILL_MAX, Math.round(normalRandom(70, 10)))),

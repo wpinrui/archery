@@ -28,13 +28,13 @@ export interface MedalTally {
 // ── Countries ────────────────────────────────────────────────────────
 
 export type CountryCode =
-  | 'ARG' | 'AUS' | 'AUT' | 'BEL' | 'BRA' | 'CAN' | 'CHE' | 'CHN'
-  | 'CMR' | 'CZE' | 'DEU' | 'DNK' | 'EGY' | 'ESP' | 'ETH' | 'FIN'
-  | 'FRA' | 'GBR' | 'GHA' | 'GRC' | 'HRV' | 'HUN' | 'IND' | 'IRN'
-  | 'ITA' | 'JPN' | 'KEN' | 'KOR' | 'MAR' | 'MEX' | 'NGA' | 'NLD'
-  | 'NOR' | 'NZL' | 'PAK' | 'POL' | 'PRT' | 'ROU' | 'RUS' | 'SEN'
-  | 'SRB' | 'SWE' | 'TUN' | 'TUR' | 'TZA' | 'UGA' | 'UKR' | 'USA'
-  | 'ZAF' | 'ZMB'
+  | 'ARG' | 'AUS' | 'BRA' | 'CAN' | 'CHE' | 'CHL' | 'CHN' | 'COL'
+  | 'CRI' | 'CZE' | 'DEU' | 'DNK' | 'EGY' | 'ESP' | 'FIN' | 'FRA'
+  | 'GBR' | 'GRC' | 'HKG' | 'HRV' | 'IDN' | 'IND' | 'IRL' | 'ITA'
+  | 'JAM' | 'JPN' | 'KAZ' | 'KEN' | 'KOR' | 'MAR' | 'MEX' | 'MNG'
+  | 'MYS' | 'NGA' | 'NLD' | 'NOR' | 'NPL' | 'NZL' | 'PHL' | 'POL'
+  | 'PRT' | 'ROU' | 'SGP' | 'SWE' | 'THA' | 'TUR' | 'TWN' | 'USA'
+  | 'VNM' | 'ZAF'
 
 export interface Country {
   code: CountryCode
