@@ -1,73 +1,24 @@
-# React + TypeScript + Vite
+# Long Draw Archery
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A single-player archery career game built with React, TypeScript, and Vite.
 
-Currently, two official plugins are available:
+## About
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Long Draw Archery puts you on the professional archery world tour. Compete across 5 events per season in real-world cities — Seoul, Paris, Las Vegas, Sydney, and Cape Town — each with its own mix of distances from 18m to 90m.
 
-## React Compiler
+The core mechanic is real-time aim stabilisation. Your bow drifts continuously from simulated hand tremor, and you correct by countering the movement. At longer distances, you'll need to compensate for gravity drop and read the windsock to adjust for wind — no assists, just learned intuition.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Each event ranks you against 49 AI competitors on a full leaderboard. Event results feed into season-long championship standings, with the top finisher crowned World Champion. Strong finishes reduce your bow shakiness over time, but an aging curve kicks in from age 30, making each season progressively harder. Your career starts at 18 and ends when you choose to retire.
 
-## Expanding the ESLint configuration
+The game tracks your full career history: championship positions, medals earned, and career highlights shown in a retirement sequence when you finally hang up the bow.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Attributions
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Photos from [Unsplash](https://unsplash.com):
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- [Ameer Basheer](https://unsplash.com/photos/JHDqhEFZJjs)
+- [Guillaume Flandre](https://unsplash.com/photos/0YMcQKJXtc4)
+- [Hwang Inkeom](https://unsplash.com/photos/NNGxaQpgQrM)
+- [Leif Christoph Gottwald](https://unsplash.com/photos/hu52naQz1uk)
+- [Nerissa J](https://unsplash.com/photos/FDmOJZOA2sk)
+- [Roman Grachev](https://unsplash.com/photos/XP-b7U3dVX8)
