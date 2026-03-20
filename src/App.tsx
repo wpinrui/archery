@@ -99,14 +99,15 @@ function MockupLayout() {
 }
 
 /**
- * Entry-point gate — reads game phase and redirects to the appropriate screen.
+ * Resume gate — reads game phase and redirects to the appropriate in-game screen.
+ * Mounted at /play; reached when the player chooses "Continue" on TitleScreen.
  *
- * Playing sub-screen heuristic (for resume on direct / navigation):
+ * Playing sub-screen heuristic (for resume):
  *   - arrows in progress  → /game/shooting
  *   - otherwise           → /game/event-lobby
  *
  * Once real screens are in place they drive navigation themselves via
- * useNavigate(); this gate only determines the landing point on cold load.
+ * useNavigate(); this gate only determines the landing point on resume.
  */
 function PhaseGate() {
   const phase             = useGameStore(s => s.phase)

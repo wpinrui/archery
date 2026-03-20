@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../store/gameStore'
 import styles from './TitleScreen.module.scss'
@@ -10,6 +10,11 @@ export default function TitleScreen() {
 
   const hasCareer = phase !== 'country-selection'
   const [confirming, setConfirming] = useState(false)
+  const cancelRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (confirming) cancelRef.current?.focus()
+  }, [confirming])
 
   function handleContinue() {
     navigate('/play')
@@ -80,7 +85,7 @@ export default function TitleScreen() {
                 <button className={styles.confirmYes} onClick={handleConfirmNewGame}>
                   Confirm
                 </button>
-                <button className={styles.confirmCancel} onClick={() => setConfirming(false)}>
+                <button className={styles.confirmCancel} ref={cancelRef} onClick={() => setConfirming(false)}>
                   Cancel
                 </button>
               </div>
