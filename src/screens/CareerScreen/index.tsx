@@ -148,7 +148,6 @@ export default function CareerScreen() {
                     <span className={styles.cAge}>{rec.age}</span>
 
                     <div className={styles.cPos}>
-                      {rec.champ && <span className={styles.cupStar}>★</span>}
                       <span style={{ color: posColor(rec.pos) }}>P{rec.pos}</span>
                     </div>
 
