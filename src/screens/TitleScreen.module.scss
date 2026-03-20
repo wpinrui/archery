@@ -65,28 +65,26 @@
 // ── Title block ───────────────────────────────────────────────────────
 
 .titleBlock {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
   animation: titleIn 0.9s cubic-bezier(0.22, 0.68, 0, 1.05) both;
 }
 
-.eyebrow {
-  font-size: clamp(1.6rem, 3.5vw, 3rem);
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--accent);
-  font-weight: 700;
-}
-
 .title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   font-size: clamp(4.5rem, 11vw, 8.5rem);
   font-weight: 800;
   letter-spacing: -0.03em;
   color: var(--text);
   line-height: 1;
-  text-align: center;
+}
+
+.titleAccent {
+  color: var(--accent);
+}
+
+.titleIndent {
+  padding-left: 2ch;
 }
 
 // ── Actions ───────────────────────────────────────────────────────────
