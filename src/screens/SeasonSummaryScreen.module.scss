@@ -328,10 +328,10 @@
   &::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.15); border-radius: 2px; }
 }
 
-// Grid: # | flag | name | E1 | E2 | E3 | E4 | E5 | Total
+// Grid: # | flag | name | E1…EN | Total
+// grid-template-columns set via inline style (driven by EVENT_SCHEDULE.length)
 .standingsRow {
   display: grid;
-  grid-template-columns: 2rem 1.6rem 1fr repeat(5, 3.2rem) 3.5rem;
   align-items: center;
   gap: 0;
   padding: 0.45rem 0.75rem;

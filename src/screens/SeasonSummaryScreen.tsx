@@ -37,10 +37,15 @@ export default function SeasonSummaryScreen() {
   const skillGain = bracket.reductionPercent
   const isDeclining = player.age > AGING_THRESHOLD
 
+  const gridColumns = `2rem 1.6rem 1fr repeat(${EVENT_SCHEDULE.length}, 3.2rem) 3.5rem`
+
   function handleNextSeason() {
-    const isChampion = playerStanding.rank === 1
-    completeSeason()
-    navigate(isChampion ? '/game/victory' : '/game/event-lobby')
+    if (playerStanding.rank === 1) {
+      navigate('/game/victory')
+    } else {
+      completeSeason()
+      navigate('/game/event-lobby')
+    }
   }
 
   return (
@@ -131,7 +136,7 @@ export default function SeasonSummaryScreen() {
           <div className={styles.standingsTable}>
 
             {/* Header row */}
-            <div className={`${styles.standingsRow} ${styles.standingsHeaderRow}`}>
+            <div className={`${styles.standingsRow} ${styles.standingsHeaderRow}`} style={{ gridTemplateColumns: gridColumns }}>
               <span className={styles.cRank}>#</span>
               <span className={styles.cFlag} />
               <span className={styles.cName} />
@@ -151,6 +156,7 @@ export default function SeasonSummaryScreen() {
                   <div
                     key={row.countryCode}
                     className={`${styles.standingsRow} ${row.isPlayer ? styles.playerRow : ''} ${medal ? styles.medalRow : ''}`}
+                    style={{ gridTemplateColumns: gridColumns }}
                   >
                     <span
                       className={styles.cRank}
