@@ -1,0 +1,470 @@
+// ── Container ─────────────────────────────────────────────────────────
+
+.container {
+  height: 100vh;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.bg {
+  position: absolute;
+  inset: -2rem;
+  background: url('/menus-bg.jpg') center / cover no-repeat;
+  filter: blur(10px);
+  z-index: 0;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 80% at 50% 50%, transparent 20%, rgba(0,0,0,0.82) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.5) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 860px;
+  height: 100%;
+  padding: 48px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+// ── Season bar ────────────────────────────────────────────────────────
+
+.seasonBar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--panel-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  padding: 0.9rem 1.5rem;
+  flex-shrink: 0;
+}
+
+.seasonBarItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.seasonBarLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.5);
+}
+
+.seasonBarValue {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+.seasonBarOf {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.5);
+}
+
+.seasonBarDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  flex-shrink: 0;
+}
+
+.seasonBarSpacer { flex: 1; }
+
+.completedBadge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+  border: 1px solid rgba(232, 200, 74, 0.4);
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.6rem;
+}
+
+// ── Champion + player hero ────────────────────────────────────────────
+
+.heroCard {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  background: var(--panel-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.champSide {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.25rem 1.75rem;
+  background: rgba(232, 200, 74, 0.05);
+  border-right: 1px solid rgba(232, 200, 74, 0.15);
+}
+
+.champCrown {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+.champIdentity {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.champFlag {
+  width: 1.75rem;
+  height: auto;
+  border-radius: 2px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.champName {
+  font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.champTotal {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgba(232, 200, 74, 0.7);
+  line-height: 1;
+}
+
+.champPtsLabel {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: rgba(232, 200, 74, 0.45);
+}
+
+.heroDivider {
+  width: 1px;
+  background: rgba(255,255,255,0.07);
+  flex-shrink: 0;
+}
+
+.playerSide {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.25rem 1.75rem;
+}
+
+.playerSideLabel {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.4);
+}
+
+.playerResult {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.playerPos {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.playerPts {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.6);
+}
+
+.playerNote {
+  font-size: 0.78rem;
+  color: rgba(90, 224, 122, 0.75);
+  letter-spacing: 0.02em;
+  margin-top: 0.1rem;
+}
+
+.playerNoteDecline {
+  font-size: 0.78rem;
+  color: rgba(224, 90, 90, 0.8);
+  letter-spacing: 0.02em;
+}
+
+// ── Season arc recap ──────────────────────────────────────────────────
+
+.eventRecap {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  background: var(--panel-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.recapStep {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.85rem 0.5rem;
+  position: relative;
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(255,255,255,0.05);
+  }
+}
+
+.recapFlagWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recapFlag {
+  width: 1.75rem;
+  height: auto;
+  border-radius: 2px;
+  display: block;
+}
+
+.recapName {
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.8);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.recapResult {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.55);
+  text-align: center;
+}
+
+// ── Championship standings ────────────────────────────────────────────
+
+.standings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+  min-height: 0;
+}
+
+.standingsLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.75);
+  flex-shrink: 0;
+}
+
+.standingsTable {
+  background: var(--panel-bg-inner);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.standingsBody {
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+
+  &::-webkit-scrollbar       { width: 3px; }
+  &::-webkit-scrollbar-track  { background: transparent; }
+  &::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.15); border-radius: 2px; }
+}
+
+// Grid: # | flag | name | E1 | E2 | E3 | E4 | E5 | Total
+.standingsRow {
+  display: grid;
+  grid-template-columns: 2rem 1.6rem 1fr repeat(5, 3.2rem) 3.5rem;
+  align-items: center;
+  gap: 0;
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+
+  &:last-child { border-bottom: none; }
+}
+
+.standingsHeaderRow {
+  padding: 0.3rem 0.75rem;
+  background: rgba(255,255,255,0.025);
+  border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+  flex-shrink: 0;
+}
+
+.medalRow {
+  background: rgba(255,255,255,0.02);
+}
+
+.playerRow {
+  border-left: 2px solid var(--accent);
+  background: rgba(232, 200, 74, 0.05);
+
+  .cName  { color: var(--accent); }
+  .cTotal { color: var(--accent); }
+}
+
+// Shared column cells
+.cRank {
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: rgba(255,255,255,0.5);
+}
+
+.cFlag {
+  width: 1.1rem;
+  height: auto;
+  border-radius: 1px;
+  display: block;
+}
+
+.cName {
+  font-size: 0.88rem;
+  color: rgba(240,240,240,0.85);
+  padding-right: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cEvent {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+}
+
+.cEventPos {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: rgba(240,240,240,0.9);
+  line-height: 1;
+}
+
+.cEventPts {
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  line-height: 1;
+  color: rgba(255,255,255,0.4);
+}
+
+.cTotal {
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text);
+  text-align: right;
+}
+
+.standingsHeaderRow .cTotal {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.8rem;
+}
+
+.headerFlag {
+  width: 1.1rem;
+  height: auto;
+  border-radius: 1px;
+  display: block;
+}
+
+// ── Action row ────────────────────────────────────────────────────────
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.25rem;
+  flex-shrink: 0;
+}
+
+.careerBtn {
+  padding: 0.55rem 1.4rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 0.3rem;
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.06);
+  transition: border-color 0.15s, background 0.15s;
+  cursor: pointer;
+
+  &:hover {
+    border-color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.1);
+  }
+}
+
+.nextBtn {
+  padding: 0.7rem 2.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  background: var(--accent);
+  color: #0d0d0d;
+  border: none;
+  border-radius: 0.3rem;
+  transition: opacity 0.15s;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+
+  &:hover { opacity: 0.88; }
+}
