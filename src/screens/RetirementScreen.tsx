@@ -81,11 +81,6 @@ export default function RetirementScreen() {
   const medalHistory = useGameStore(s => s.medalHistory)
   const resetCareer = useGameStore(s => s.resetCareer)
 
-  // Guard: only accessible when retired
-  if (!player || phase !== 'retired') {
-    return <Navigate to="/play" replace />
-  }
-
   const highlights = useMemo(
     () => computeRetirementHighlights(medalHistory, careerHistory),
     [medalHistory, careerHistory],
@@ -101,6 +96,11 @@ export default function RetirementScreen() {
     () => highlights.filter(h => h.type === 'medal') as Extract<RetirementHighlight, { type: 'medal' }>[],
     [highlights],
   )
+
+  // Guard: only accessible when retired
+  if (!player || phase !== 'retired') {
+    return <Navigate to="/play" replace />
+  }
 
   // ── Timing ──────────────────────────────────────────────────────────
   // Total children in overlay: 1 (title card) + slides.length
