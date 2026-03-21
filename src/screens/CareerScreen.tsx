@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate, Navigate } from 'react-router-dom'
 import { useGameStore } from '../store/gameStore'
 import Flag from '../components/Flag'
@@ -16,6 +17,7 @@ function posColor(pos: number): string {
 
 export default function CareerScreen() {
   const navigate = useNavigate()
+  const [showConfirm, setShowConfirm] = useState(false)
 
   const phase = useGameStore(s => s.phase)
   const player = useGameStore(s => s.player)
@@ -182,10 +184,26 @@ export default function CareerScreen() {
         {/* ── Actions ─────────────────────────────────────────────── */}
         <div className={styles.actionRow}>
           <button className={styles.backBtn} onClick={handleBack}>← Back</button>
-          <button className={styles.retireBtn} onClick={handleRetire}>Retire</button>
+          <button className={styles.retireBtn} onClick={() => setShowConfirm(true)}>Retire</button>
         </div>
 
       </div>
+
+      {/* ── Retire confirmation dialog ──────────────────────────── */}
+      {showConfirm && (
+        <div className={styles.dialogOverlay} onClick={() => setShowConfirm(false)}>
+          <div className={styles.dialog} onClick={e => e.stopPropagation()}>
+            <span className={styles.dialogTitle}>Retire from competition?</span>
+            <p className={styles.dialogBody}>
+              This will end your career permanently. There is no coming back.
+            </p>
+            <div className={styles.dialogActions}>
+              <button className={styles.dialogCancel} onClick={() => setShowConfirm(false)}>Cancel</button>
+              <button className={styles.dialogConfirm} onClick={handleRetire}>Retire</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
