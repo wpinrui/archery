@@ -15,6 +15,7 @@ export default function CareerScreen() {
   const player = useGameStore(s => s.player)
   const currentSeason = useGameStore(s => s.currentSeason)
   const careerHistory = useGameStore(s => s.careerHistory)
+  const completedEvents = useGameStore(s => s.completedEvents)
   const completeSeason = useGameStore(s => s.completeSeason)
   const retire = useGameStore(s => s.retire)
 
@@ -37,7 +38,7 @@ export default function CareerScreen() {
   }
 
   function handleRetire() {
-    completeSeason()
+    if (completedEvents.length > 0) completeSeason()
     retire()
     navigate('/retired')
   }
