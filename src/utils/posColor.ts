@@ -3,5 +3,5 @@ export function posColor(pos: number): string {
   if (pos === 1) return '#e8c84a'
   if (pos === 2) return '#9eb8cc'
   if (pos === 3) return '#c8824a'
-  return 'rgba(255,255,255,0.75)'
+  return 'rgba(255,255,255,0.85)'
 }
