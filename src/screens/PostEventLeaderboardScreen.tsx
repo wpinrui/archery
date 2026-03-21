@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../store/gameStore'
 import { EVENT_BACKGROUNDS, EVENT_SCHEDULE, EVENTS_PER_SEASON } from '../types'
 import Flag from '../components/Flag'
+import { posColor } from '../utils/posColor'
 import styles from './PostEventLeaderboardScreen.module.scss'
 
 // ── Helpers ───────────────────────────────────────────────────────────
@@ -18,13 +19,6 @@ function scoreColor(s: number): { bg: string; fg: string } {
 function distanceColor(m: number): string {
   const t = (m - 18) / (90 - 18)
   return `hsl(${Math.round(120 * (1 - t))}, 70%, 62%)`
-}
-
-function posColor(pos: number): string {
-  if (pos === 1) return '#e8c84a'
-  if (pos === 2) return '#9eb8cc'
-  if (pos === 3) return '#c8824a'
-  return 'rgba(255,255,255,0.85)'
 }
 
 // ── Component ─────────────────────────────────────────────────────────

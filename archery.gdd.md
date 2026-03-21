@@ -223,6 +223,14 @@ summary screen → next season begins.
    table (one row per season with age, championship
    position, points total, and medals earned that season).
 
+   **Mid-season retirement:** When the player retires after completing
+   at least one event in the current season, that partial season is
+   committed to career history before the career ends. Its championship
+   position, points total, and medals are preserved and available to
+   the highlight reel and career table. Retiring at the very start of
+   a season (zero events played) does not commit the season — no
+   phantom season record is created.
+
 9. **Event lobby** — shown before each event begins (after
    country selection on first launch, and after each
    post-event leaderboard thereafter). Displays the event
