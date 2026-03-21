@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { useNavigate, Navigate } from 'react-router-dom'
 import { useGameStore } from '../store/gameStore'
 import { expandDistances } from '../store/helpers'
+import { EVENT_BACKGROUNDS } from '../types'
 import type { Distance, Score } from '../types'
 import type { EventLeaderboardRow } from '../types'
 import Flag from '../components/Flag'
@@ -420,7 +421,7 @@ export default function ShootingHUDScreen() {
       ref={containerRef}
       className={`${styles.container} ${phase === 'ready' ? styles.aiming : ''}`}
     >
-      <div className={styles.bg} style={{ transform: `scale(${bgScale})` }} />
+      <div className={styles.bg} style={{ transform: `scale(${bgScale})`, backgroundImage: `url('${EVENT_BACKGROUNDS[currentEvent.id]}')` }} />
       <div className={styles.vignette} />
 
       {/* Top-left: event + arrow count */}
