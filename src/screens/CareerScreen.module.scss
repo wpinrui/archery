@@ -1,0 +1,363 @@
+// ── Container ─────────────────────────────────────────────────────────
+
+.container {
+  height: 100vh;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.bg {
+  position: absolute;
+  inset: -2rem;
+  background: url('/menus-bg.jpg') center / cover no-repeat;
+  filter: blur(10px);
+  z-index: 0;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 80% at 50% 50%, transparent 20%, rgba(0,0,0,0.82) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.5) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 860px;
+  height: 100%;
+  padding: 48px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+// ── Identity bar ──────────────────────────────────────────────────────
+
+.identityBar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--panel-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  padding: 0.9rem 1.5rem;
+  flex-shrink: 0;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.identityFlag {
+  width: 2.2rem;
+  height: auto;
+  border-radius: 3px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.identityText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.playerName {
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.playerMeta {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.4);
+}
+
+.inProgressBadge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.65rem;
+  flex-shrink: 0;
+}
+
+// ── Stat strip ────────────────────────────────────────────────────────
+
+.statStrip {
+  display: flex;
+  align-items: stretch;
+  background: var(--panel-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.statCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.85rem 1.25rem;
+}
+
+.statDivider {
+  width: 1px;
+  background: rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+
+.statLabel {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.4);
+  line-height: 1;
+}
+
+.statValue {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+// Championships
+.champDisplay {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  line-height: 1.1;
+}
+
+.champCount {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.champTrophy {
+  font-size: 1.2rem;
+}
+
+// Medal tally (stat strip)
+.medalTally {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  line-height: 1.1;
+}
+
+// ── Career record table ───────────────────────────────────────────────
+
+.tableSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  flex: 1;
+  min-height: 0;
+}
+
+.sectionLabel {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.6);
+  flex-shrink: 0;
+}
+
+.tableWrap {
+  background: var(--panel-bg-inner);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.tableBody {
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+
+  &::-webkit-scrollbar       { width: 3px; }
+  &::-webkit-scrollbar-track  { background: transparent; }
+  &::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.15); border-radius: 2px; }
+}
+
+// Grid: # | Age | Finish | Pts | Medals
+.row {
+  display: grid;
+  grid-template-columns: 2.5rem 3.5rem 5.5rem 5.5rem 10rem;
+  align-items: center;
+  gap: 0;
+  padding: 0.5rem 1rem;
+  border-left: 2px solid transparent;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+
+  &:last-child { border-bottom: none; }
+}
+
+.headerRow {
+  padding: 0.35rem 1rem;
+  background: rgba(255,255,255,0.025);
+  border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+  flex-shrink: 0;
+
+  span {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+  }
+}
+
+.champRow {
+  border-left: 2px solid rgba(232, 200, 74, 0.6);
+  background: rgba(232, 200, 74, 0.04);
+}
+
+// Column cells ─────────────────────────────────────────────────────────
+
+.cSeason {
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+  color: rgba(255,255,255,0.35);
+}
+
+.cAge {
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+  color: rgba(255,255,255,0.55);
+}
+
+.cPos {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.cPts {
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  color: rgba(255,255,255,0.7);
+}
+
+.cMedals {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+// Medal circles
+.medalCircle {
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.medalCircleG {
+  background: rgba(232, 200, 74, 0.12);
+  border: 1.5px solid rgba(232, 200, 74, 0.55);
+  color: #e8c84a;
+}
+
+.medalCircleS {
+  background: rgba(158, 184, 204, 0.12);
+  border: 1.5px solid rgba(158, 184, 204, 0.55);
+  color: #9eb8cc;
+}
+
+.medalCircleB {
+  background: rgba(200, 130, 74, 0.12);
+  border: 1.5px solid rgba(200, 130, 74, 0.55);
+  color: #c8824a;
+}
+
+.mNone {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.2);
+}
+
+// ── Action row ────────────────────────────────────────────────────────
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+.backBtn {
+  padding: 0.55rem 1.4rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 0.3rem;
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.06);
+  transition: border-color 0.15s, background 0.15s;
+
+  &:hover {
+    border-color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.1);
+  }
+}
+
+.retireBtn {
+  padding: 0.55rem 1.6rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border: 1px solid rgba(224, 90, 90, 0.5);
+  border-radius: 0.3rem;
+  color: rgba(224, 90, 90, 0.85);
+  background: rgba(224, 90, 90, 0.08);
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+
+  &:hover {
+    border-color: rgba(224, 90, 90, 0.8);
+    background: rgba(224, 90, 90, 0.14);
+    color: #e05a5a;
+  }
+}
