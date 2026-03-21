@@ -1,5 +1,6 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import { useGameStore } from '../store/gameStore'
+import { EVENTS_PER_SEASON } from '../types'
 import Flag from '../components/Flag'
 import styles from './VictoryScreen.module.scss'
 
@@ -17,15 +18,22 @@ function ordinal(n: number): string {
 export default function VictoryScreen() {
   const navigate = useNavigate()
 
-  const player = useGameStore(s => s.player)!
+  const player = useGameStore(s => s.player)
   const currentSeason = useGameStore(s => s.currentSeason)
   const careerHistory = useGameStore(s => s.careerHistory)
+  const completedEvents = useGameStore(s => s.completedEvents)
   const getChampionshipStandings = useGameStore(s => s.getChampionshipStandings)
   const completeSeason = useGameStore(s => s.completeSeason)
   const retire = useGameStore(s => s.retire)
 
   const standings = getChampionshipStandings()
-  const playerStanding = standings.find(s => s.isPlayer)!
+  const playerStanding = standings.find(s => s.isPlayer)
+
+  // Guard: only show this screen if the season is complete and the player won
+  if (!player || completedEvents.length < EVENTS_PER_SEASON || !playerStanding || playerStanding.rank !== 1) {
+    return <Navigate to="/play" replace />
+  }
+
   const totalPts = playerStanding.totalPoints
 
   // Past championship wins + current one
