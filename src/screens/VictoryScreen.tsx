@@ -48,6 +48,7 @@ export default function VictoryScreen() {
   }
 
   function handleRetire() {
+    completeSeason()
     retire()
     navigate('/retired')
   }

@@ -11,7 +11,6 @@ import type {
   MedalTally,
   MedalType,
   Player,
-  RetirementHighlight,
   Score,
   SeasonRecord,
   StandingsRow,
@@ -29,7 +28,6 @@ import {
 } from '../types'
 import {
   ageCompetitor,
-  computeRetirementHighlights,
   expandDistances,
   generateInitialRoster,
   generateRookie,
@@ -95,8 +93,8 @@ interface GameState extends GameData {
    */
   completeSeason: () => void
 
-  /** End the career and return the 5 retirement highlight slides */
-  retire: () => RetirementHighlight[]
+  /** End the career */
+  retire: () => void
 
   /** Wipe persisted state and start fresh (back to country selection) */
   resetCareer: () => void
@@ -368,9 +366,7 @@ export const useGameStore = create<GameState>()(persist((set, get) => ({
   },
 
   retire: () => {
-    const state = get()
     set({ phase: 'retired' })
-    return computeRetirementHighlights(state.medalHistory, state.careerHistory)
   },
 
   resetCareer: () => {
