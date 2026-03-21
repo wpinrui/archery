@@ -2,16 +2,8 @@ import { useState } from 'react'
 import { useNavigate, Navigate } from 'react-router-dom'
 import { useGameStore } from '../store/gameStore'
 import Flag from '../components/Flag'
+import { posColor } from '../utils/posColor'
 import styles from './CareerScreen.module.scss'
-
-// ── Helpers ───────────────────────────────────────────────────────────
-
-function posColor(pos: number): string {
-  if (pos === 1) return '#e8c84a'
-  if (pos === 2) return '#9eb8cc'
-  if (pos === 3) return '#c8824a'
-  return 'rgba(255,255,255,0.75)'
-}
 
 // ── Component ─────────────────────────────────────────────────────────
 
@@ -23,6 +15,7 @@ export default function CareerScreen() {
   const player = useGameStore(s => s.player)
   const currentSeason = useGameStore(s => s.currentSeason)
   const careerHistory = useGameStore(s => s.careerHistory)
+  const completeSeason = useGameStore(s => s.completeSeason)
   const retire = useGameStore(s => s.retire)
 
   // Guard: only accessible during an active career
@@ -44,6 +37,7 @@ export default function CareerScreen() {
   }
 
   function handleRetire() {
+    completeSeason()
     retire()
     navigate('/retired')
   }
@@ -62,7 +56,7 @@ export default function CareerScreen() {
             <div className={styles.identityText}>
               <span className={styles.playerName}>{player.name}</span>
               <span className={styles.playerMeta}>
-                {player.countryCode} · Age {player.age} · {careerHistory.length} seasons
+                {player.countryCode} · Age {player.age} · {careerHistory.length} {careerHistory.length === 1 ? 'season' : 'seasons'}
               </span>
             </div>
           </div>
