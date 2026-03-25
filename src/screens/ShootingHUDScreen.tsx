@@ -6,6 +6,7 @@ import { EVENT_BACKGROUNDS } from '../types'
 import type { Distance, Score } from '../types'
 import type { EventLeaderboardRow } from '../types'
 import Flag from '../components/Flag'
+import { playArrowSfx } from '../audio/sfx'
 import styles from './ShootingHUDScreen.module.scss'
 
 // ── Debug flag ──────────────────────────────────────────────────────
@@ -361,6 +362,7 @@ export default function ShootingHUDScreen() {
   // ── Fire ──────────────────────────────────────────────────────────
   const fire = useCallback(() => {
     if (phase !== 'ready') return
+    playArrowSfx(currentDistance)
 
     const radius = targetSizeRef.current / 2
     const gravPx = gravityForDistance(currentDistance, gravityFactor)
