@@ -1,12 +1,21 @@
 /**
  * Arrow shot sound effect.
  *
- * ARROW_SFX_DELAY_MS can be tuned to sync the woosh with the zoom
- * animation without touching any other code.
+ * ARROW_SFX_DELAY_MS maps each distance to a delay so the woosh
+ * aligns with the zoom-to-impact animation. Tune these values
+ * without touching any other code.
  */
 
-/** Delay (ms) before the arrow SFX plays after the shot is fired. */
-export const ARROW_SFX_DELAY_MS = 0
+import type { Distance } from '../types'
+
+/** Per-distance delay (ms) before the arrow SFX plays. */
+export const ARROW_SFX_DELAY_MS: Record<Distance, number> = {
+  18: 0,
+  30: 140,
+  50: 428,
+  70: 774,
+  90: 1188,
+}
 
 const SFX_PATH = '/sfx/72208__strangely_gnarled__arrow_woosh__twang_01.wav'
 
@@ -27,8 +36,8 @@ export function preloadArrowSfx() {
   loadBuffer().catch(() => {})
 }
 
-/** Play the arrow woosh SFX, respecting the configurable delay. */
-export function playArrowSfx() {
+/** Play the arrow woosh SFX, respecting the per-distance delay. */
+export function playArrowSfx(distance: Distance) {
   const play = () => {
     if (!audioCtx) audioCtx = new AudioContext()
     loadBuffer().then(buffer => {
@@ -39,8 +48,9 @@ export function playArrowSfx() {
     }).catch(() => {})
   }
 
-  if (ARROW_SFX_DELAY_MS > 0) {
-    setTimeout(play, ARROW_SFX_DELAY_MS)
+  const delay = ARROW_SFX_DELAY_MS[distance] ?? 0
+  if (delay > 0) {
+    setTimeout(play, delay)
   } else {
     play()
   }

@@ -362,7 +362,7 @@ export default function ShootingHUDScreen() {
   // ── Fire ──────────────────────────────────────────────────────────
   const fire = useCallback(() => {
     if (phase !== 'ready') return
-    playArrowSfx()
+    playArrowSfx(currentDistance)
 
     const radius = targetSizeRef.current / 2
     const gravPx = gravityForDistance(currentDistance, gravityFactor)
