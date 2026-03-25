@@ -16,7 +16,6 @@ const PLAYLIST = [
 
 let audio: HTMLAudioElement | null = null
 let currentIndex = 0
-let playing = false
 
 function ensureAudio() {
   if (audio) return audio
@@ -32,11 +31,10 @@ function ensureAudio() {
 /** Start (or resume) playback of the current track. */
 export function playMusic() {
   const a = ensureAudio()
-  if (playing) return
+  if (!a.paused) return
   if (!a.src || a.src === location.origin + '/') {
     a.src = PLAYLIST[currentIndex]
   }
-  playing = true
   a.play().catch(() => {})
 }
 
@@ -44,7 +42,6 @@ export function playMusic() {
  *  will start the *next* track from 0 anyway). */
 export function stopMusic() {
   if (!audio) return
-  playing = false
   audio.pause()
 }
 
@@ -54,6 +51,5 @@ export function advanceAndPlay() {
   currentIndex = (currentIndex + 1) % PLAYLIST.length
   a.src = PLAYLIST[currentIndex]
   a.currentTime = 0
-  playing = true
   a.play().catch(() => {})
 }

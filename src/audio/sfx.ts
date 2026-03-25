@@ -40,7 +40,7 @@ export function preloadArrowSfx() {
 export function playArrowSfx(distance: Distance) {
   const play = () => {
     if (!audioCtx) audioCtx = new AudioContext()
-    loadBuffer().then(buffer => {
+    audioCtx.resume().then(() => loadBuffer()).then(buffer => {
       const source = audioCtx!.createBufferSource()
       source.buffer = buffer
       source.connect(audioCtx!.destination)
