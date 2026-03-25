@@ -1,6 +1,8 @@
 import { useRef, useState, useCallback, useEffect, useSyncExternalStore } from 'react'
-import { BrowserRouter, Routes, Route, Link, Navigate, Outlet } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Link, Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useGameStore } from './store/gameStore'
+import { playMusic, stopMusic, advanceAndPlay } from './audio/musicManager'
+import { preloadArrowSfx } from './audio/sfx'
 import styles from './App.module.scss'
 
 // Mockup imports — retained for reference routes only
@@ -130,12 +132,41 @@ function useHasHydrated() {
   )
 }
 
+/** Reacts to route changes to control background music. */
+function MusicController() {
+  const { pathname } = useLocation()
+  const prevRef = useRef(pathname)
+
+  useEffect(() => {
+    preloadArrowSfx()
+  }, [])
+
+  useEffect(() => {
+    const prev = prevRef.current
+    prevRef.current = pathname
+
+    const onShooting = pathname === '/game/shooting'
+    const wasShooting = prev === '/game/shooting'
+
+    if (onShooting) {
+      stopMusic()
+    } else if (wasShooting) {
+      advanceAndPlay()
+    } else {
+      playMusic()
+    }
+  }, [pathname])
+
+  return null
+}
+
 export default function App() {
   const hydrated = useHasHydrated()
   if (!hydrated) return null
 
   return (
     <BrowserRouter>
+      <MusicController />
       <Routes>
         {/* Entry point — title screen on cold start */}
         <Route path="/" element={<TitleScreen />} />
