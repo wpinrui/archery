@@ -69,7 +69,7 @@ export const EVENTS_PER_SEASON = 5
 
 /**
  * The 5 world-tour events in fixed season order.
- * Each event has 10 arrows across 3 distances, shot shortest to longest.
+ * Each event has 6 arrows across 3 distances, shot shortest to longest.
  */
 export const EVENT_SCHEDULE: readonly EventDefinition[] = [
   {
@@ -78,9 +78,9 @@ export const EVENT_SCHEDULE: readonly EventDefinition[] = [
     shortName: 'Seoul',
     hostCountryCode: 'KOR',
     distances: [
-      { distance: 18, arrows: 4 },
-      { distance: 30, arrows: 3 },
-      { distance: 50, arrows: 3 },
+      { distance: 18, arrows: 2 },
+      { distance: 30, arrows: 2 },
+      { distance: 50, arrows: 2 },
     ],
   },
   {
@@ -89,8 +89,8 @@ export const EVENT_SCHEDULE: readonly EventDefinition[] = [
     shortName: 'Paris',
     hostCountryCode: 'FRA',
     distances: [
-      { distance: 18, arrows: 4 },
-      { distance: 30, arrows: 4 },
+      { distance: 18, arrows: 2 },
+      { distance: 30, arrows: 2 },
       { distance: 70, arrows: 2 },
     ],
   },
@@ -100,9 +100,9 @@ export const EVENT_SCHEDULE: readonly EventDefinition[] = [
     shortName: 'Las Vegas',
     hostCountryCode: 'USA',
     distances: [
-      { distance: 30, arrows: 3 },
-      { distance: 50, arrows: 4 },
-      { distance: 70, arrows: 3 },
+      { distance: 30, arrows: 2 },
+      { distance: 50, arrows: 2 },
+      { distance: 70, arrows: 2 },
     ],
   },
   {
@@ -111,9 +111,9 @@ export const EVENT_SCHEDULE: readonly EventDefinition[] = [
     shortName: 'Sydney',
     hostCountryCode: 'AUS',
     distances: [
-      { distance: 50, arrows: 3 },
-      { distance: 70, arrows: 3 },
-      { distance: 90, arrows: 4 },
+      { distance: 50, arrows: 2 },
+      { distance: 70, arrows: 2 },
+      { distance: 90, arrows: 2 },
     ],
   },
   {
@@ -123,8 +123,8 @@ export const EVENT_SCHEDULE: readonly EventDefinition[] = [
     hostCountryCode: 'ZAF',
     distances: [
       { distance: 18, arrows: 2 },
-      { distance: 70, arrows: 4 },
-      { distance: 90, arrows: 4 },
+      { distance: 70, arrows: 2 },
+      { distance: 90, arrows: 2 },
     ],
   },
 ]
